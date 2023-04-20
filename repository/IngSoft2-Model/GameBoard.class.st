@@ -13,11 +13,6 @@ GameBoard class >> with: numberOfCells [
 	^(self new) initializeWith: numberOfCells 
 ]
 
-{ #category : #validations }
-GameBoard >> PlayerPosition: aDice [
-	^aDice 
-]
-
 { #category : #validation }
 GameBoard >> amountOfCells [
 	^cells 
@@ -66,4 +61,9 @@ GameBoard >> move: aPlayer adding: anInteger [
 	playerPosition := (playersPositions at: counter ) changePosition: anInteger.
 	
 	
+]
+
+{ #category : #validations }
+GameBoard >> playerPosition: aDice [
+	^aDice 
 ]

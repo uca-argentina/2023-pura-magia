@@ -45,15 +45,18 @@ self assert: aGameBoard amountOfCells equals: 4
 
 { #category : #tests }
 GameTests >> test005PlayerHasPosition [
-|aGame aPlayer aGameBoard cells |
+|aGame aPlayer aGameBoard cells dice  players|
 aGame:= Game initializeEmpty.
 aPlayer := Player new.
+players := OrderedCollection new.
+players add: aPlayer .
+dice := 0.
 cells:= 4.
 aGameBoard := GameBoard with: cells .
 
-aGame startwith: aPlayer and: aGameBoard.
+aGame startwith: players and: aGameBoard.
 
-self assert: (aGameBoard PlayerPosition: aPlayer) equals: 0.
+self assert: (aGameBoard playerPosition: dice ) equals: 0.
  
 
   
