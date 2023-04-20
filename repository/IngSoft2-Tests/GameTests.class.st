@@ -30,13 +30,15 @@ self assert: aGame result equals: aPlayer
 
 { #category : #tests }
 GameTests >> test004GameIsStartedWithAGameBoardAndPlayer [
-|aGame aPlayer aGameBoard cells|
+|aGame aPlayer aGameBoard cells players|
 aGame:= Game initializeEmpty.
 aPlayer := Player new.
+players := OrderedCollection new.
+players add: aPlayer .
 cells:= 4.
 aGameBoard := GameBoard with: cells .
 
-aGame startwith: aPlayer and: aGameBoard.
+aGame startwith: players and: aGameBoard.
  
 self assert: aGameBoard amountOfCells equals: 4  
 ]
@@ -59,12 +61,14 @@ self assert: (aGameBoard PlayerPosition: aPlayer) equals: 0.
 
 { #category : #tests }
 GameTests >> test006PlayerPositionLessThanToatalsCellsThenNotWinner [
-|aGame aPlayer aGameBoard cells |
+|aGame aPlayer aGameBoard cells players|
 aGame:= Game initializeEmpty.
 aPlayer := Player new.
+players := OrderedCollection new.
+players add:aPlayer.
 cells:= 4.
 aGameBoard := GameBoard with: cells .
-aGame startwith: aPlayer and: aGameBoard.
+aGame startwith: players and: aGameBoard.
 
 self deny: aGame result equals: aPlayer.
 
@@ -73,13 +77,15 @@ self deny: aGame result equals: aPlayer.
 
 { #category : #tests }
 GameTests >> test007PlayerPositionLessThanToatalsCellsThenWinner [
-|aGame aPlayer aGameBoard cells dice|
+|aGame aPlayer aGameBoard cells dice players|
 aGame:= Game initializeEmpty.
 aPlayer := Player new.
+players := OrderedCollection new.
+players add:aPlayer.
 cells:= 4.
 dice:= 4.
 aGameBoard := GameBoard with: cells .
-aGame startwith: aPlayer and: aGameBoard.
+aGame startwith: players and: aGameBoard.
 aGameBoard move: aPlayer adding: dice.
 self assert: aGameBoard checkPosition equals: cells.
 
@@ -88,20 +94,22 @@ self assert: aGameBoard checkPosition equals: cells.
 
 { #category : #tests }
 GameTests >> test008PlayersPlayTheGame2Rounds [
-|aGame aPlayer aGameBoard cells dice|
+|aGame aPlayer aGameBoard cells dice players|
 aGame:= Game initializeEmpty.
 aPlayer := Player new.
+players := OrderedCollection new.
+players add:aPlayer.
 cells:= 4.
 dice:= 4.
 aGameBoard := GameBoard with: cells .
-aGame startwith: aPlayer and: aGameBoard.
+aGame startwith: players and: aGameBoard.
 aGameBoard move: aPlayer adding: dice.
 self assert: aGameBoard checkPosition equals: cells.
 
   
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 GameTests >> test009PlayersPlayTheGame2Rounds [
 |aGame marian delfi aGameBoard players cells dice|
 aGame:= Game initializeEmpty.
