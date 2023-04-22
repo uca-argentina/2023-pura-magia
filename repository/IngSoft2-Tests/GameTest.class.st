@@ -1,20 +1,20 @@
 Class {
-	#name : #Game,
+	#name : #GameTest,
 	#superclass : #Object,
 	#instVars : [
 		'result',
 		'gameboard'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Tests'
 }
 
 { #category : #initialization }
-Game class >> initializeEmpty [
+GameTest class >> initializeEmpty [
 	^(self new) initializeWith: 'The Game does not have a winner'
 ]
 
 { #category : #creation }
-Game >> create: amountOfPlayers [
+GameTest >> create: amountOfPlayers [
 	|playersCollection count|
 	count:=1.
 	playersCollection := OrderedCollection new.
@@ -28,13 +28,13 @@ Game >> create: amountOfPlayers [
 ]
 
 { #category : #intialization }
-Game >> initializeWith: aResult [ 
+GameTest >> initializeWith: aResult [ 
 	result := aResult.
 	gameboard := nil.
 ]
 
 { #category : #validations }
-Game >> playUntilWinner: aDice [ 
+GameTest >> playUntilWinner: aDice [ 
 	[(gameboard winner)= false ] whileTrue: [ 
 		 gameboard playRoundWith: aDice 
 	
@@ -43,32 +43,32 @@ Game >> playUntilWinner: aDice [
 ]
 
 { #category : #validation }
-Game >> result [
+GameTest >> result [
 	^ result
 ]
 
 { #category : #start }
-Game >> start [
+GameTest >> start [
 	result := 'The Game does not have a winner' 
 ]
 
 { #category : #starting }
-Game >> startwith: aPlayer [ 
+GameTest >> startwith: aPlayer [ 
 	result:= aPlayer 
 ]
 
 { #category : #starting }
-Game >> startwith: amountOfPlayers and: aGameboard [
-|players|
+GameTest >> startwith: aPlayer and: aGameboard [
+
 gameboard := aGameboard .
-players := self create: amountOfPlayers.
-aGameboard fillPlayers: players  .
+
+aGameboard fillPlayers: aPlayer  .
 "((aGameboard player aPlayer) = (aGameboard amountOfCells)) ifTrue: [result:= aPlayer  ]."
 	 
 ]
 
 { #category : #validating }
-Game >> winner [
-	[gameboard winner = false]ifFalse: [ result := 'The Game ended'  ]. 
+GameTest >> winner [
+	 
 	^gameboard winner
 ]
