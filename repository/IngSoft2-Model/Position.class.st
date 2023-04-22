@@ -24,11 +24,6 @@ Position >> initializeWith: aPlayer [
 	position := 0 .
 ]
 
-{ #category : #validations }
-Position >> is [
-	self shouldBeImplemented.
-]
-
 { #category : #'tests - validation' }
 Position >> is: aPlayer [ 
 	^ aPlayer = player .
@@ -37,4 +32,9 @@ Position >> is: aPlayer [
 { #category : #validation }
 Position >> isAtPosition [
 	^ position 
+]
+
+{ #category : #validations }
+Position >> playerInPosition [
+	^player
 ]

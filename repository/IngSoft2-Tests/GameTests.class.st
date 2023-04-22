@@ -90,7 +90,7 @@ dice:= 4.
 aGameBoard := GameBoard with: cells .
 aGame startwith: players and: aGameBoard.
 aGameBoard move: aPlayer adding: dice.
-self assert: aGameBoard checkPosition equals: cells.
+self assert: (aGameBoard checkPosition:aPlayer) equals: cells.
 
   
 ]
@@ -107,7 +107,7 @@ dice:= 4.
 aGameBoard := GameBoard with: cells .
 aGame startwith: players and: aGameBoard.
 aGameBoard move: aPlayer adding: dice.
-self assert: aGameBoard checkPosition equals: cells.
+self assert: (aGameBoard checkPosition:aPlayer) equals: cells.
 
   
 ]
@@ -132,6 +132,84 @@ aGameBoard move: delfi   adding: dice.
 self assert: (aGameBoard  checkPosition: delfi  )  equals: 2.
 aGameBoard move: marian  adding: dice.
 self assert: (aGameBoard  checkPosition: marian  )  equals: 3.
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test010PlayersPlayTheGame3RoundsThenPlayer1Wins [
+|aGame marian delfi aGameBoard players cells dice|
+aGame:= Game initializeEmpty.
+marian := Player new.
+delfi := Player new.
+players := OrderedCollection new.
+players add: marian.
+players add:delfi.
+cells:= 4.
+dice:= 1.
+aGameBoard := GameBoard with: cells .
+aGame startwith: players  and: aGameBoard.
+aGameBoard move: marian  adding: dice.
+self assert: (aGameBoard  checkPosition: marian  )  equals: 1.
+dice:=2.
+aGameBoard move: delfi   adding: dice.
+self assert: (aGameBoard  checkPosition: delfi  )  equals: 2.
+aGameBoard move: marian  adding: dice.
+self assert: (aGameBoard  checkPosition: marian  )  equals: 3.
+dice := 1.
+aGameBoard move: delfi   adding: dice.
+self assert: (aGameBoard  checkPosition: delfi  )  equals: 3.
+aGameBoard move: marian  adding: dice.
+self assert: (aGameBoard  checkPosition: marian  )  equals: 4.
+self assert: (aGameBoard winner) equals: marian.
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test011PlayersRounds [
+|aGame marian delfi aGameBoard players cells dice|
+aGame:= Game initializeEmpty.
+marian := Player new.
+delfi := Player new.
+players := OrderedCollection new.
+players add: marian.
+players add:delfi.
+cells:= 4.
+dice:= 1.
+aGameBoard := GameBoard with: cells .
+aGame startwith: players  and: aGameBoard.
+aGame playUntilWinner: dice.
+
+self assert: (aGameBoard checkPosition: delfi)equals: 3. 
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test011PlayersRoundsTilOneWins [
+|aGame marian delfi aGameBoard players cells dice|
+aGame:= Game initializeEmpty.
+marian := Player new.
+delfi := Player new.
+players := OrderedCollection new.
+players add: marian.
+players add:delfi.
+cells:= 4.
+dice:= 1.
+aGameBoard := GameBoard with: cells .
+aGame startwith: players  and: aGameBoard.
+aGame playUntilWinner: dice.
+
+self assert: (aGameBoard winner)equals: marian. 
+
+
+
 
   
 ]
