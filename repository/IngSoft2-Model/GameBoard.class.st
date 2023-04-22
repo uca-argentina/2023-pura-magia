@@ -58,6 +58,19 @@ GameBoard >> move: aPlayer adding: anInteger [
 	
 ]
 
+{ #category : #action }
+GameBoard >> playRoundWith: aDice [ 
+	|counter result|
+	counter := 1.
+	
+	[counter <= playersPositions size and: self winner = false] whileTrue:  [ 
+		result := aDice throw.
+	 self move: ((playersPositions at: counter )  playerInPosition  )  adding: result.
+	counter := counter + 1. 
+	
+	 ].
+]
+
 { #category : #validations }
 GameBoard >> playerPosition: aDice [
 	^aDice 
@@ -79,11 +92,11 @@ GameBoard >> throwDice: aDice [
 GameBoard >> winner [
 	|counter|
 	counter := 1.
-	 [((playersPositions at: counter) isAtPosition) = cells or:(counter >= playersPositions size) ] whileFalse: [ 
+	 [((playersPositions at: counter) isAtPosition) >= cells or:(counter >= playersPositions size) ] whileFalse: [ 
 		counter := counter + 1. 
 	
 	 ].
-((counter <= playersPositions size) and: (((playersPositions at: counter) isAtPosition) = cells)) ifTrue: [ ^(playersPositions at: counter)playerInPosition. ] 
+((counter <= playersPositions size) and: (((playersPositions at: counter) isAtPosition) >= cells)) ifTrue: [ ^(playersPositions at: counter)playerInPosition. ] 
 ifFalse: [ ^false ].
  
 
