@@ -170,7 +170,7 @@ self assert: (aGameBoard winner) equals: marian.
 
 { #category : #tests }
 GameTests >> test011PlayersRounds [
-|aGame marian delfi aGameBoard players cells dice numbers|
+|aGame marian delfi aGameBoard players cells dice numbers arrayOfDices|
 aGame:= GameTest initializeEmpty.
 marian := Player new.
 delfi := Player new.
@@ -180,9 +180,13 @@ players add:delfi.
 cells:= 4.
 numbers := #(1 1 1)  .
 dice:= LoadedDice with:numbers.
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice .
+
 aGameBoard := GameBoard with: cells .
 aGame startwith: players  and: aGameBoard.
-aGame playUntilWinner: dice.
+aGame playUntilWinner: arrayOfDices.
 
 self assert: (aGameBoard checkPosition: delfi)equals: 3. 
 
@@ -194,7 +198,7 @@ self assert: (aGameBoard checkPosition: delfi)equals: 3.
 
 { #category : #tests }
 GameTests >> test011PlayersRoundsTilOneWins [
-|aGame marian delfi aGameBoard players cells dice numbers|
+|aGame marian delfi aGameBoard players cells dice numbers arrayOfDices|
 aGame:= GameTest initializeEmpty.
 marian := Player new.
 delfi := Player new.
@@ -204,9 +208,13 @@ players add:delfi.
 cells:= 4.
 numbers := #(1 1 1)  .
 dice:= LoadedDice with:numbers.
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice .
+
 aGameBoard := GameBoard with: cells .
 aGame startwith: players  and: aGameBoard.
-aGame playUntilWinner: dice.
+aGame playUntilWinner: arrayOfDices.
 
 self assert: (aGameBoard winner)equals: marian. 
 
@@ -218,7 +226,7 @@ self assert: (aGameBoard winner)equals: marian.
 
 { #category : #tests }
 GameTests >> test012PlayersRoundsTilOneWins [
-|aGame marian delfi aGameBoard players cells dice numbers|
+|aGame marian delfi aGameBoard players cells dice numbers arrayOfDices|
 aGame:= GameTest initializeEmpty.
 marian := Player new.
 delfi := Player new.
@@ -228,9 +236,13 @@ players add:delfi.
 cells:= 4.
 numbers := #(1 2 3)  .
 dice:= LoadedDice with:numbers.
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice .
+
 aGameBoard := GameBoard with: cells .
 aGame startwith: players  and: aGameBoard.
-aGame playUntilWinner: dice.
+aGame playUntilWinner: arrayOfDices.
 
 self assert: (aGame  winner)equals: marian. 
 
@@ -241,7 +253,7 @@ self assert: (aGame  winner)equals: marian.
 
 { #category : #tests }
 GameTests >> test013PlayWithLoadedDiceAndWinsPlayer2 [
-|aGame marian delfi aGameBoard players cells dice numbers|
+|aGame marian delfi aGameBoard players cells dice numbers arrayOfDices|
 aGame:= GameTest initializeEmpty.
 marian := Player new.
 delfi := Player new.
@@ -253,9 +265,12 @@ dice:= LoadedDice .
 numbers := #(1 2 1 4)  .
 dice := LoadedDice with: numbers .
 
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice .
+
 aGameBoard := GameBoard with: cells .
 aGame startwith: players  and: aGameBoard.
-aGame playUntilWinner: dice.
+aGame playUntilWinner: arrayOfDices.
 
 self assert: (aGame winner)equals: delfi . 
 
@@ -266,7 +281,7 @@ self assert: (aGame winner)equals: delfi .
 
 { #category : #tests }
 GameTests >> test014playWithRandomDice [
-|aGame marian delfi aGameBoard players cells aDice |
+|aGame marian delfi aGameBoard players cells aDice arrayOfDices|
 aGame:= GameTest initializeEmpty.
 marian := Player new.
 delfi := Player new.
@@ -276,9 +291,12 @@ players add:delfi.
 cells:= 4.
 aDice := Dice with: 4.
 
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: aDice .
+
 aGameBoard := GameBoard with: cells .
 aGame startwith: players  and: aGameBoard.
-aGame playUntilWinner: aDice.
+aGame playUntilWinner: arrayOfDices.
 
 self assert: ((aGame winner)isKindOf:  Player) . 
 
@@ -289,7 +307,7 @@ self assert: ((aGame winner)isKindOf:  Player) .
 
 { #category : #tests }
 GameTests >> test015PlayWithNPlayers [
-|aGame aGameBoard amountOfPlayers cells dice numbers|
+|aGame aGameBoard amountOfPlayers cells dice numbers arrayOfDices|
 aGame:= Game initializeEmpty.
 amountOfPlayers := 4.
 cells:= 8.
@@ -297,11 +315,103 @@ dice:= LoadedDice .
 numbers := #(1 2 1 4)  .
 dice := LoadedDice with: numbers .
 
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice .
+
 aGameBoard := GameBoard with: cells .
 aGame startwith: amountOfPlayers   and: aGameBoard.
-aGame playUntilWinner: dice.
+aGame playUntilWinner: arrayOfDices.
 
 self assert: (aGame result) equals: 'The Game has ended' . 
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test016PlayWithMLoadedDicesAndNPlayers [
+|aGame aGameBoard amountOfPlayers amountOfDices anotherNumbers cells dice1 dice2 numbers arrayOfDices|
+aGame:= Game initializeEmpty.
+amountOfPlayers := 4.
+cells:= 8.
+
+amountOfDices := 2.
+
+numbers := #(1 1 1 1)  .
+anotherNumbers := #(2 2 2 4)  .
+dice1 := LoadedDice with: numbers .
+dice2 := LoadedDice with: anotherNumbers .
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice1 .
+arrayOfDices add: dice2 .
+
+aGameBoard := GameBoard with: cells .
+aGame startwith: amountOfPlayers   and: aGameBoard.
+aGame playUntilWinner: arrayOfDices .
+
+self deny: (aGame winner) equals: (aGameBoard playerIn: 1) .
+self deny: (aGame winner) equals: (aGameBoard playerIn: 2) .
+self deny: (aGame winner) equals: (aGameBoard playerIn: 3) .
+self assert: (aGame winner) equals: (aGameBoard playerIn: 4) .
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test017PlayWithMDicesAndNPlayers [
+|aGame aGameBoard amountOfPlayers amountOfDices cells dice1 dice2 arrayOfDices |
+aGame:= Game initializeEmpty.
+amountOfPlayers := 4.
+cells:= 8.
+
+amountOfDices := 2.
+dice1 := Dice with: 3 .
+dice2 := Dice with: 5 .
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice1 .
+arrayOfDices add: dice2 .
+
+aGameBoard := GameBoard with: cells .
+aGame startwith: amountOfPlayers   and: aGameBoard.
+aGame playUntilWinner: arrayOfDices .
+
+self assert: (aGame result) equals: 'The Game has ended'
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test018PlayUntilWinnerThenCheckFinalPositions [ 
+|aGame aGameBoard amountOfPlayers amountOfDices anotherNumbers cells dice1 dice2 numbers arrayOfDices|
+aGame:= Game initializeEmpty.
+amountOfPlayers := 4.
+cells:= 8.
+
+amountOfDices := 2.
+
+numbers := #(1 1 1 1)  .
+anotherNumbers := #(2 2 2 4)  .
+dice1 := LoadedDice with: numbers .
+dice2 := LoadedDice with: anotherNumbers .
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice1 .
+arrayOfDices add: dice2 .
+
+aGameBoard := GameBoard with: cells .
+aGame startwith: amountOfPlayers   and: aGameBoard.
+aGame playUntilWinner: arrayOfDices .
+
+self assert: (aGameBoard checkPosition: (aGameBoard playerIn: 2) ) equals: 6 .
+
 
 
 
