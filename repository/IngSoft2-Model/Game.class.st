@@ -69,6 +69,5 @@ aGameboard fillPlayers: players  .
 
 { #category : #validating }
 Game >> winner [
-	[gameboard winner = false]ifFalse: [ result := 'The Game ended'  ]. 
 	^gameboard winner
 ]

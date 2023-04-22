@@ -59,16 +59,24 @@ GameBoard >> move: aPlayer adding: anInteger [
 ]
 
 { #category : #action }
-GameBoard >> playRoundWith: aDice [ 
+GameBoard >> playRoundWith: aCollectionOfDices [ 
 	|counter result|
 	counter := 1.
+	result := 0.
 	
-	[counter <= playersPositions size and: self winner = false] whileTrue:  [ 
-		result := aDice throw.
-	 self move: ((playersPositions at: counter )  playerInPosition  )  adding: result.
-	counter := counter + 1. 
+	[counter <= playersPositions size and: self winner = false] whileTrue:  [
+		
+		result := self throwVariousDices: aCollectionOfDices .	
+		self move: ((playersPositions at: counter )  playerInPosition  )  adding: result.
+		counter := counter + 1.
+		result := 0.
 	
 	 ].
+]
+
+{ #category : #positioning }
+GameBoard >> playerIn: aPosition [ 
+	^ (playersPositions at: aPosition ) playerInPosition
 ]
 
 { #category : #validations }
@@ -86,6 +94,19 @@ GameBoard >> throwDice: aDice [
 	counter := counter + 1. 
 	
 	 ].
+]
+
+{ #category : #actions }
+GameBoard >> throwVariousDices: aCollectionOfDices [
+	|counter result|
+	counter := 1.
+	result := 0.
+	
+	[ counter <= aCollectionOfDices size ] whileTrue: [ 
+			result := result + (aCollectionOfDices at: counter) throw .
+			counter := counter + 1.
+		 ].
+	^ result .
 ]
 
 { #category : #validation }
