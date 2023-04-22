@@ -19,6 +19,14 @@ Game >> initializeWith: aResult [
 	gameboard := nil.
 ]
 
+{ #category : #validations }
+Game >> playUntilWinner: aDice [ 
+	[(gameboard winner)= false ] whileTrue: [ 
+		 gameboard throwDice: aDice 
+	
+	 ].
+]
+
 { #category : #validation }
 Game >> result [
 	^ result
