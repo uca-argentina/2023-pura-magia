@@ -2,8 +2,8 @@ Class {
 	#name : #Position,
 	#superclass : #Object,
 	#instVars : [
-		'player',
-		'position'
+		'ship',
+		'cellNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -15,26 +15,26 @@ Position class >> with: aPlayer [
 
 { #category : #changes }
 Position >> changePosition: anInteger [ 
-	position := position + anInteger 
+	cellNumber := cellNumber + anInteger 
 ]
 
 { #category : #initialization }
-Position >> initializeWith: aPlayer [ 
-	player := aPlayer .
-	position := 0 .
-]
-
-{ #category : #'tests - validation' }
-Position >> is: aPlayer [ 
-	^ aPlayer = player .
+Position >> initializeWith: aShip [ 
+	ship  := aShip .
+	cellNumber := 0 .
 ]
 
 { #category : #validation }
 Position >> isAtPosition [
-	^ position 
+	^ cellNumber 
+]
+
+{ #category : #'tests - validation' }
+Position >> isTheSameAs: aShip [ 
+	^ aShip = ship .
 ]
 
 { #category : #validations }
-Position >> playerInPosition [
-	^player
+Position >> shipInPosition [
+	^ship
 ]

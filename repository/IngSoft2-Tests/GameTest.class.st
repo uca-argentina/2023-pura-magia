@@ -19,7 +19,7 @@ GameTest >> create: amountOfPlayers [
 	count:=1.
 	playersCollection := OrderedCollection new.
 	[ count <= amountOfPlayers  ] whileTrue: [ 
-		playersCollection add: Player new.
+		playersCollection add: Ship new.
 		count :=count +1
 	 ].
 ^playersCollection.

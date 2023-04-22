@@ -22,7 +22,7 @@ self assert: aGame result equals: 'The Game does not have a winner'
 GameTests >> test003GameIsStartedThenMessageThatHasNoWinners [
 |aGame aPlayer|
 aGame:= Game initializeEmpty.
-aPlayer := Player new.
+aPlayer := Ship new.
 aGame startwith: aPlayer.
  
 self assert: aGame result equals: aPlayer  
@@ -32,7 +32,7 @@ self assert: aGame result equals: aPlayer
 GameTests >> test004GameIsStartedWithAGameBoardAndPlayer [
 |aGame aPlayer aGameBoard cells players|
 aGame:= GameTest initializeEmpty.
-aPlayer := Player new.
+aPlayer := Ship new.
 players := OrderedCollection new.
 players add: aPlayer .
 cells:= 4.
@@ -47,7 +47,7 @@ self assert: aGameBoard amountOfCells equals: 4
 GameTests >> test005PlayerHasPosition [
 |aGame aPlayer aGameBoard cells dice  players|
 aGame:= GameTest initializeEmpty.
-aPlayer := Player new.
+aPlayer := Ship new.
 players := OrderedCollection new.
 players add: aPlayer .
 dice := 0.
@@ -66,7 +66,7 @@ self assert: (aGameBoard playerPosition: dice ) equals: 0.
 GameTests >> test006PlayerPositionLessThanToatalsCellsThenNotWinner [
 |aGame aPlayer aGameBoard cells players|
 aGame:= GameTest initializeEmpty.
-aPlayer := Player new.
+aPlayer := Ship new.
 players := OrderedCollection new.
 players add:aPlayer.
 cells:= 4.
@@ -82,7 +82,7 @@ self deny: aGame result equals: aPlayer.
 GameTests >> test007PlayerPositionLessThanToatalsCellsThenWinner [
 |aGame aPlayer aGameBoard cells dice players|
 aGame:= GameTest initializeEmpty.
-aPlayer := Player new.
+aPlayer := Ship new.
 players := OrderedCollection new.
 players add:aPlayer.
 cells:= 4.
@@ -99,7 +99,7 @@ self assert: (aGameBoard checkPosition:aPlayer) equals: cells.
 GameTests >> test008PlayersPlayTheGame2Rounds [
 |aGame aPlayer aGameBoard cells dice players|
 aGame:= GameTest initializeEmpty.
-aPlayer := Player new.
+aPlayer := Ship new.
 players := OrderedCollection new.
 players add:aPlayer.
 cells:= 4.
@@ -116,8 +116,8 @@ self assert: (aGameBoard checkPosition:aPlayer) equals: cells.
 GameTests >> test009PlayersPlayTheGame2Rounds [
 |aGame marian delfi aGameBoard players cells dice|
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := Ship new.
+delfi := Ship new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -140,8 +140,8 @@ self assert: (aGameBoard  checkPosition: marian  )  equals: 3.
 GameTests >> test010PlayersPlayTheGame3RoundsThenPlayer1Wins [
 |aGame marian delfi aGameBoard players cells dice|
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := Ship new.
+delfi := Ship new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -172,8 +172,8 @@ self assert: (aGameBoard winner) equals: marian.
 GameTests >> test011PlayersRounds [
 |aGame marian delfi aGameBoard players cells dice numbers arrayOfDices|
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := Ship new.
+delfi := Ship new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -200,8 +200,8 @@ self assert: (aGameBoard checkPosition: delfi)equals: 3.
 GameTests >> test011PlayersRoundsTilOneWins [
 |aGame marian delfi aGameBoard players cells dice numbers arrayOfDices|
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := Ship new.
+delfi := Ship new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -228,8 +228,8 @@ self assert: (aGameBoard winner)equals: marian.
 GameTests >> test012PlayersRoundsTilOneWins [
 |aGame marian delfi aGameBoard players cells dice numbers arrayOfDices|
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := Ship new.
+delfi := Ship new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -255,8 +255,8 @@ self assert: (aGame  winner)equals: marian.
 GameTests >> test013PlayWithLoadedDiceAndWinsPlayer2 [
 |aGame marian delfi aGameBoard players cells dice numbers arrayOfDices|
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := Ship new.
+delfi := Ship new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -283,8 +283,8 @@ self assert: (aGame winner)equals: delfi .
 GameTests >> test014playWithRandomDice [
 |aGame marian delfi aGameBoard players cells aDice arrayOfDices|
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := Ship new.
+delfi := Ship new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -298,7 +298,7 @@ aGameBoard := GameBoard with: cells .
 aGame startwith: players  and: aGameBoard.
 aGame playUntilWinner: arrayOfDices.
 
-self assert: ((aGame winner)isKindOf:  Player) . 
+self assert: ((aGame winner)isKindOf:  Ship) . 
 
 
 
@@ -351,10 +351,10 @@ aGameBoard := GameBoard with: cells .
 aGame startwith: amountOfPlayers   and: aGameBoard.
 aGame playUntilWinner: arrayOfDices .
 
-self deny: (aGame winner) equals: (aGameBoard playerIn: 1) .
-self deny: (aGame winner) equals: (aGameBoard playerIn: 2) .
-self deny: (aGame winner) equals: (aGameBoard playerIn: 3) .
-self assert: (aGame winner) equals: (aGameBoard playerIn: 4) .
+self deny: (aGame winner) equals: (aGameBoard shipAt: 1) .
+self deny: (aGame winner) equals: (aGameBoard shipAt: 2) .
+self deny: (aGame winner) equals: (aGameBoard shipAt: 3) .
+self assert: (aGame winner) equals: (aGameBoard shipAt: 4) .
 
 
 
@@ -410,7 +410,7 @@ aGameBoard := GameBoard with: cells .
 aGame startwith: amountOfPlayers   and: aGameBoard.
 aGame playUntilWinner: arrayOfDices .
 
-self assert: (aGameBoard checkPosition: (aGameBoard playerIn: 2) ) equals: 6 .
+self assert: (aGameBoard checkPosition: (aGameBoard shipAt: 2) ) equals: 6 .
 
 
 
