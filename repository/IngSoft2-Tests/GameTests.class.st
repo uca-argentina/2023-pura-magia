@@ -19,32 +19,32 @@ self assert: aGame result equals: 'The Game does not have a winner'
 ]
 
 { #category : #tests }
-GameTests >> test003GameIsStartedThenMessageThatHasNoWinners [
-|aGame aPlayer|
+GameTests >> test003GameIsStartedThenWinnerShip [
+|aGame aShip|
 aGame:= Game initializeEmpty.
-aPlayer := Ship new.
-aGame startwith: aPlayer.
+aShip := Ship new.
+aGame startwith: aShip .
  
-self assert: aGame result equals: aPlayer  
+self assert: aGame result equals: aShip  
 ]
 
 { #category : #tests }
-GameTests >> test004GameIsStartedWithAGameBoardAndPlayer [
-|aGame aPlayer aGameBoard cells players|
+GameTests >> test004GameIsStartedWithAGameBoardThenCheckTheAmountOfCells [
+|aGame aShip aGameBoard cells players|
 aGame:= GameTest initializeEmpty.
-aPlayer := Ship new.
+aShip  := Ship new.
 players := OrderedCollection new.
-players add: aPlayer .
+players add: aShip .
 cells:= 4.
 aGameBoard := GameBoard with: cells .
 
 aGame startwith: players and: aGameBoard.
  
-self assert: aGameBoard amountOfCells equals: 4  
+self assert: aGameBoard amountOfCells equals: 4 .
 ]
 
 { #category : #tests }
-GameTests >> test005PlayerHasPosition [
+GameTests >> test005ShipHasPosition [
 |aGame aPlayer aGameBoard cells dice  players|
 aGame:= GameTest initializeEmpty.
 aPlayer := Ship new.
@@ -63,7 +63,7 @@ self assert: (aGameBoard playerPosition: dice ) equals: 0.
 ]
 
 { #category : #tests }
-GameTests >> test006PlayerPositionLessThanToatalsCellsThenNotWinner [
+GameTests >> test006ShipPositionLessThanToatalsCellsThenNotWinner [
 |aGame aPlayer aGameBoard cells players|
 aGame:= GameTest initializeEmpty.
 aPlayer := Ship new.
@@ -79,7 +79,26 @@ self deny: aGame result equals: aPlayer.
 ]
 
 { #category : #tests }
-GameTests >> test007PlayerPositionLessThanToatalsCellsThenWinner [
+GameTests >> test007ShipPositionLessThanToatalsCellsThenWinner [
+|aGame aPlayer aGameBoard cells dice players|
+aGame:= GameTest initializeEmpty.
+aPlayer := Ship new.
+players := OrderedCollection new.
+players add:aPlayer.
+cells:= 4.
+dice:= 4.
+aGameBoard := GameBoard with: cells .
+aGame startwith: players and: aGameBoard.
+aGameBoard move: aPlayer adding: dice.
+
+self assert: (aGameBoard checkPosition:aPlayer) equals: cells.
+self assert: (aGame winner) equals: aPlayer 
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test008PlayerPlayTheGame2RoundsThenFinalPositionEqualsAmountOfCells [
 |aGame aPlayer aGameBoard cells dice players|
 aGame:= GameTest initializeEmpty.
 aPlayer := Ship new.
@@ -96,24 +115,7 @@ self assert: (aGameBoard checkPosition:aPlayer) equals: cells.
 ]
 
 { #category : #tests }
-GameTests >> test008PlayersPlayTheGame2Rounds [
-|aGame aPlayer aGameBoard cells dice players|
-aGame:= GameTest initializeEmpty.
-aPlayer := Ship new.
-players := OrderedCollection new.
-players add:aPlayer.
-cells:= 4.
-dice:= 4.
-aGameBoard := GameBoard with: cells .
-aGame startwith: players and: aGameBoard.
-aGameBoard move: aPlayer adding: dice.
-self assert: (aGameBoard checkPosition:aPlayer) equals: cells.
-
-  
-]
-
-{ #category : #tests }
-GameTests >> test009PlayersPlayTheGame2Rounds [
+GameTests >> test009PlayersPlayTheGame2RoundsThenCheckPositions [
 |aGame marian delfi aGameBoard players cells dice|
 aGame:= GameTest initializeEmpty.
 marian := Ship new.
@@ -161,7 +163,7 @@ aGameBoard move: delfi   adding: dice.
 self assert: (aGameBoard  checkPosition: delfi  )  equals: 3.
 aGameBoard move: marian  adding: dice.
 self assert: (aGameBoard  checkPosition: marian  )  equals: 4.
-self assert: (aGameBoard winner) equals: marian.
+self assert: (aGame winner) equals: marian.
 
 
 
@@ -169,7 +171,7 @@ self assert: (aGameBoard winner) equals: marian.
 ]
 
 { #category : #tests }
-GameTests >> test011PlayersRounds [
+GameTests >> test011PlayersPlayWithRoundsThenCheckPosition [
 |aGame marian delfi aGameBoard players cells dice numbers arrayOfDices|
 aGame:= GameTest initializeEmpty.
 marian := Ship new.
@@ -216,7 +218,8 @@ aGameBoard := GameBoard with: cells .
 aGame startwith: players  and: aGameBoard.
 aGame playUntilWinner: arrayOfDices.
 
-self assert: (aGameBoard winner)equals: marian. 
+self assert: (aGame winner)equals: marian. 
+self deny: (aGame winner)equals: delfi.
 
 
 
@@ -252,7 +255,7 @@ self assert: (aGame  winner)equals: marian.
 ]
 
 { #category : #tests }
-GameTests >> test013PlayWithLoadedDiceAndWinsPlayer2 [
+GameTests >> test013PlayWithLoadedDiceThenWinsPlayer2 [
 |aGame marian delfi aGameBoard players cells dice numbers arrayOfDices|
 aGame:= GameTest initializeEmpty.
 marian := Ship new.
@@ -280,7 +283,7 @@ self assert: (aGame winner)equals: delfi .
 ]
 
 { #category : #tests }
-GameTests >> test014playWithRandomDice [
+GameTests >> test014playWithRandomDiceThenWinner [
 |aGame marian delfi aGameBoard players cells aDice arrayOfDices|
 aGame:= GameTest initializeEmpty.
 marian := Ship new.
@@ -306,7 +309,7 @@ self assert: ((aGame winner)isKindOf:  Ship) .
 ]
 
 { #category : #tests }
-GameTests >> test015PlayWithNPlayers [
+GameTests >> test015PlayWithNPlayersTillGamesEnd [
 |aGame aGameBoard amountOfPlayers cells dice numbers arrayOfDices|
 aGame:= Game initializeEmpty.
 amountOfPlayers := 4.
@@ -330,7 +333,7 @@ self assert: (aGame result) equals: 'The Game has ended' .
 ]
 
 { #category : #tests }
-GameTests >> test016PlayWithMLoadedDicesAndNPlayers [
+GameTests >> test016PlayWithMLoadedDicesAndNPlayersThenCheckWinner [
 |aGame aGameBoard amountOfPlayers amountOfDices anotherNumbers cells dice1 dice2 numbers arrayOfDices|
 aGame:= Game initializeEmpty.
 amountOfPlayers := 4.
@@ -363,7 +366,7 @@ self assert: (aGame winner) equals: (aGameBoard shipAt: 4) .
 ]
 
 { #category : #tests }
-GameTests >> test017PlayWithMDicesAndNPlayers [
+GameTests >> test017PlayWithMDicesAndNPlayersTillTheGameEnds [
 |aGame aGameBoard amountOfPlayers amountOfDices cells dice1 dice2 arrayOfDices |
 aGame:= Game initializeEmpty.
 amountOfPlayers := 4.
@@ -389,7 +392,7 @@ self assert: (aGame result) equals: 'The Game has ended'
 ]
 
 { #category : #tests }
-GameTests >> test018PlayUntilWinnerThenCheckFinalPositions [ 
+GameTests >> test018PlayWithMLoadedDicesAndNPlayersTillWinnerThenCheckFinalPositions [ 
 |aGame aGameBoard amountOfPlayers amountOfDices anotherNumbers cells dice1 dice2 numbers arrayOfDices|
 aGame:= Game initializeEmpty.
 amountOfPlayers := 4.
