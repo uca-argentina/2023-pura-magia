@@ -14,17 +14,29 @@ Game class >> initializeEmpty [
 ]
 
 { #category : #creation }
-Game >> create: amountOfPlayers [
-	|playersCollection count|
-	count:=1.
+Game >> addShipTo: playersCollection andIncrease1On: count [
+
+	playersCollection add: Ship new.
+	^ count + 1
+]
+
+{ #category : #creation }
+Game >> addToCollectionTheRequired: amountOfPlayers [
+
+	| playersCollection count |
+	count := 1.
 	playersCollection := OrderedCollection new.
-	[ count <= amountOfPlayers  ] whileTrue: [ 
-		playersCollection add: Ship new.
-		count :=count +1
-	 ].
-^playersCollection.
-	
-	
+	[ self the: count isLowerOrEqualThan: amountOfPlayers ] whileTrue: [ 
+		count := self addShipTo: playersCollection andIncrease1On: count ].
+	^ playersCollection
+]
+
+{ #category : #creation }
+Game >> create: amountOfPlayers [
+
+	| playersCollection |
+	playersCollection := self addToCollectionTheRequired: amountOfPlayers.
+	^ playersCollection
 ]
 
 { #category : #intialization }
@@ -34,12 +46,11 @@ Game >> initializeWith: aResult [
 ]
 
 { #category : #validations }
-Game >> playUntilWinner: aDice [ 
-	[(gameboard winner)= false ] whileTrue: [ 
-		 gameboard playRoundWith: aDice 
-	
-	 ].
-	result := 'The Game has ended' .
+Game >> playUntilWinner: aDice [
+
+	[ self thereIsNoWinnerYet ] whileTrue: [ 
+		gameboard playRoundWith: aDice ].
+	result := 'The Game has ended'
 ]
 
 { #category : #validation }
@@ -65,6 +76,17 @@ players := self create: amountOfPlayers.
 aGameboard fillPlayers: players  .
 "((aGameboard player aPlayer) = (aGameboard amountOfCells)) ifTrue: [result:= aPlayer  ]."
 	 
+]
+
+{ #category : #creation }
+Game >> the: count isLowerOrEqualThan: amountOfPlayers [
+
+	^ count <= amountOfPlayers
+]
+
+{ #category : #validations }
+Game >> thereIsNoWinnerYet [
+	^ gameboard winner = false
 ]
 
 { #category : #validating }

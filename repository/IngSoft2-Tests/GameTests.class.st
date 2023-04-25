@@ -63,7 +63,7 @@ self assert: (aGameBoard playerPosition: dice ) equals: 0.
 ]
 
 { #category : #tests }
-GameTests >> test006ShipPositionLessThanToatalsCellsThenNotWinner [
+GameTests >> test006ShipPositionLowerThanTotalCellsThenNotWinner [
 |aGame aPlayer aGameBoard cells players|
 aGame:= GameTest initializeEmpty.
 aPlayer := Ship new.
@@ -79,7 +79,7 @@ self deny: aGame result equals: aPlayer.
 ]
 
 { #category : #tests }
-GameTests >> test007ShipPositionLessThanToatalsCellsThenWinner [
+GameTests >> test007ShipPositionSameAsTotalCellsThenWinner [
 |aGame aPlayer aGameBoard cells dice players|
 aGame:= GameTest initializeEmpty.
 aPlayer := Ship new.
@@ -91,7 +91,7 @@ aGameBoard := GameBoard with: cells .
 aGame startwith: players and: aGameBoard.
 aGameBoard move: aPlayer adding: dice.
 
-self assert: (aGameBoard checkPosition:aPlayer) equals: cells.
+self assert: (aGameBoard checkPositionOf:aPlayer) equals: cells.
 self assert: (aGame winner) equals: aPlayer 
 
   
@@ -109,7 +109,7 @@ dice:= 4.
 aGameBoard := GameBoard with: cells .
 aGame startwith: players and: aGameBoard.
 aGameBoard move: aPlayer adding: dice.
-self assert: (aGameBoard checkPosition:aPlayer) equals: cells.
+self assert: (aGameBoard checkPositionOf:aPlayer) equals: cells.
 
   
 ]
@@ -128,12 +128,12 @@ dice:= 1.
 aGameBoard := GameBoard with: cells .
 aGame startwith: players  and: aGameBoard.
 aGameBoard move: marian  adding: dice.
-self assert: (aGameBoard  checkPosition: marian  )  equals: 1.
+self assert: (aGameBoard  checkPositionOf: marian  )  equals: 1.
 dice:=2.
 aGameBoard move: delfi   adding: dice.
-self assert: (aGameBoard  checkPosition: delfi  )  equals: 2.
+self assert: (aGameBoard  checkPositionOf: delfi  )  equals: 2.
 aGameBoard move: marian  adding: dice.
-self assert: (aGameBoard  checkPosition: marian  )  equals: 3.
+self assert: (aGameBoard  checkPositionOf: marian  )  equals: 3.
 
   
 ]
@@ -152,17 +152,17 @@ dice:= 1.
 aGameBoard := GameBoard with: cells .
 aGame startwith: players  and: aGameBoard.
 aGameBoard move: marian  adding: dice.
-self assert: (aGameBoard  checkPosition: marian  )  equals: 1.
+self assert: (aGameBoard  checkPositionOf: marian  )  equals: 1.
 dice:=2.
 aGameBoard move: delfi   adding: dice.
-self assert: (aGameBoard  checkPosition: delfi  )  equals: 2.
+self assert: (aGameBoard  checkPositionOf: delfi  )  equals: 2.
 aGameBoard move: marian  adding: dice.
-self assert: (aGameBoard  checkPosition: marian  )  equals: 3.
+self assert: (aGameBoard  checkPositionOf: marian  )  equals: 3.
 dice := 1.
 aGameBoard move: delfi   adding: dice.
-self assert: (aGameBoard  checkPosition: delfi  )  equals: 3.
+self assert: (aGameBoard  checkPositionOf: delfi  )  equals: 3.
 aGameBoard move: marian  adding: dice.
-self assert: (aGameBoard  checkPosition: marian  )  equals: 4.
+self assert: (aGameBoard  checkPositionOf: marian  )  equals: 4.
 self assert: (aGame winner) equals: marian.
 
 
@@ -190,7 +190,7 @@ aGameBoard := GameBoard with: cells .
 aGame startwith: players  and: aGameBoard.
 aGame playUntilWinner: arrayOfDices.
 
-self assert: (aGameBoard checkPosition: delfi)equals: 3. 
+self assert: (aGameBoard checkPositionOf: delfi)equals: 3. 
 
 
 
@@ -199,7 +199,7 @@ self assert: (aGameBoard checkPosition: delfi)equals: 3.
 ]
 
 { #category : #tests }
-GameTests >> test011PlayersRoundsTilOneWins [
+GameTests >> test011PlayersRoundsUntilOneWins [
 |aGame marian delfi aGameBoard players cells dice numbers arrayOfDices|
 aGame:= GameTest initializeEmpty.
 marian := Ship new.
@@ -228,7 +228,7 @@ self deny: (aGame winner)equals: delfi.
 ]
 
 { #category : #tests }
-GameTests >> test012PlayersRoundsTilOneWins [
+GameTests >> test012PlayersRoundsUntilOneWins [
 |aGame marian delfi aGameBoard players cells dice numbers arrayOfDices|
 aGame:= GameTest initializeEmpty.
 marian := Ship new.
@@ -309,7 +309,7 @@ self assert: ((aGame winner)isKindOf:  Ship) .
 ]
 
 { #category : #tests }
-GameTests >> test015PlayWithNPlayersTillGamesEnd [
+GameTests >> test015PlayWithNPlayersUntilGameEnds [
 |aGame aGameBoard amountOfPlayers cells dice numbers arrayOfDices|
 aGame:= Game initializeEmpty.
 amountOfPlayers := 4.
@@ -366,7 +366,7 @@ self assert: (aGame winner) equals: (aGameBoard shipAt: 4) .
 ]
 
 { #category : #tests }
-GameTests >> test017PlayWithMDicesAndNPlayersTillTheGameEnds [
+GameTests >> test017PlayWithMDicesAndNPlayersUntilTheGameEnds [
 |aGame aGameBoard amountOfPlayers amountOfDices cells dice1 dice2 arrayOfDices |
 aGame:= Game initializeEmpty.
 amountOfPlayers := 4.
@@ -392,7 +392,7 @@ self assert: (aGame result) equals: 'The Game has ended'
 ]
 
 { #category : #tests }
-GameTests >> test018PlayWithMLoadedDicesAndNPlayersTillWinnerThenCheckFinalPositions [ 
+GameTests >> test018PlayWithMLoadedDicesAndNPlayersUntilWinnerThenCheckFinalPositions [ 
 |aGame aGameBoard amountOfPlayers amountOfDices anotherNumbers cells dice1 dice2 numbers arrayOfDices|
 aGame:= Game initializeEmpty.
 amountOfPlayers := 4.
@@ -413,7 +413,7 @@ aGameBoard := GameBoard with: cells .
 aGame startwith: amountOfPlayers   and: aGameBoard.
 aGame playUntilWinner: arrayOfDices .
 
-self assert: (aGameBoard checkPosition: (aGameBoard shipAt: 2) ) equals: 6 .
+self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 2) ) equals: 6 .
 
 
 
