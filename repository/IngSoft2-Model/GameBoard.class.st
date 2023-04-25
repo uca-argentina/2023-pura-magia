@@ -19,24 +19,17 @@ GameBoard >> amountOfCells [
 ]
 
 { #category : #validating }
-GameBoard >> checkPosition: aShip [
-	|counter anotherShip |
-	counter := 1.
-	anotherShip :=collectionOfPositions at: counter.
-	[ anotherShip isTheSameAs: aShip  ] whileFalse: [ 
-	counter := counter + 1.
-	anotherShip :=collectionOfPositions at: counter. 
-	
-	 ].
+GameBoard >> checkPositionOf: aShip [
 
-
-	^ (collectionOfPositions at: counter ) isAtPosition
+	| anotherShip |
+	anotherShip := self positionAtCollectionOf: aShip.
+	^ anotherShip isAtPosition
 ]
 
 { #category : #creating }
 GameBoard >> fillPlayers: aPlayer [
 	aPlayer do:[:each | collectionOfPositions add: (Position with: each )].
-	"playersPositions add: (Position with: aPlayer)"
+	
 ]
 
 { #category : #initialization }
@@ -47,13 +40,13 @@ GameBoard >> initializeWith: numberOfCells [
 
 { #category : #moves }
 GameBoard >> move: aPlayer adding: diceResult [ 
-	|playerPosition index |
+	|index|
 	index := 1.
 	[(collectionOfPositions at: index) isTheSameAs:  aPlayer ] whileFalse: [ 
-	
 	 index := index + 1. 
 	 ].
-	playerPosition := (collectionOfPositions at: index ) changePosition: diceResult.
+	
+	(collectionOfPositions at: index ) changePosition: diceResult.
 	
 	
 ]
@@ -75,6 +68,18 @@ GameBoard >> playRoundWith: aCollectionOfDices [
 { #category : #validations }
 GameBoard >> playerPosition: aDice [
 	^aDice 
+]
+
+{ #category : #validating }
+GameBoard >> positionAtCollectionOf: aShip [
+
+	| anotherShip counter |
+	counter := 1.
+	anotherShip := collectionOfPositions at: counter.
+	[ anotherShip isTheSameAs: aShip ] whileFalse: [ 
+		counter := counter + 1.
+		anotherShip := collectionOfPositions at: counter ].
+	^ anotherShip
 ]
 
 { #category : #positioning }
