@@ -73,7 +73,7 @@ Game >> startwith: amountOfPlayers and: aGameboard [
 |players|
 gameboard := aGameboard .
 players := self create: amountOfPlayers.
-aGameboard fillPlayers: players  .
+aGameboard fillWith: players  .
 "((aGameboard player aPlayer) = (aGameboard amountOfCells)) ifTrue: [result:= aPlayer  ]."
 	 
 ]

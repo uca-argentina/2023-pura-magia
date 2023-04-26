@@ -27,8 +27,8 @@ GameBoard >> checkPositionOf: aShip [
 ]
 
 { #category : #creating }
-GameBoard >> fillPlayers: aPlayer [
-	aPlayer do:[:each | collectionOfPositions add: (Position with: each )].
+GameBoard >> fillWith: players [
+	players do:[:each | collectionOfPositions add: (Position with: each )].
 	
 ]
 
