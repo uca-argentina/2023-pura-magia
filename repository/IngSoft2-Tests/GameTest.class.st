@@ -62,7 +62,7 @@ GameTest >> startwith: aPlayer and: aGameboard [
 
 gameboard := aGameboard .
 
-aGameboard fillPlayers: aPlayer  .
+aGameboard fillWith: aPlayer  .
 "((aGameboard player aPlayer) = (aGameboard amountOfCells)) ifTrue: [result:= aPlayer  ]."
 	 
 ]
