@@ -39,35 +39,37 @@ GameBoard >> initializeWith: numberOfCells [
 ]
 
 { #category : #moves }
-GameBoard >> move: aPlayer adding: diceResult [ 
-	|index|
+GameBoard >> move: aPlayer adding: diceResult [
+
+	| index |
 	index := 1.
-	[(collectionOfPositions at: index) isTheSameAs:  aPlayer ] whileFalse: [ 
-	 index := index + 1. 
-	 ].
-	
-	(collectionOfPositions at: index ) changePosition: diceResult.
-	
-	
+	[ (collectionOfPositions at: index) isTheSameAs: aPlayer ] 
+		whileFalse: [ index := index + 1 ].
+
+	(collectionOfPositions at: index) changePosition: diceResult
 ]
 
 { #category : #action }
-GameBoard >> playRoundWith: aCollectionOfDices [ 
-	|index result|
+GameBoard >> playRoundWith: aCollectionOfDices [
+
+	| index result |
 	index := 1.
 	result := 0.
-	[index  <= collectionOfPositions size and: self winner = false] whileTrue:  [
-		result := self throwVariousDices: aCollectionOfDices .	
-		self move: ((collectionOfPositions at: index  )  shipInPosition   )  adding: result.
-		index  := index  + 1.
-		result := 0.
-	
-	 ].
+	[ index <= collectionOfPositions size and: self winner = false ] 
+		whileTrue: [ 
+			result := self throwVariousDices: aCollectionOfDices.
+			self
+				move: (collectionOfPositions at: index) shipInPosition
+				adding: result.
+			index := index + 1.
+			result := 0 ]
 ]
 
 { #category : #validations }
 GameBoard >> playerPosition: aDice [
-	^aDice 
+	^aDice
+	
+	"Este mensaje quedó de los primeros tests antes de descubrir Position"
 ]
 
 { #category : #validating }
@@ -87,28 +89,16 @@ GameBoard >> shipAt: index [
 	^ (collectionOfPositions at: index ) shipInPosition
 ]
 
-{ #category : #action }
-GameBoard >> throwDice: aDice [ 
-	|counter|
-	counter := 1.
-	
-	[counter <= collectionOfPositions size and: self winner = false] whileTrue:  [ 
-	 self move: ((collectionOfPositions at: counter )  shipInPosition  )  adding: aDice.
-	counter := counter + 1. 
-	
-	 ].
-]
-
 { #category : #actions }
 GameBoard >> throwVariousDices: aCollectionOfDices [
-	|counter result|
+
+	| counter result |
 	counter := 1.
 	result := 0.
 	[ counter <= aCollectionOfDices size ] whileTrue: [ 
-			result := result + (aCollectionOfDices at: counter) throw .
-			counter := counter + 1.
-		 ].
-	^ result .
+		result := result + (aCollectionOfDices at: counter) throw.
+		counter := counter + 1 ].
+	^ result
 ]
 
 { #category : #validation }

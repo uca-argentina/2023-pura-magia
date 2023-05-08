@@ -2,7 +2,6 @@ Class {
 	#name : #Dice,
 	#superclass : #Object,
 	#instVars : [
-		'number',
 		'faces'
 	],
 	#category : #'IngSoft2-Model'
