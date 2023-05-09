@@ -14,41 +14,28 @@ Game class >> initializeEmpty [
 ]
 
 { #category : #creation }
-Game >> addShipTo: playersCollection andIncrease1On: count [
-
-	playersCollection add: Ship new.
-	^ count + 1
-]
-
-{ #category : #creation }
-Game >> addToCollectionTheRequired: amountOfPlayers [
-
-	| playersCollection count |
-	count := 1.
-	playersCollection := OrderedCollection new.
-	[ self the: count isLowerOrEqualThan: amountOfPlayers ] whileTrue: [ 
-		count := self addShipTo: playersCollection andIncrease1On: count ].
-	^ playersCollection
-]
-
-{ #category : #creation }
 Game >> create: amountOfPlayers [
-
-	| playersCollection |
-	playersCollection := self addToCollectionTheRequired: amountOfPlayers.
-	^ playersCollection
+	|playersCollection count|
+	count:=1.
+	playersCollection := OrderedCollection new.
+	[ count <= amountOfPlayers  ] whileTrue: [ 
+		playersCollection add: Ship new.
+		count :=count +1
+	 ].
+^playersCollection.
 ]
 
 { #category : #intialization }
-Game >> initializeWith: aResult [ 
+Game >> initializeWith: aResult [
+
 	result := aResult.
-	gameboard := nil.
+	gameboard := nil
 ]
 
 { #category : #validations }
 Game >> playUntilWinner: aDice [
 
-	[ self thereIsNoWinnerYet ] whileTrue: [ 
+	[ gameboard winner = false ] whileTrue: [ 
 		gameboard playRoundWith: aDice ].
 	result := 'The Game has ended'
 ]
@@ -70,26 +57,15 @@ Game >> startwith: aPlayer [
 
 { #category : #starting }
 Game >> startwith: amountOfPlayers and: aGameboard [
-|players|
-gameboard := aGameboard .
-players := self create: amountOfPlayers.
-aGameboard fillWith: players  .
-"((aGameboard player aPlayer) = (aGameboard amountOfCells)) ifTrue: [result:= aPlayer  ]."
-	 
-]
 
-{ #category : #creation }
-Game >> the: count isLowerOrEqualThan: amountOfPlayers [
-
-	^ count <= amountOfPlayers
-]
-
-{ #category : #validations }
-Game >> thereIsNoWinnerYet [
-	^ gameboard winner = false
+	| players |
+	gameboard := aGameboard.
+	players := self create: amountOfPlayers.
+	aGameboard fillWith: players
 ]
 
 { #category : #validating }
 Game >> winner [
-	^gameboard winner
+
+	^ gameboard winner
 ]
