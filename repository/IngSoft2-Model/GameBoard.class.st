@@ -8,8 +8,15 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #validation }
+GameBoard class >> validateCanExistWith: anAmountOfCells [ 
+	anAmountOfCells > 1 ifFalse:  [ 
+		 Error signal: 'Cannot create GameBoard with negative amount of cells'].
+]
+
 { #category : #initialization }
 GameBoard class >> with: numberOfCells [ 
+	self validateCanExistWith: numberOfCells.
 	^(self new) initializeWith: numberOfCells 
 ]
 
@@ -55,7 +62,7 @@ GameBoard >> playRoundWith: aCollectionOfDices [
 	| index result |
 	index := 1.
 	result := 0.
-	[ index <= collectionOfPositions size and: self winner = false ] 
+	[ index <= collectionOfPositions size and: self winner = 0 ] 
 		whileTrue: [ 
 			result := self throwVariousDices: aCollectionOfDices.
 			self
@@ -101,6 +108,17 @@ GameBoard >> throwVariousDices: aCollectionOfDices [
 	^ result
 ]
 
+{ #category : #interactions }
+GameBoard >> turnOf: numberOfShip with: aCollectionOfDices [
+
+	| result |
+	result := 0.
+	result := self throwVariousDices: aCollectionOfDices.
+	self
+		move: (collectionOfPositions at: numberOfShip) shipInPosition
+		adding: result
+]
+
 { #category : #validation }
 GameBoard >> winner [
 
@@ -112,6 +130,6 @@ GameBoard >> winner [
 		counter := counter + 1 ].
 	(counter <= collectionOfPositions size and:
 		 (collectionOfPositions at: counter) isAtPosition >= cells)
-		ifTrue: [ ^ (collectionOfPositions at: counter) shipInPosition ]
-		ifFalse: [ ^ false ]
+		ifTrue: [ ^ ((collectionOfPositions at: counter) shipInPosition) numberOfShip ]
+		ifFalse: [ ^ 0 ]
 ]
