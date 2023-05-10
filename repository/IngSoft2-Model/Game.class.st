@@ -3,7 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'result',
-		'gameboard'
+		'gameboard',
+		'numberOfPlayer',
+		'amountOfPlayers'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -14,12 +16,12 @@ Game class >> initializeEmpty [
 ]
 
 { #category : #creation }
-Game >> create: amountOfPlayers [
+Game >> create: anAmountOfPlayers [
 	|playersCollection count|
 	count:=1.
 	playersCollection := OrderedCollection new.
-	[ count <= amountOfPlayers  ] whileTrue: [ 
-		playersCollection add: Ship new.
+	[ count <= anAmountOfPlayers  ] whileTrue: [ 
+		playersCollection add: (Ship number: count) .
 		count :=count +1
 	 ].
 ^playersCollection.
@@ -29,13 +31,15 @@ Game >> create: amountOfPlayers [
 Game >> initializeWith: aResult [
 
 	result := aResult.
-	gameboard := nil
+	gameboard := nil.
+	numberOfPlayer := 1.
+	amountOfPlayers := 0.
 ]
 
 { #category : #validations }
 Game >> playUntilWinner: aDice [
 
-	[ gameboard winner = false ] whileTrue: [ 
+	[ (gameboard winner) = 0 ] whileTrue: [ 
 		gameboard playRoundWith: aDice ].
 	result := 'The Game has ended'
 ]
@@ -56,12 +60,24 @@ Game >> startwith: aPlayer [
 ]
 
 { #category : #starting }
-Game >> startwith: amountOfPlayers and: aGameboard [
+Game >> startwith: anAmountOfPlayers and: aGameboard [
 
 	| players |
 	gameboard := aGameboard.
-	players := self create: amountOfPlayers.
+	players := self create: anAmountOfPlayers .
+	amountOfPlayers := anAmountOfPlayers. 
 	aGameboard fillWith: players
+]
+
+{ #category : #action }
+Game >> throwNextPlayer: dices [
+
+	numberOfPlayer <= amountOfPlayers ifTrue:  [ 
+		gameboard turnOf: numberOfPlayer with: dices.
+		numberOfPlayer := numberOfPlayer + 1.
+		 ]ifFalse: [ 
+			numberOfPlayer := 1.
+			gameboard turnOf: numberOfPlayer with: dices. ]
 ]
 
 { #category : #validating }
