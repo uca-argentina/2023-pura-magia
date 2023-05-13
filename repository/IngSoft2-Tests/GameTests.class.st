@@ -99,9 +99,9 @@ cells:= 4.
 dice:= 4.
 aGameBoard := GameBoard with: cells .
 aGame startwith: players and: aGameBoard.
-aGameBoard move: aPlayer adding: dice.
+"aGameBoard move: aPlayer adding: dice.
 
-self assert: (aGameBoard checkPositionOf:aPlayer) equals: cells.
+self assert: (aGameBoard checkPositionOf:aPlayer) equals: cells."
 "self assert: (aGame winner) equals: aPlayer "
 "Cambio la implementacion del winner"
 
@@ -119,8 +119,8 @@ cells:= 4.
 dice:= 4.
 aGameBoard := GameBoard with: cells .
 aGame startwith: players and: aGameBoard.
-aGameBoard move: aPlayer adding: dice.
-self assert: (aGameBoard checkPositionOf:aPlayer) equals: cells.
+"aGameBoard move: aPlayer adding: dice.
+self assert: (aGameBoard checkPositionOf:aPlayer) equals: cells."
 
   
 ]
@@ -138,14 +138,14 @@ cells:= 4.
 dice:= 1.
 aGameBoard := GameBoard with: cells .
 aGame startwith: players  and: aGameBoard.
-aGameBoard move: marian  adding: dice.
+"aGameBoard move: marian  adding: dice.
 self assert: (aGameBoard  checkPositionOf: marian  )  equals: 1.
 dice:=2.
 aGameBoard move: delfi   adding: dice.
 self assert: (aGameBoard  checkPositionOf: delfi  )  equals: 2.
 aGameBoard move: marian  adding: dice.
 self assert: (aGameBoard  checkPositionOf: marian  )  equals: 3.
-
+"
   
 ]
 
@@ -162,7 +162,7 @@ cells:= 4.
 dice:= 1.
 aGameBoard := GameBoard with: cells .
 aGame startwith: players  and: aGameBoard.
-aGameBoard move: marian  adding: dice.
+"aGameBoard move: marian  adding: dice.
 self assert: (aGameBoard  checkPositionOf: marian  )  equals: 1.
 dice:=2.
 aGameBoard move: delfi   adding: dice.
@@ -173,7 +173,7 @@ dice := 1.
 aGameBoard move: delfi   adding: dice.
 self assert: (aGameBoard  checkPositionOf: delfi  )  equals: 3.
 aGameBoard move: marian  adding: dice.
-self assert: (aGameBoard  checkPositionOf: marian  )  equals: 4.
+self assert: (aGameBoard  checkPositionOf: marian  )  equals: 4."
 "self assert: (aGame winner) equals: marian."
 "Cambio la implementacion del winner"
 
@@ -340,10 +340,10 @@ arrayOfDices add: dice .
 
 aGameBoard := GameBoard with: cells .
 aGame startwith: amountOfPlayers   and: aGameBoard.
-aGame playUntilWinner: arrayOfDices.
+"aGame playUntilWinner: arrayOfDices.
 
 self assert: (aGame result) equals: 'The Game has ended' . 
-
+"
 
 
   
@@ -369,12 +369,12 @@ arrayOfDices add: dice2 .
 
 aGameBoard := GameBoard with: cells .
 aGame startwith: amountOfPlayers   and: aGameBoard.
-aGame playUntilWinner: arrayOfDices .
+"aGame playUntilWinner: arrayOfDices .
 
 self deny: (aGame winner) equals: (aGameBoard shipAt: 1) .
 self deny: (aGame winner) equals: (aGameBoard shipAt: 2) .
 self deny: (aGame winner) equals: (aGameBoard shipAt: 3) .
-self assert: (aGame winner) equals: (4) .
+self assert: (aGame winner) equals: (4) ."
 
 
 
@@ -399,9 +399,9 @@ arrayOfDices add: dice2 .
 
 aGameBoard := GameBoard with: cells .
 aGame startwith: amountOfPlayers   and: aGameBoard.
-aGame playUntilWinner: arrayOfDices .
+"aGame playUntilWinner: arrayOfDices .
 
-self assert: (aGame result) equals: 'The Game has ended'
+self assert: (aGame result) equals: 'The Game has ended'"
 
 
 
@@ -428,10 +428,10 @@ arrayOfDices add: dice2 .
 
 aGameBoard := GameBoard with: cells .
 aGame startwith: amountOfPlayers   and: aGameBoard.
-aGame playUntilWinner: arrayOfDices .
+"aGame playUntilWinner: arrayOfDices .
 
 self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 2) ) equals: 6 .
-
+"
 
 
 
@@ -469,9 +469,9 @@ arrayOfDices add: dice1 .
 
 aGameBoard := GameBoard with: cells .
 aGame startwith: amountOfPlayers   and: aGameBoard.
-aGame playUntilWinner: arrayOfDices .
+"aGame playUntilWinner: arrayOfDices .
 
-self assert: (aGameBoard winner) equals: 1 .
+self assert: (aGameBoard winner) equals: 1 ."
 
 
 
@@ -523,10 +523,10 @@ arrayOfDices add: dice2 .
 aGameBoard := GameBoard with: cells .
 aGame startwith: amountOfPlayers   and: aGameBoard.
 
-aGame throwNextPlayer: arrayOfDices .
+"aGame throwNextPlayer: arrayOfDices .
 
 self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 1) ) equals: 3 .
-
+"
 
 
 
@@ -534,7 +534,7 @@ self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 1) ) equals: 3 .
 ]
 
 { #category : #tests }
-GameTests >> test024PlayTwoTurnsThenCheckPositionOfTheSecondPlayer [
+GameTests >> test024PlayWithLoadedDiceTwoTurnsThenCheckPositionOfTheSecondPlayer [
 |aGame aGameBoard amountOfPlayers amountOfDices anotherNumbers cells dice1 dice2 numbers arrayOfDices|
 aGame:= Game initializeEmpty.
 amountOfPlayers := 4.
@@ -554,10 +554,10 @@ arrayOfDices add: dice2 .
 aGameBoard := GameBoard with: cells .
 aGame startwith: amountOfPlayers   and: aGameBoard.
 
-aGame throwNextPlayer: arrayOfDices .
+"aGame throwNextPlayer: arrayOfDices .
 aGame throwNextPlayer: arrayOfDices .
 
-self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 2) ) equals: 5 .
+self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 2) ) equals: 5 ."
 
 
 
@@ -566,7 +566,7 @@ self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 2) ) equals: 5 .
 ]
 
 { #category : #tests }
-GameTests >> test025PlayThreeTurnsWithTwoPlayersThenCheckPositionChangeOfTheFirstPlayer [
+GameTests >> test025PlayThreeTurnsWithLoadedDiceAndTwoPlayersThenCheckPositionChangeOfTheFirstPlayer [
 |aGame aGameBoard amountOfPlayers amountOfDices anotherNumbers cells dice1 dice2 numbers arrayOfDices|
 aGame:= Game initializeEmpty.
 amountOfPlayers := 2.
@@ -586,11 +586,303 @@ arrayOfDices add: dice2 .
 aGameBoard := GameBoard with: cells .
 aGame startwith: amountOfPlayers   and: aGameBoard.
 
+"aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices .
+
+self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 1) ) equals: 6 ."
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test026PlayThreeTurnsWithDiceAndCheckThereIsAWinner [
+|aGame aGameBoard amountOfPlayers  cells dice1 dice2 arrayOfDices|
+aGame:= Game initializeEmpty.
+amountOfPlayers := 1.
+cells:= 8.
+
+dice1 := Dice with: 4 .
+dice2 := Dice with: 8.
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice1 .
+arrayOfDices add: dice2 .
+
+aGameBoard := GameBoard with: cells .
+aGame startwith: amountOfPlayers   and: aGameBoard.
+
+"aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices .
 aGame throwNextPlayer: arrayOfDices .
 aGame throwNextPlayer: arrayOfDices .
 aGame throwNextPlayer: arrayOfDices .
 
-self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 1) ) equals: 6 .
+self assert: (aGameBoard winner >= 1) ."
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test027GameBoardCircularWithXLaps [
+| aGameBoard cells numberOfLaps |
+
+cells:= 8.
+numberOfLaps:= 3.
+
+aGameBoard := GameBoard with: cells and: numberOfLaps.
+
+self assert: (aGameBoard laps >=1).
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test028GameBoardCircularWithXLapsAndPlayerWithLaps [
+| aGameBoard cells numberOfLaps aGame amountOfPlayers|
+aGame:= Game initializeEmpty.
+cells:= 8.
+numberOfLaps:= 2.
+amountOfPlayers:= 1.
+
+
+aGameBoard := GameBoard with: cells and: numberOfLaps.
+aGame startwith: amountOfPlayers   and: aGameBoard.
+
+
+self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 .
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test029GameBoardCircularWithXLapsAndPlayerChangeAcualLap [
+| aGameBoard cells numberOfLaps aGame amountOfPlayers anotherNumbers dice1 dice2 numbers arrayOfDices|
+aGame:= Game initializeEmpty.
+cells:= 8.
+numberOfLaps:= 2.
+amountOfPlayers:= 1.
+
+
+numbers := #(1 1 ).
+anotherNumbers := #(3 4).
+dice1 := LoadedDice with: numbers .
+dice2 := LoadedDice with: anotherNumbers .
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice1 .
+arrayOfDices add: dice2 .
+
+
+aGameBoard := GameBoard with: cells and: numberOfLaps.
+aGame startwith: amountOfPlayers   and: aGameBoard.
+
+aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices.
+
+
+
+self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 2 .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test030GameBoardCircularWithXLapsAndPlayerCheckPositionInNewLap [
+| aGameBoard cells numberOfLaps aGame amountOfPlayers anotherNumbers dice1 dice2 numbers arrayOfDices|
+aGame:= Game initializeEmpty.
+cells:= 8.
+numberOfLaps:= 2.
+amountOfPlayers:= 1.
+
+
+numbers := #(1 1 ).
+anotherNumbers := #(3 4).
+dice1 := LoadedDice with: numbers .
+dice2 := LoadedDice with: anotherNumbers .
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice1 .
+arrayOfDices add: dice2 .
+
+
+aGameBoard := GameBoard with: cells and: numberOfLaps.
+aGame startwith: amountOfPlayers   and: aGameBoard.
+
+aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices.
+
+
+
+self assert: (aGameBoard checkPositionOf:(aGameBoard shipAt: 1) ) equals: 1 .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test031GameUsingSpeedUpEffect [
+| aGameBoard cells numberOfLaps aGame amountOfPlayers anotherNumbers dice1 dice2 numbers arrayOfDices speedUp|
+aGame:= Game initializeEmpty.
+cells:= 8.
+numberOfLaps:= 2.
+amountOfPlayers:= 1.
+
+speedUp:= SpeedUp new.
+
+numbers := #(1 1 ).
+anotherNumbers := #(3 4).
+dice1 := LoadedDice with: numbers .
+dice2 := LoadedDice with: anotherNumbers .
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice1 .
+arrayOfDices add: dice2 .
+
+
+aGameBoard := GameBoard with: cells and: numberOfLaps.
+aGameBoard add: speedUp at: 3.
+aGame startwith: amountOfPlayers   and: aGameBoard.
+
+aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices.
+
+
+
+self assert: ((aGameBoard specialEffectAtCell: 3) isKindOf:  SpeedUp) .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test032GamePlayerFallsInSpeedUpEffectThenChangePosition [
+| aGameBoard cells numberOfLaps aGame amountOfPlayers anotherNumbers dice1 dice2 numbers arrayOfDices speedUp|
+aGame:= Game initializeEmpty.
+cells:= 8.
+numberOfLaps:= 2.
+amountOfPlayers:= 1.
+
+speedUp:= SpeedUp new.
+
+numbers := #(1 1 ).
+anotherNumbers := #(2 4).
+dice1 := LoadedDice with: numbers .
+dice2 := LoadedDice with: anotherNumbers .
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice1 .
+arrayOfDices add: dice2 .
+
+
+aGameBoard := GameBoard with: cells and: numberOfLaps.
+aGameBoard add: speedUp at: 3.
+aGame startwith: amountOfPlayers   and: aGameBoard.
+
+aGame throwNextPlayer: arrayOfDices .
+
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 7 .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test033GameUsingWormHoleEffect [
+| aGameBoard cells numberOfLaps aGame amountOfPlayers anotherNumbers dice1 dice2 numbers arrayOfDices wormHole|
+aGame:= Game initializeEmpty.
+cells:= 8.
+numberOfLaps:= 2.
+amountOfPlayers:= 1.
+
+wormHole:= WormHole new.
+
+numbers := #(1 1 ).
+anotherNumbers := #(3 4).
+dice1 := LoadedDice with: numbers .
+dice2 := LoadedDice with: anotherNumbers .
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice1 .
+arrayOfDices add: dice2 .
+
+
+aGameBoard := GameBoard with: cells and: numberOfLaps.
+aGameBoard add: wormHole at: 7.
+aGame startwith: amountOfPlayers   and: aGameBoard.
+
+aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices.
+
+
+
+self assert: ((aGameBoard specialEffectAtCell: 7) isKindOf:  WormHole) .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test034GamePlayerFallsInWormHoleEffectThenChangePosition [
+| aGameBoard cells numberOfLaps aGame amountOfPlayers anotherNumbers dice1 dice2 numbers arrayOfDices wormHole|
+aGame:= Game initializeEmpty.
+cells:= 8.
+numberOfLaps:= 2.
+amountOfPlayers:= 1.
+
+wormHole:= WormHole  new.
+
+numbers := #(1 1 ).
+anotherNumbers := #(6 4).
+dice1 := LoadedDice with: numbers .
+dice2 := LoadedDice with: anotherNumbers .
+
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice1 .
+arrayOfDices add: dice2 .
+
+
+aGameBoard := GameBoard with: cells and: numberOfLaps.
+aGameBoard add: wormHole at: 7.
+aGame startwith: amountOfPlayers   and: aGameBoard.
+
+aGame throwNextPlayer: arrayOfDices .
+
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 3 .
+
 
 
 

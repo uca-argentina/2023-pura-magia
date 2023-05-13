@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'ship',
-		'cellNumber'
+		'cellNumber',
+		'actualLap'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -11,6 +12,11 @@ Class {
 { #category : #initialization }
 Position class >> with: aPlayer [ 
 	^ (self new) initializeWith: aPlayer .
+]
+
+{ #category : #changes }
+Position >> changeLap [
+	actualLap:=actualLap +1.
 ]
 
 { #category : #changes }
@@ -22,6 +28,12 @@ Position >> changePosition: anInteger [
 Position >> initializeWith: aShip [ 
 	ship  := aShip .
 	cellNumber := 0 .
+	actualLap :=1.
+]
+
+{ #category : #validation }
+Position >> isAtLap [
+	^actualLap.
 ]
 
 { #category : #validation }
@@ -32,6 +44,11 @@ Position >> isAtPosition [
 { #category : #'tests - validation' }
 Position >> isTheSameAs: aShip [ 
 	^ aShip = ship .
+]
+
+{ #category : #changes }
+Position >> restartCellPosition [
+	cellNumber := 0.
 ]
 
 { #category : #validations }
