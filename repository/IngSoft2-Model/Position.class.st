@@ -19,6 +19,17 @@ Position >> changeLap [
 	actualLap:=actualLap +1.
 ]
 
+{ #category : #move }
+Position >> changeLap: anAmountOfLaps [ 
+	anAmountOfLaps < 0 ifTrue: [ 
+		actualLap := actualLap-1.
+		 ]
+	ifFalse:[
+		actualLap := actualLap+1.
+		]
+		
+]
+
 { #category : #changes }
 Position >> changePosition: anInteger [ 
 	cellNumber := anInteger 

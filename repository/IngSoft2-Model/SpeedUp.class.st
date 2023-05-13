@@ -8,3 +8,8 @@ Class {
 SpeedUp >> cellsToMove [
 	^4.
 ]
+
+{ #category : #validation }
+SpeedUp >> destinatary [
+	^0.
+]

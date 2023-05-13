@@ -50,6 +50,35 @@ GameBoard >> amountOfCells [
 	^cells 
 ]
 
+{ #category : #action }
+GameBoard >> applyToOtherShips: aSpecialEffect except: aShip [
+
+	| index result positionOfShip amountOfLaps |
+	index := 1.
+	result := 0.
+	[ index <= collectionOfPositions size ] whileTrue: [
+		result :=0.
+		positionOfShip := (collectionOfPositions at: index) isAtPosition. 
+		((collectionOfPositions at: index) == aShip) ifFalse: [ 
+			result:= aSpecialEffect cellsToMove + positionOfShip.
+			amountOfLaps := result/cells integerPart  .
+			result > cells
+				ifTrue: [ 
+					(collectionOfPositions at: index) restartCellPosition.
+					(collectionOfPositions at: index) changePosition: result - cells.
+					(collectionOfPositions at: index) changeLap: amountOfLaps ]
+				ifFalse: [ 
+				(collectionOfPositions at: index) changePosition: result ] ].
+					result<0 ifTrue: [ 
+						(collectionOfPositions at: index) changeLap: amountOfLaps.
+						
+						 ].
+					index := index+1.
+					
+	 
+	]
+]
+
 { #category : #validation }
 GameBoard >> checkLapOf: aShip [ 
 	| anotherShip |
@@ -93,24 +122,29 @@ GameBoard >> laps [
 { #category : #moves }
 GameBoard >> move: aPlayer adding: diceResult [
 
-	| index positionOfShip result typeOfSpecialEffect|
+	| index positionOfShip result specialEffect|
 	index := 1.
 	
 	[ (collectionOfPositions at: index) isTheSameAs: aPlayer ] 
 		whileFalse: [ index := index + 1 ].
 	positionOfShip := (collectionOfPositions at: index) isAtPosition.
 	result :=positionOfShip + diceResult.
-	typeOfSpecialEffect:=(self specialEffectAtCell: result ).
-	typeOfSpecialEffect == 0 ifFalse: [
-	result:= result+ typeOfSpecialEffect cellsToMove]. 
+	specialEffect:=(self specialEffectAtCell: result ).
+	specialEffect == 0 ifFalse: [
+		specialEffect destinatary == 0 ifTrue:[
+			result:= result+ specialEffect cellsToMove]
+		ifFalse:[ 
+			self applyToOtherShips: specialEffect except: (collectionOfPositions at: index). 
+			].
+		].
 	result> cells
 		ifTrue: [ 
 			(collectionOfPositions at: index) restartCellPosition.
 			(collectionOfPositions at: index) changePosition:
-				result - cells.
+				(result - cells).
 			(collectionOfPositions at: index) changeLap ]
 		ifFalse: [ 
-		(collectionOfPositions at: index) changePosition: result  ]
+		(collectionOfPositions at: index) changePosition: result  ] 
 ]
 
 { #category : #action }
@@ -199,14 +233,16 @@ GameBoard >> turnOf: numberOfShip with: aCollectionOfDices [
 { #category : #validation }
 GameBoard >> winner [
 
-	| counter |
+	| counter shipLap|
 	counter := 1.
-	[ 
-	(collectionOfPositions at: counter) isAtPosition >= cells or:
-		counter >= collectionOfPositions size ] whileFalse: [ 
-		counter := counter + 1 ].
+	shipLap:=(collectionOfPositions at: counter) isAtLap. 
+	[ (counter >= collectionOfPositions size or:
+			 (shipLap >= (laps + 1))) ] 
+		whileFalse: [ counter := counter + 1 ].
+
 	(counter <= collectionOfPositions size and:
-		 (collectionOfPositions at: counter) isAtPosition >= cells)
-		ifTrue: [ ^ ((collectionOfPositions at: counter) shipInPosition) numberOfShip ]
+		 (shipLap >= (laps + 1)))
+		ifTrue: [ 
+		^ (collectionOfPositions at: counter) shipInPosition numberOfShip ]
 		ifFalse: [ ^ 0 ]
 ]

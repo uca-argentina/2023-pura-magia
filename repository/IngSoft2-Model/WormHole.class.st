@@ -8,3 +8,8 @@ Class {
 WormHole >> cellsToMove [
 	^-4.
 ]
+
+{ #category : #validation }
+WormHole >> destinatary [
+	^0.
+]
