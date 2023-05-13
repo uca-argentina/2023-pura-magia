@@ -890,3 +890,39 @@ self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 .
 
   
 ]
+
+{ #category : #tests }
+GameTests >> test039GameHasTwoDifferentMoonWalksandDifferentPlayersFallInto [
+
+|aMoonWalk anotherMoonWalk|
+
+aMoonWalk := MoonWalk with: -3.
+anotherMoonWalk := MoonWalk with: -2.
+amountOfPlayers:= 3.
+numbers := #(1 1 ).
+anotherNumbers := #(1 6 ).
+
+dice1 := LoadedDice with: numbers .
+dice2 := LoadedDice with: anotherNumbers .
+arrayOfDices := OrderedCollection new.
+arrayOfDices add: dice1 .
+arrayOfDices add: dice2 .
+
+aGame startwith: amountOfPlayers   and: aGameBoard.
+
+aGameBoard add: aMoonWalk at: 2 .
+aGameBoard add: anotherMoonWalk at: 4 .
+aGame throwNextPlayer: arrayOfDices. 
+aGame throwNextPlayer: arrayOfDices. 
+
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 2) ) equals: 4 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 3) ) equals: -5 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 0 .
+
+
+
+
+
+
+  
+]
