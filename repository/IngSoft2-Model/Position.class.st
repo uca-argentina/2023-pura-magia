@@ -21,7 +21,7 @@ Position >> changeLap [
 
 { #category : #changes }
 Position >> changePosition: anInteger [ 
-	cellNumber := cellNumber + anInteger 
+	cellNumber := anInteger 
 ]
 
 { #category : #initialization }
