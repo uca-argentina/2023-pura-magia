@@ -45,6 +45,11 @@ Game >> playUntilWinner: aDice [
 ]
 
 { #category : #validation }
+Game >> ranking [
+	^gameboard ranking
+]
+
+{ #category : #validation }
 Game >> result [
 	^ result
 ]

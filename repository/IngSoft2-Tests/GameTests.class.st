@@ -11,7 +11,8 @@ Class {
 		'anotherNumbers',
 		'dice1',
 		'dice2',
-		'arrayOfDices'
+		'arrayOfDices',
+		'numberOfParsecs'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -41,6 +42,7 @@ GameTests >> setUp [
 	
 	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
+	aGameBoard cellsWith: 0.
 	aGame startwith: amountOfPlayers   and: aGameBoard.
 ]
 
@@ -53,6 +55,21 @@ GameTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCells
 	amountOfPlayers := anAmountOfPlayers .
 	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
+	aGameBoard cellsWith: 0.
+	aGame startwith: amountOfPlayers   and: aGameBoard.
+]
+
+{ #category : #running }
+GameTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCells and: laps andAlso: parsecs [
+	aGame:= Game initializeEmpty.
+	
+	cells:= anAmountOfCells .
+	numberOfLaps:= laps.
+	amountOfPlayers := anAmountOfPlayers .
+	numberOfParsecs:=parsecs.
+	
+	aGameBoard := GameBoard with: cells and: numberOfLaps.
+	aGameBoard cellsWith: numberOfParsecs .
 	aGame startwith: amountOfPlayers   and: aGameBoard.
 ]
 
@@ -588,6 +605,7 @@ arrayOfDices add: dice1 .
 arrayOfDices add: dice2 .
 
 aGameBoard := GameBoard with: cells and: 1 .
+aGameBoard cellsWith: 0.
 aGame startwith: amountOfPlayers   and: aGameBoard.
 
 aGame throwNextPlayer: arrayOfDices .
@@ -616,6 +634,7 @@ arrayOfDices add: dice1 .
 arrayOfDices add: dice2 .
 
 aGameBoard := GameBoard with: cells and: 1.
+aGameBoard cellsWith: 0.
 aGame startwith: amountOfPlayers   and: aGameBoard.
 
 aGame throwNextPlayer: arrayOfDices .
@@ -640,11 +659,13 @@ anotherNumbers := #(2 2)  .
 dice1 := LoadedDice with: numbers .
 dice2 := LoadedDice with: anotherNumbers .
 
+
 arrayOfDices := OrderedCollection new.
 arrayOfDices add: dice1 .
 arrayOfDices add: dice2 .
 
 aGameBoard := GameBoard with: cells and: 1.
+aGameBoard cellsWith: 0.
 aGame startwith: amountOfPlayers   and: aGameBoard.
 
 aGame throwNextPlayer: arrayOfDices .
@@ -724,9 +745,11 @@ GameTests >> test029GameBoardCircularWithXLapsAndPlayerChangeAcualLap [
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
+aGameBoard cellsWith: 0.
 
 aGame throwNextPlayer: arrayOfDices .
 aGame throwNextPlayer: arrayOfDices.
+
 
 
 self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 2 .
@@ -1050,6 +1073,127 @@ self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 3) ) equals: 1 .
 
 self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 0 .
 self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test043GameUsingParsecs [
+| parsecs |
+
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
+parsecs := 4. 
+
+
+self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 1)) equals: 0  .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test044GameUsingHyperJump [
+| parsecs hyperJump amountOfParsecsToMove|
+
+self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+amountOfParsecsToMove:= #(4 3 2 1).
+parsecs := 4. 
+hyperJump := HyperJump with: amountOfParsecsToMove .
+aGameBoard cellsWith: parsecs.
+aGameBoard add: hyperJump  at: 3 .
+aGame throwNextPlayer: arrayOfDices.
+aGame throwNextPlayer: arrayOfDices.
+
+self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 1)) equals: 4  .
+self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 2)) equals: 3  .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test045GameUsingHyperJumpWhenCellChangeThanksToTheEffect [
+| parsecs hyperJump amountOfParsecsToMove|
+
+self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+amountOfParsecsToMove:= #(7 3 2 1).
+parsecs := 4. 
+hyperJump := HyperJump with: amountOfParsecsToMove .
+aGameBoard cellsWith: parsecs.
+aGameBoard add: hyperJump  at: 3 .
+aGame throwNextPlayer: arrayOfDices.
+
+
+self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 1)) equals: 3  .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1)) equals: 4  .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test046PlayerFallsInHyperJumpAndChangeLapCellAndParsec [
+| parsecs hyperJump amountOfParsecsToMove|
+
+self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(7 2 ).
+amountOfParsecsToMove:= #(7 3 2 1).
+parsecs := 4. 
+
+hyperJump := HyperJump with: amountOfParsecsToMove .
+
+aGameBoard cellsWith: parsecs.
+aGameBoard add: hyperJump  at: 8 .
+
+aGame throwNextPlayer: arrayOfDices.
+
+
+self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 1)) equals: 3  .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1)) equals: 1  .
+self assert: (aGameBoard checkLapOf:   (aGameBoard shipAt: 1)) equals: 2  .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test047RankingPlayers [
+| parsecs  amountOfParsecsToMove aRanking|
+
+self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 2) and: #(3 2 4).
+amountOfParsecsToMove:= #(7 3 2 1).
+parsecs := 4. 
+
+aGameBoard cellsWith: parsecs.
+aGame throwNextPlayer: arrayOfDices.
+aGame throwNextPlayer: arrayOfDices.
+aGame throwNextPlayer: arrayOfDices.
+aRanking := aGame ranking.
+
+
+self assert: ((aRanking at: 1)shipInPosition  )numberOfShip  equals: 3 .
+self assert: ((aRanking at: 2)shipInPosition  )numberOfShip  equals: 1 .
+self assert: ((aRanking at: 3)shipInPosition  )numberOfShip  equals: 2 .
 
 
 

@@ -4,6 +4,11 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #action }
+WormHole >> activatedBy: aPlayer with: aNewPosition [ 
+	aPlayer changePosition: (aPlayer isAtPosition -4)
+]
+
 { #category : #move }
 WormHole >> cellsToMove [
 	^-4.

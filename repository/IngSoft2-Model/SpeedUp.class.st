@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #action }
+SpeedUp >> activatedBy: aPlayer with: aNewPosition [ 
+	aPlayer changePosition: (aPlayer isAtPosition +4)
+]
+
+{ #category : #action }
 SpeedUp >> cellsToMove [
 	^4.
 ]
