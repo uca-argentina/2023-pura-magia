@@ -50,35 +50,6 @@ GameBoard >> amountOfCells [
 	^cells 
 ]
 
-{ #category : #action }
-GameBoard >> applyToOtherShips: aSpecialEffect except: aShip [
-
-	| index result positionOfShip amountOfLaps |
-	index := 1.
-	result := 0.
-	[ index <= collectionOfPositions size ] whileTrue: [
-		result :=0.
-		positionOfShip := (collectionOfPositions at: index) isAtPosition. 
-		((collectionOfPositions at: index) == aShip) ifFalse: [ 
-			result:= aSpecialEffect cellsToMove + positionOfShip.
-			amountOfLaps := result/cells integerPart  .
-			result > cells
-				ifTrue: [ 
-					(collectionOfPositions at: index) restartCellPosition.
-					(collectionOfPositions at: index) changePosition: result - cells.
-					(collectionOfPositions at: index) changeLap: amountOfLaps ]
-				ifFalse: [ 
-				(collectionOfPositions at: index) changePosition: result ] ].
-					result<0 ifTrue: [ 
-						(collectionOfPositions at: index) changeLap: amountOfLaps.
-						
-						 ].
-					index := index+1.
-					
-	 
-	]
-]
-
 { #category : #validation }
 GameBoard >> checkLapOf: aShip [ 
 	| anotherShip |
@@ -122,29 +93,30 @@ GameBoard >> laps [
 { #category : #moves }
 GameBoard >> move: aPlayer adding: diceResult [
 
-	| index positionOfShip result specialEffect|
+	| index positionOfShip result specialEffect auxResult|
 	index := 1.
 	
-	[ (collectionOfPositions at: index) isTheSameAs: aPlayer ] 
-		whileFalse: [ index := index + 1 ].
+	[ (collectionOfPositions at: index) isTheSameAs: aPlayer ] whileFalse: [ index := index + 1 ].
+	
 	positionOfShip := (collectionOfPositions at: index) isAtPosition.
-	result :=positionOfShip + diceResult.
-	specialEffect:=(self specialEffectAtCell: result ).
-	specialEffect == 0 ifFalse: [
+	result := positionOfShip + diceResult. "12"
+	auxResult:= self updateResult: result.
+	
+
+	specialEffect:= (self specialEffectAtCell: auxResult ).
+	(specialEffect == 0) ifFalse: [ "Si hay special effect"
+		
 		specialEffect destinatary == 0 ifTrue:[
-			result:= result+ specialEffect cellsToMove]
-		ifFalse:[ 
-			self applyToOtherShips: specialEffect except: (collectionOfPositions at: index). 
-			].
+            result:= result+ specialEffect cellsToMove]
+        ifFalse:[ 
+            specialEffect applyEffect: collectionOfPositions activatedBy: (collectionOfPositions at: index).
+				(specialEffect isKindOf: AtomicBomb) ifTrue: [ result := 0 ].
+				self verifyAllPositions.
+            ].
 		].
-	result> cells
-		ifTrue: [ 
-			(collectionOfPositions at: index) restartCellPosition.
-			(collectionOfPositions at: index) changePosition:
-				(result - cells).
-			(collectionOfPositions at: index) changeLap ]
-		ifFalse: [ 
-		(collectionOfPositions at: index) changePosition: result  ] 
+	
+	(collectionOfPositions at: index) changePosition: result  .
+	self verifyAllPositions.
 ]
 
 { #category : #action }
@@ -228,6 +200,41 @@ GameBoard >> turnOf: numberOfShip with: aCollectionOfDices [
 	self
 		move: (collectionOfPositions at: numberOfShip) shipInPosition
 		adding: result
+]
+
+{ #category : #update }
+GameBoard >> updateResult: aResult [
+	|auxResult|
+	auxResult := aResult.
+	[ auxResult  > cells ] whileTrue: [ 
+		auxResult := auxResult - cells . 
+	 ].
+
+	^ auxResult .
+]
+
+{ #category : #validations }
+GameBoard >> verifyAllPositions [
+	|index player playerPosition|
+	index := 1.
+	[ index <= collectionOfPositions size ] whileTrue: [ 
+		player:= collectionOfPositions at: index.
+		playerPosition:= player isAtPosition.
+		
+		[playerPosition<0] whileTrue: [ 
+			player changePosition: cells + playerPosition.
+			player decreaseLap.
+			playerPosition := cells + playerPosition .
+			 ].
+		[playerPosition>cells] whileTrue: [ 
+			player changePosition: playerPosition - cells .
+			player increaseLap.
+			playerPosition := playerPosition - cells .
+			 ].
+				
+		index := index + 1.
+	 ]
+	
 ]
 
 { #category : #validation }

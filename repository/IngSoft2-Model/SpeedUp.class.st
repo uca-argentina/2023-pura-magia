@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #action }
+SpeedUp >> applyEffect: aCollection and: aPosition [ 
+	self shouldBeImplemented.
+]
+
+{ #category : #action }
 SpeedUp >> cellsToMove [
 	^4.
 ]

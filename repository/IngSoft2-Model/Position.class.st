@@ -15,24 +15,18 @@ Position class >> with: aPlayer [
 ]
 
 { #category : #changes }
-Position >> changeLap [
-	actualLap:=actualLap +1.
+Position >> changePosition: anInteger [ 
+	cellNumber := anInteger 
 ]
 
-{ #category : #move }
-Position >> changeLap: anAmountOfLaps [ 
-	anAmountOfLaps < 0 ifTrue: [ 
-		actualLap := actualLap-1.
-		 ]
-	ifFalse:[
-		actualLap := actualLap+1.
-		]
-		
+{ #category : #action }
+Position >> decreaseLap [
+	actualLap := actualLap -1.
 ]
 
 { #category : #changes }
-Position >> changePosition: anInteger [ 
-	cellNumber := anInteger 
+Position >> increaseLap [
+	actualLap:=actualLap +1.
 ]
 
 { #category : #initialization }
@@ -55,11 +49,6 @@ Position >> isAtPosition [
 { #category : #'tests - validation' }
 Position >> isTheSameAs: aShip [ 
 	^ aShip = ship .
-]
-
-{ #category : #changes }
-Position >> restartCellPosition [
-	cellNumber := 0.
 ]
 
 { #category : #validations }
