@@ -24,11 +24,6 @@ HyperJump >> activatedBy: aPlayer with: aNewPosition [
 
 ]
 
-{ #category : #action }
-HyperJump >> cellsToMove [
-	self shouldBeImplemented.
-]
-
 { #category : #validation }
 HyperJump >> destinatary [
 	^0.
