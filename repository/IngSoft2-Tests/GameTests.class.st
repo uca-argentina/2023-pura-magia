@@ -45,6 +45,52 @@ GameTests >> setUp [
 ]
 
 { #category : #running }
+GameTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCells and: laps [
+	aGame:= Game initializeEmpty.
+	
+	cells:= anAmountOfCells .
+	numberOfLaps:= laps.
+	amountOfPlayers := anAmountOfPlayers .
+	
+	aGameBoard := GameBoard with: cells and: numberOfLaps.
+	aGame startwith: amountOfPlayers   and: aGameBoard.
+]
+
+{ #category : #running }
+GameTests >> setUpLoadedDiceWith: array1 and: array2 [
+	
+	numbers := array1 .
+	anotherNumbers := array2 .
+	dice1 := LoadedDice with: numbers .
+	dice2 := LoadedDice with: anotherNumbers .
+
+	arrayOfDices := OrderedCollection new.
+	arrayOfDices add: dice1 .
+	arrayOfDices add: dice2.
+]
+
+{ #category : #running }
+GameTests >> setUpWith:  anAmountOfPlayers [
+	aGame:= Game initializeEmpty.
+	cells:= 8.
+	numberOfLaps:= 2.
+	amountOfPlayers := anAmountOfPlayers .
+	
+	numbers := #(1 1 ).
+	anotherNumbers := #(3 4).
+	dice1 := LoadedDice with: numbers .
+	dice2 := LoadedDice with: anotherNumbers .
+
+	arrayOfDices := OrderedCollection new.
+	arrayOfDices add: dice1 .
+	arrayOfDices add: dice2.
+	
+	
+	aGameBoard := GameBoard with: cells and: numberOfLaps.
+	aGame startwith: amountOfPlayers   and: aGameBoard.
+]
+
+{ #category : #running }
 GameTests >> should: anErrorBlock raise: anExceptionClass withMessage: anErrorMessage [
 	self
 		should: anErrorBlock 
@@ -616,16 +662,15 @@ self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 1) ) equals: 6 .
 { #category : #tests }
 GameTests >> test026PlayThreeTurnsWithDiceAndCheckThereIsAWinner [
 
+self setUpGameWith: 1 andGameboardWith: 2 and: 1.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
+
 dice1 := Dice with: 4 .
 dice2 := Dice with: 8.
-numberOfLaps :=1.
 
 arrayOfDices := OrderedCollection new.
 arrayOfDices add: dice1 .
 arrayOfDices add: dice2 .
-
-aGameBoard := GameBoard with: 2 and: numberOfLaps  .
-aGame startwith: amountOfPlayers   and: aGameBoard.
 
 aGame throwNextPlayer: arrayOfDices .
 aGame throwNextPlayer: arrayOfDices .
@@ -648,6 +693,9 @@ self deny: (aGameBoard winner = 0) .
 
 { #category : #tests }
 GameTests >> test027GameBoardCircularWithXLaps [
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
+
 numberOfLaps:= 3.
 self assert: (aGameBoard laps >=1).
 
@@ -659,6 +707,10 @@ self assert: (aGameBoard laps >=1).
 
 { #category : #tests }
 GameTests >> test028GameBoardCircularWithXLapsAndPlayerWithLaps [
+
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
+
 self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 .
 
 
@@ -669,6 +721,9 @@ self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 .
 
 { #category : #tests }
 GameTests >> test029GameBoardCircularWithXLapsAndPlayerChangeAcualLap [
+
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
 aGame throwNextPlayer: arrayOfDices .
 aGame throwNextPlayer: arrayOfDices.
@@ -685,6 +740,9 @@ self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 2 .
 
 { #category : #tests }
 GameTests >> test030GameBoardCircularWithXLapsAndPlayerCheckPositionInNewLap [
+
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
 aGame throwNextPlayer: arrayOfDices .
 aGame throwNextPlayer: arrayOfDices.
@@ -704,6 +762,9 @@ GameTests >> test031GameUsingSpeedUpEffect [
 | speedUp|
 
 speedUp:= SpeedUp new.
+
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
 aGameBoard add: speedUp at: 3.
 
@@ -725,13 +786,8 @@ GameTests >> test032GamePlayerFallsInSpeedUpEffectThenChangePosition [
 
 speedUp:= SpeedUp new.
 
-numbers := #(1 1).
-anotherNumbers := #(2 4).
-dice1 := LoadedDice with: numbers .
-dice2 := LoadedDice with: anotherNumbers .
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2.
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 
 aGameBoard add: speedUp at: 3.
 
@@ -752,6 +808,9 @@ GameTests >> test033GameUsingWormHoleEffect [
 
 wormHole:= WormHole new.
 
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
+
 aGameBoard add: wormHole at: 7.
 
 aGame throwNextPlayer: arrayOfDices .
@@ -769,13 +828,29 @@ self assert: ((aGameBoard specialEffectAtCell: 7) isKindOf:  WormHole) .
 GameTests >> test034GamePlayerFallsInWormHoleEffectThenChangePosition [
 | wormHole|
 wormHole:= WormHole  new.
-numbers := #(1 1 ).
-anotherNumbers := #(6 4).
-dice1 := LoadedDice with: numbers .
-dice2 := LoadedDice with: anotherNumbers .
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2 .
+
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
+
+aGameBoard add: wormHole at: 7.
+aGame throwNextPlayer: arrayOfDices .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 3 .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test034bisGamePlayerFallsInWormHoleEffectThenChangePosition [
+| wormHole|
+wormHole:= WormHole  new.
+
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
+
 aGameBoard add: wormHole at: 7.
 aGame throwNextPlayer: arrayOfDices .
 self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 3 .
@@ -790,14 +865,11 @@ self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 3 .
 { #category : #tests }
 GameTests >> test035GamePlayAndCheckWinner [
 | wormHole|
+
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
+
 wormHole:= WormHole  new.
-numbers := #(1 1 ).
-anotherNumbers := #(6 4).
-dice1 := LoadedDice with: numbers .
-dice2 := LoadedDice with: anotherNumbers .
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2 .
 
 aGame throwNextPlayer: arrayOfDices.
 aGame throwNextPlayer: arrayOfDices.
@@ -815,15 +887,13 @@ self assert: aGameBoard winner equals: 1 .
 { #category : #tests }
 GameTests >> test036GamePlayerFallsInWormHoleAndThenSpeedUpOnlyWornHoleApplied [
 | wormHole speedUp|
+
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(6 4 ).
+
 wormHole:= WormHole  new.
 speedUp := SpeedUp new.
-numbers := #(1 1 ).
-anotherNumbers := #(6 4).
-dice1 := LoadedDice with: numbers .
-dice2 := LoadedDice with: anotherNumbers .
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2 .
+
 aGameBoard add: wormHole at: 7.
 aGameBoard add: speedUp at: 3.
 aGame throwNextPlayer: arrayOfDices .
@@ -839,6 +909,9 @@ self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 3 .
 { #category : #tests }
 GameTests >> test037GamePUsingMoonWalk [
 |aMoonWalk|
+
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
 aMoonWalk := MoonWalk new.
 
@@ -860,29 +933,42 @@ GameTests >> test038GamePlayerFallsInWMoonWalkEffectThenChangePositionOfOtherPla
 
 |aMoonWalk|
 
+self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(1 4 ).
+
 aMoonWalk := MoonWalk with: -3.
-
-amountOfPlayers:= 3.
-numbers := #(1 1 ).
-anotherNumbers := #(1 4).
-
-dice1 := LoadedDice with: numbers .
-dice2 := LoadedDice with: anotherNumbers .
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2 .
-
-aGame startwith: amountOfPlayers   and: aGameBoard.
 
 aGameBoard add: aMoonWalk at: 2 .
 aGame throwNextPlayer: arrayOfDices.
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 2) ) equals: -3 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 2) ) equals: 5 .
 self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 2) ) equals: 0 .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 3) ) equals: -3 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 3) ) equals: 5 .
 self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 3) ) equals: 0 .
 self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 2 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 .
+self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 
+]
+
+{ #category : #tests }
+GameTests >> test039GameHasTwoDifferentMoonWalksandDifferentPlayersFallInto [
+
+|aMoonWalk anotherMoonWalk|
+
+self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(1 6 ).
+
+aMoonWalk := MoonWalk with: -3.
+anotherMoonWalk := MoonWalk with: -2.
+
+aGameBoard add: aMoonWalk at: 2 .
+aGameBoard add: anotherMoonWalk at: 4 .
+aGame throwNextPlayer: arrayOfDices. "2L1 5L0 5L0 "
+aGame throwNextPlayer: arrayOfDices. "0L1 4L1 3L0 "
+
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 2) ) equals: 4 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 3) ) equals: 3 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 0 .
+
 
 
 
@@ -892,33 +978,78 @@ self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 .
 ]
 
 { #category : #tests }
-GameTests >> test039GameHasTwoDifferentMoonWalksandDifferentPlayersFallInto [
+GameTests >> test040GameHasTwoDifferentMoonWalksandDifferentPlayersFallIntoAndCheckLaps [
 
 |aMoonWalk anotherMoonWalk|
 
+self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(1 6 ).
+
 aMoonWalk := MoonWalk with: -3.
 anotherMoonWalk := MoonWalk with: -2.
-amountOfPlayers:= 3.
-numbers := #(1 1 ).
-anotherNumbers := #(1 6 ).
-
-dice1 := LoadedDice with: numbers .
-dice2 := LoadedDice with: anotherNumbers .
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2 .
-
-aGame startwith: amountOfPlayers   and: aGameBoard.
 
 aGameBoard add: aMoonWalk at: 2 .
 aGameBoard add: anotherMoonWalk at: 4 .
 aGame throwNextPlayer: arrayOfDices. 
 aGame throwNextPlayer: arrayOfDices. 
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 2) ) equals: 4 .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 3) ) equals: -5 .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 0 .
+self assert: (aGameBoard checkLapOf:   (aGameBoard shipAt: 2) ) equals: 1 .
+self assert: (aGameBoard checkLapOf:  (aGameBoard shipAt: 3) ) equals: 0 .
+self assert: (aGameBoard checkLapOf:  (aGameBoard shipAt: 1) ) equals: 1 .
 
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test041GameUsingAtomicBomb [
+|anAtomicBomb|
+
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
+
+anAtomicBomb := AtomicBomb new.
+
+aGameBoard add: anAtomicBomb at: 8.
+
+aGame throwNextPlayer: arrayOfDices .
+aGame throwNextPlayer: arrayOfDices.
+self assert: ((aGameBoard specialEffectAtCell: 8) isKindOf:  AtomicBomb ) .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test042GameUsingAtomicBombAllPlayersMovedToCellZero [
+
+|anAtomicBomb|
+
+self setUpGameWith: 3 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 1) and: #(1 4 7).
+
+anAtomicBomb := AtomicBomb new.
+
+aGameBoard add: anAtomicBomb at: 8 .
+aGame throwNextPlayer: arrayOfDices.
+aGame throwNextPlayer: arrayOfDices.
+aGame throwNextPlayer: arrayOfDices.
+
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 2) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 2) ) equals: 1 .
+
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 3) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 3) ) equals: 1 .
+
+self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 .
 
 
 
