@@ -1,5 +1,5 @@
 Class {
-	#name : #Game,
+	#name : #ShipsGame,
 	#superclass : #Object,
 	#instVars : [
 		'result',
@@ -11,12 +11,12 @@ Class {
 }
 
 { #category : #initialization }
-Game class >> initializeEmpty [
+ShipsGame class >> initializeEmpty [
 	^(self new) initializeWith: 'The Game does not have a winner'
 ]
 
 { #category : #creation }
-Game >> create: anAmountOfPlayers [
+ShipsGame >> create: anAmountOfPlayers [
 	|playersCollection count|
 	count:=1.
 	playersCollection := OrderedCollection new.
@@ -28,7 +28,7 @@ Game >> create: anAmountOfPlayers [
 ]
 
 { #category : #intialization }
-Game >> initializeWith: aResult [
+ShipsGame >> initializeWith: aResult [
 
 	result := aResult.
 	gameboard := nil.
@@ -36,8 +36,8 @@ Game >> initializeWith: aResult [
 	amountOfPlayers := 0.
 ]
 
-{ #category : #validations }
-Game >> playUntilWinner: aDice [
+{ #category : #validation }
+ShipsGame >> playUntilWinner: aDice [
 
 	[ (gameboard winner) = 0 ] whileTrue: [ 
 		gameboard playRoundWith: aDice ].
@@ -45,27 +45,22 @@ Game >> playUntilWinner: aDice [
 ]
 
 { #category : #validation }
-Game >> ranking [
+ShipsGame >> ranking [
 	^gameboard ranking
 ]
 
 { #category : #validation }
-Game >> result [
+ShipsGame >> result [
 	^ result
 ]
 
-{ #category : #start }
-Game >> start [
-	result := 'The Game does not have a winner' 
-]
-
 { #category : #starting }
-Game >> startwith: aPlayer [ 
+ShipsGame >> startwith: aPlayer [ 
 	result:= aPlayer 
 ]
 
 { #category : #starting }
-Game >> startwith: anAmountOfPlayers and: aGameboard [
+ShipsGame >> startwith: anAmountOfPlayers and: aGameboard [
 
 	| players |
 	gameboard := aGameboard.
@@ -75,7 +70,7 @@ Game >> startwith: anAmountOfPlayers and: aGameboard [
 ]
 
 { #category : #action }
-Game >> throwNextPlayer: dices [
+ShipsGame >> throwNextPlayer: dices [
 
 	numberOfPlayer <= amountOfPlayers ifTrue:  [ 
 		gameboard turnOf: numberOfPlayer with: dices.
@@ -85,8 +80,8 @@ Game >> throwNextPlayer: dices [
 			gameboard turnOf: numberOfPlayer with: dices. ]
 ]
 
-{ #category : #validating }
-Game >> winner [
+{ #category : #validation }
+ShipsGame >> winner [
 
 	^ gameboard winner
 ]
