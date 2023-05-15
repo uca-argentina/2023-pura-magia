@@ -1201,3 +1201,22 @@ self assert: ((aRanking at: 3)shipInPosition  )numberOfShip  equals: 2 .
 
   
 ]
+
+{ #category : #tests }
+GameTests >> test048 [
+| parsecs |
+
+self setUpGameWith: 3 andGameboardWith: 10 and: 1.
+
+parsecs := 4. 
+
+aGameBoard cellsWith: parsecs.
+aGameBoard addEffects: #(40 20 20 10 8 2).
+
+
+
+
+
+
+  
+]
