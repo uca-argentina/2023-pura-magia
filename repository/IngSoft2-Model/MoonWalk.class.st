@@ -26,11 +26,6 @@ MoonWalk >> applyEffect: allPlayers activatedBy: aPlayer [
 	
 ]
 
-{ #category : #action }
-MoonWalk >> cellsToMove [
-	^amountOfCells.
-]
-
 { #category : #validation }
 MoonWalk >> destinatary [
 	^1.

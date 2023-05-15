@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'ship',
 		'cellNumber',
-		'actualLap'
+		'actualLap',
+		'parsecs'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -12,6 +13,11 @@ Class {
 { #category : #initialization }
 Position class >> with: aPlayer [ 
 	^ (self new) initializeWith: aPlayer .
+]
+
+{ #category : #action }
+Position >> changeParsecs: anAmountOfParsecs [ 
+	parsecs := anAmountOfParsecs.
 ]
 
 { #category : #changes }
@@ -34,11 +40,17 @@ Position >> initializeWith: aShip [
 	ship  := aShip .
 	cellNumber := 0 .
 	actualLap :=1.
+	parsecs := 0.
 ]
 
 { #category : #validation }
 Position >> isAtLap [
 	^actualLap.
+]
+
+{ #category : #validation }
+Position >> isAtParsec [
+	^parsecs.
 ]
 
 { #category : #validation }

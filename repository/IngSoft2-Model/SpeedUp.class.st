@@ -5,8 +5,8 @@ Class {
 }
 
 { #category : #action }
-SpeedUp >> cellsToMove [
-	^4.
+SpeedUp >> activatedBy: aPlayer with: aNewPosition [ 
+	aPlayer changePosition: (aPlayer isAtPosition +4)
 ]
 
 { #category : #validation }
