@@ -1,5 +1,5 @@
 Class {
-	#name : #GameBoard,
+	#name : #LoadedGameBoard,
 	#superclass : #Object,
 	#instVars : [
 		'cells',
@@ -8,17 +8,17 @@ Class {
 		'aCollectionOfSpecialCells',
 		'parsecsByCell'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Tests'
 }
 
 { #category : #validation }
-GameBoard class >> validateCanExistWith: anAmountOfCells [ 
+LoadedGameBoard class >> validateCanExistWith: anAmountOfCells [ 
 	anAmountOfCells > 1 ifFalse:  [ 
 		 Error signal: 'Cannot create GameBoard with negative amount of cells'].
 ]
 
 { #category : #validating }
-GameBoard class >> validateCanExistWith: numberOfCells and: numberOfLaps [
+LoadedGameBoard class >> validateCanExistWith: numberOfCells and: numberOfLaps [
 	|result|
 	result := (numberOfCells > 1 )&(numberOfLaps >= 1 ).
 	 result  ifFalse: [ 
@@ -27,13 +27,13 @@ GameBoard class >> validateCanExistWith: numberOfCells and: numberOfLaps [
 ]
 
 { #category : #initialization }
-GameBoard class >> with: numberOfCells [ 
+LoadedGameBoard class >> with: numberOfCells [ 
 	self validateCanExistWith: numberOfCells.
 	^(self new) initializeWith: numberOfCells 
 ]
 
 { #category : #creation }
-GameBoard class >> with: numberOfCells and: numberOfLaps [ 
+LoadedGameBoard class >> with: numberOfCells and: numberOfLaps [ 
 	self validateCanExistWith: numberOfCells and: numberOfLaps.
 	^(self new) initializeWith: numberOfCells and: numberOfLaps.
 	
@@ -42,96 +42,59 @@ GameBoard class >> with: numberOfCells and: numberOfLaps [
 ]
 
 { #category : #adding }
-GameBoard >> add: aSpeedUp at: aNumberOfCell [ 
+LoadedGameBoard >> add: aSpeedUp at: aNumberOfCell [ 
 	aCollectionOfSpecialCells add: (Cell with: aSpeedUp and: aNumberOfCell).
 ]
 
 { #category : #action }
-GameBoard >> addEffects: aCollectionOfProbabilities [
-	|index randomNumber probabilities|
-	index:= 0.
-	
-	probabilities := self createCollectionFrom: aCollectionOfProbabilities .
-		
-	[ index <= cells ] whileTrue: [
-		randomNumber:= 100 atRandom.
-		
-		( randomNumber >= (probabilities  at: 1) and: randomNumber < (probabilities at: 2)) ifTrue: [ 
-			self add: (WormHole new) at: index. 
-		 ].
-	 (randomNumber >= (probabilities  at: 2) and: randomNumber < (probabilities at: 3)) ifTrue: [ 
-			self add: (SpeedUp new) at: index. 
-		 ].
-	 (randomNumber >= (probabilities  at: 3) and: randomNumber < (probabilities at: 4)) ifTrue: [ 
-			self add: (MoonWalk  with: (cells atRandom)*(-1)) at: index. 
-		 ].
-	 (randomNumber >= (probabilities  at: 4) and: randomNumber < (probabilities at: 5)) ifTrue: [ 
-			self add: (HyperJump  with: (#(7 3 2 1))) at: index. 
-		 ].
-	(randomNumber >= (probabilities  at: 5) and: randomNumber < (probabilities at: 6)) ifTrue: [ 
-			self add: (AtomicBomb  new) at: index. 
-		 ].
-	
-		index := index + 1.
-		
-	 ]
+LoadedGameBoard >> addEffects [
+	self shouldBeImplemented.
+]
 
+{ #category : #action }
+LoadedGameBoard >> addEffects: aCollection [ 
+	self shouldBeImplemented.
 ]
 
 { #category : #validation }
-GameBoard >> amountOfCells [
+LoadedGameBoard >> amountOfCells [
 	^cells 
 ]
 
 { #category : #initialization }
-GameBoard >> cellsWith: anAmountOfParsecs [
+LoadedGameBoard >> cellsWith: anAmountOfParsecs [
 	parsecsByCell := anAmountOfParsecs .
 ]
 
 { #category : #validation }
-GameBoard >> checkLapOf: aShip [ 
+LoadedGameBoard >> checkLapOf: aShip [ 
 	| anotherShip |
 	anotherShip := self positionAtCollectionOf: aShip.
 	^ anotherShip isAtLap.
 ]
 
 { #category : #validation }
-GameBoard >> checkPositionOf: aShip [
+LoadedGameBoard >> checkPositionOf: aShip [
 
 	| anotherShip |
 	anotherShip := self positionAtCollectionOf: aShip.
 	^ anotherShip isAtPosition
 ]
 
-{ #category : #action }
-GameBoard >> createCollectionFrom: aCollection [ 
-	|index newCollection|
-	index:= 2.
-	newCollection := OrderedCollection new .
-	newCollection add: (aCollection at: 1).
-	[ index <= aCollection size ] whileTrue: [ 
-		newCollection add: ((newCollection at: index-1) + (aCollection at: index)).
-		index := index + 1.
-	 ].
-
-^ newCollection .
-	
-]
-
 { #category : #creating }
-GameBoard >> fillWith: players [
+LoadedGameBoard >> fillWith: players [
 	players do:[:each | collectionOfPositions add: (Position with: each )].
 	
 ]
 
 { #category : #initialization }
-GameBoard >> initializeWith: numberOfCells [ 
+LoadedGameBoard >> initializeWith: numberOfCells [ 
 	cells := numberOfCells .
 	collectionOfPositions := OrderedCollection new.
 ]
 
 { #category : #initialization }
-GameBoard >> initializeWith: numberOfCells and: numberOfLaps [ 
+LoadedGameBoard >> initializeWith: numberOfCells and: numberOfLaps [ 
 	cells := numberOfCells .
 	laps := numberOfLaps.
 	aCollectionOfSpecialCells := OrderedCollection new.
@@ -139,7 +102,7 @@ GameBoard >> initializeWith: numberOfCells and: numberOfLaps [
 ]
 
 { #category : #initialization }
-GameBoard >> initializeWith: numberOfCells and: numberOfLaps andAlso: numberOfParsecs [
+LoadedGameBoard >> initializeWith: numberOfCells and: numberOfLaps andAlso: numberOfParsecs [
 	cells := numberOfCells .
 	laps := numberOfLaps.
 	parsecsByCell := numberOfParsecs .
@@ -148,12 +111,12 @@ GameBoard >> initializeWith: numberOfCells and: numberOfLaps andAlso: numberOfPa
 ]
 
 { #category : #validation }
-GameBoard >> laps [
+LoadedGameBoard >> laps [
 	^ laps
 ]
 
 { #category : #moves }
-GameBoard >> move: aPlayer adding: diceResult [
+LoadedGameBoard >> move: aPlayer adding: diceResult [
 
 	| index positionOfShip result specialEffect auxResult|
 	index := 1.
@@ -187,14 +150,14 @@ GameBoard >> move: aPlayer adding: diceResult [
 ]
 
 { #category : #validation }
-GameBoard >> numberOfParsecs: aShip [ 
+LoadedGameBoard >> numberOfParsecs: aShip [ 
 	| anotherShip |
 	anotherShip := self positionAtCollectionOf: aShip.
 	^ anotherShip isAtParsec
 ]
 
 { #category : #action }
-GameBoard >> playRoundWith: aCollectionOfDices [
+LoadedGameBoard >> playRoundWith: aCollectionOfDices [
 
 	| index result |
 	index := 1.
@@ -210,14 +173,14 @@ GameBoard >> playRoundWith: aCollectionOfDices [
 ]
 
 { #category : #validation }
-GameBoard >> playerPosition: aDice [
+LoadedGameBoard >> playerPosition: aDice [
 	^aDice
 	
 	"Este mensaje quedó de los primeros tests antes de descubrir Position"
 ]
 
 { #category : #validation }
-GameBoard >> positionAtCollectionOf: aShip [
+LoadedGameBoard >> positionAtCollectionOf: aShip [
 
 	| anotherShip counter |
 	counter := 1.
@@ -229,7 +192,7 @@ GameBoard >> positionAtCollectionOf: aShip [
 ]
 
 { #category : #validation }
-GameBoard >> ranking [
+LoadedGameBoard >> ranking [
 	| array sortedArray |
 	array := collectionOfPositions.
 	sortedArray := array sorted: [:player1 :player2 | player1 isAtLap    < player2  isAtLap  ].
@@ -240,12 +203,12 @@ GameBoard >> ranking [
 ]
 
 { #category : #positioning }
-GameBoard >> shipAt: index [ 
+LoadedGameBoard >> shipAt: index [ 
 	^ (collectionOfPositions at: index ) shipInPosition
 ]
 
 { #category : #validation }
-GameBoard >> specialEffectAtCell: aNumberOfCell [ 
+LoadedGameBoard >> specialEffectAtCell: aNumberOfCell [ 
 	|counter typeOfCell|
 	counter :=1.
 	typeOfCell := 0. 
@@ -265,7 +228,7 @@ GameBoard >> specialEffectAtCell: aNumberOfCell [
 ]
 
 { #category : #action }
-GameBoard >> throwVariousDices: aCollectionOfDices [
+LoadedGameBoard >> throwVariousDices: aCollectionOfDices [
 
 	| counter result |
 	counter := 1.
@@ -277,7 +240,7 @@ GameBoard >> throwVariousDices: aCollectionOfDices [
 ]
 
 { #category : #interactions }
-GameBoard >> turnOf: numberOfShip with: aCollectionOfDices [
+LoadedGameBoard >> turnOf: numberOfShip with: aCollectionOfDices [
 
 	| result |
 	result := 0.
@@ -288,7 +251,7 @@ GameBoard >> turnOf: numberOfShip with: aCollectionOfDices [
 ]
 
 { #category : #update }
-GameBoard >> updateResult: aResult [
+LoadedGameBoard >> updateResult: aResult [
 	|auxResult|
 	auxResult := aResult.
 	[ auxResult  > cells ] whileTrue: [ 
@@ -299,7 +262,7 @@ GameBoard >> updateResult: aResult [
 ]
 
 { #category : #validations }
-GameBoard >> verifyAllPositions [
+LoadedGameBoard >> verifyAllPositions [
 	|index player playerPosition playerParsec|
 	index := 1.
 	[ index <= collectionOfPositions size ] whileTrue: [ 
@@ -330,7 +293,7 @@ GameBoard >> verifyAllPositions [
 ]
 
 { #category : #validation }
-GameBoard >> winner [
+LoadedGameBoard >> winner [
 
 	| counter shipLap|
 	counter := 1.
