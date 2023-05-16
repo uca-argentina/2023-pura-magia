@@ -24,10 +24,10 @@ sizeOfCollection:= aCollectionOfTemporalVariables size.
 	
 ]
 
-{ #category : #validation }
-ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities [
+{ #category : #calculating }
+ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCollectionOfDifferentParsecs [ 
 	|index gameboards totalWormHoles totalSpeedUps totalMoonWalks totalHyperJumps totalAtomicBombs totalNormalCells totalCells finalArray arrayWithTemporalVariables|
-	gameboards := self createArrayOfGameBoards: arrayOfEffectsProbabilities .
+	gameboards := self createArrayOfGameBoards: arrayOfEffectsProbabilities forHyperJump: aCollectionOfDifferentParsecs .
 	index := 1.
 		totalWormHoles := 0.
 		totalSpeedUps := 0. 
@@ -63,18 +63,16 @@ ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities [
 	finalArray := self averageProbabilities: arrayWithTemporalVariables .
 	
 	^ finalArray
-
-
 ]
 
 { #category : #creation }
-ProbabilityOfEffects >> createArrayOfGameBoards: arrayOfEffectsProbabilites [
+ProbabilityOfEffects >> createArrayOfGameBoards: arrayOfEffectsProbabilites forHyperJump: aCollectionOfDifferentParsecs [  
 	|index array|
 	index:= 1.
 	array := OrderedCollection new.
 	
 [ index <= 10000 ] whileTrue: [ 
-	array add: ((GameBoard with: 100 and: 1) addEffects: arrayOfEffectsProbabilites).
+	array add: ((GameBoard with: 100 and: 1) addEffects: arrayOfEffectsProbabilites forHyperJump: aCollectionOfDifferentParsecs ).
 	index := index + 1.
 	 ].
 
