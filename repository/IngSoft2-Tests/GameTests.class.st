@@ -1064,7 +1064,7 @@ GameTests >> test044GameUsingHyperJump [
 
 self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
-amountOfParsecsToMove:= #(4 3 2 1).
+amountOfParsecsToMove:= #(#(4 3 2 1)).
 parsecs := 4. 
 hyperJump := HyperJump with: amountOfParsecsToMove .
 aGameBoard cellsWith: parsecs.
@@ -1088,7 +1088,7 @@ GameTests >> test045GameUsingHyperJumpWhenCellChangeThanksToTheEffect [
 
 self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
-amountOfParsecsToMove:= #(7 3 2 1).
+amountOfParsecsToMove:= #(#(7 3 2 1)).
 parsecs := 4. 
 hyperJump := HyperJump with: amountOfParsecsToMove .
 aGameBoard cellsWith: parsecs.
@@ -1112,7 +1112,7 @@ GameTests >> test046PlayerFallsInHyperJumpAndChangeLapCellAndParsec [
 
 self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(7 2 ).
-amountOfParsecsToMove:= #(7 3 2 1).
+amountOfParsecsToMove:= #(#(7 3 2 1)).
 parsecs := 4. 
 
 hyperJump := HyperJump with: amountOfParsecsToMove .
@@ -1162,14 +1162,35 @@ self assert: ((aRanking at: 3)shipInPosition  )numberOfShip  equals: 2 .
 ]
 
 { #category : #tests }
-GameTests >> test048CheckDistributionOfEffectsIn1000Gameboards [
-| parsecs aProbability effectsProbabilities|
+GameTests >> test048GameUsingHyperJumpWithMultipleArrayWithParsecs [
+| parsecs hyperJump  arrayOfPosibilities|
+
+self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+arrayOfPosibilities:= #(#(7 3 2 1) #(-3 -4)).
+parsecs := 4. 
+hyperJump := HyperJump with: arrayOfPosibilities .
+aGameBoard cellsWith: parsecs.
+aGameBoard add: hyperJump  at: 3 .
+aGame throwNextPlayer: arrayOfDices.
+
+self assert: (((aGameBoard checkPositionOf:  (aGameBoard shipAt: 1)) = 4 ) or: ((aGameBoard checkPositionOf:  (aGameBoard shipAt: 1)) = 2)).
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test049CheckDistributionOfEffectsIn1000GameboardsWithHyperJumpArrays [
+| parsecs aProbability effectsProbabilities array|
 
 parsecs := 4. 
-
 aProbability := ProbabilityOfEffects new.
-
-effectsProbabilities := aProbability calculate: #(40 20 20 10 8 2).
+array:=#(#(6 5 2) #(9 9 8 6 5 4 -5) #(2 1 -9) #(6 6 4 2 1 6) #(3 2 1) #(9 2) #(4 1) #(9 5)).
+effectsProbabilities := aProbability calculate: #(40 20 20 10 8 2) forHyperJump: array.
 
 self assert: ((effectsProbabilities at: 1) >39  and: (effectsProbabilities at: 1) < 40) .
 self assert: ((effectsProbabilities at: 2) >19  and: (effectsProbabilities at: 2) < 21) .
@@ -1177,6 +1198,29 @@ self assert: ((effectsProbabilities at: 3) >19  and: (effectsProbabilities at: 3
 self assert: ((effectsProbabilities at: 4) >9  and: (effectsProbabilities at: 4) < 11) .
 self assert: ((effectsProbabilities at: 5) >7  and: (effectsProbabilities at: 5) < 9) .
 self assert: ((effectsProbabilities at: 6) >1  and: (effectsProbabilities at: 6) < 3) .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test050CheckDifferentDistributionOfEffectsIn1000GameboardsWithHyperJumpArrays [
+| parsecs aProbability effectsProbabilities array|
+
+parsecs := 4. 
+aProbability := ProbabilityOfEffects new.
+array:=#(#(6 5 2) #(9 9 8 6 5 4 -5) #(2 1 -9) #(6 6 4 2 1 6) #(3 2 1) #(9 2) #(4 1) #(9 5)).
+effectsProbabilities := aProbability calculate: #(40 30 10 10 10 0) forHyperJump: array.
+
+self assert: ((effectsProbabilities at: 1) >39  and: (effectsProbabilities at: 1) < 41) .
+self assert: ((effectsProbabilities at: 2) >29  and: (effectsProbabilities at: 2) < 31) .
+self assert: ((effectsProbabilities at: 3) >9  and: (effectsProbabilities at: 3) < 11) .
+self assert: ((effectsProbabilities at: 4) >9  and: (effectsProbabilities at: 4) < 11) .
+self assert: ((effectsProbabilities at: 5) >9  and: (effectsProbabilities at: 5) < 11) .
+self assert: ((effectsProbabilities at: 6) >(-1)  and: (effectsProbabilities at: 6) < 1) .
 
 
 

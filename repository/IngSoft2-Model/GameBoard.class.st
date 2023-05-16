@@ -42,8 +42,8 @@ GameBoard class >> with: numberOfCells and: numberOfLaps [
 ]
 
 { #category : #adding }
-GameBoard >> add: aSpeedUp at: aNumberOfCell [ 
-	aCollectionOfSpecialCells add: (Cell with: aSpeedUp and: aNumberOfCell).
+GameBoard >> add: aEffect at: aNumberOfCell [ 
+	aCollectionOfSpecialCells add: (Cell with: aEffect  and: aNumberOfCell).
 ]
 
 { #category : #action }
@@ -67,6 +67,38 @@ GameBoard >> addEffects: aCollectionOfProbabilities [
 		 ].
 	 (randomNumber >= (probabilities  at: 4) and: randomNumber < (probabilities at: 5)) ifTrue: [ 
 			self add: (HyperJump  with: (#(7 3 2 1))) at: index. 
+		 ].
+	(randomNumber >= (probabilities  at: 5) and: randomNumber < (probabilities at: 6)) ifTrue: [ 
+			self add: (AtomicBomb  new) at: index. 
+		 ].
+	
+		index := index + 1.
+		
+	 ]
+
+]
+
+{ #category : #action }
+GameBoard >> addEffects: aCollectionOfProbabilities forHyperJump: aCollectionOfDifferentParsecs [ 
+	|index randomNumber probabilities|
+	index:= 0.
+	
+	probabilities := self createCollectionFrom: aCollectionOfProbabilities .
+		
+	[ index <= cells ] whileTrue: [
+		randomNumber:= 100 atRandom.
+		
+		( randomNumber >= (probabilities  at: 1) and: randomNumber < (probabilities at: 2)) ifTrue: [ 
+			self add: (WormHole new) at: index. 
+		 ].
+	 (randomNumber >= (probabilities  at: 2) and: randomNumber < (probabilities at: 3)) ifTrue: [ 
+			self add: (SpeedUp new) at: index. 
+		 ].
+	 (randomNumber >= (probabilities  at: 3) and: randomNumber < (probabilities at: 4)) ifTrue: [ 
+			self add: (MoonWalk  with: (cells atRandom)*(-1)) at: index. 
+		 ].
+	 (randomNumber >= (probabilities  at: 4) and: randomNumber < (probabilities at: 5)) ifTrue: [ 
+			self add: (HyperJump  with: aCollectionOfDifferentParsecs) at: index. 
 		 ].
 	(randomNumber >= (probabilities  at: 5) and: randomNumber < (probabilities at: 6)) ifTrue: [ 
 			self add: (AtomicBomb  new) at: index. 
@@ -226,35 +258,34 @@ GameBoard >> laps [
 { #category : #moves }
 GameBoard >> move: aPlayer adding: diceResult [
 
-	| index positionOfShip result specialEffect auxResult|
+	| index positionOfShip result specialEffect auxResult |
 	index := 1.
-	
-	[ (collectionOfPositions at: index) isTheSameAs: aPlayer ] whileFalse: [ index := index + 1 ].
-	
+	[ (collectionOfPositions at: index) isTheSameAs: aPlayer ] 
+		whileFalse: [ index := index + 1 ].
 	positionOfShip := (collectionOfPositions at: index) isAtPosition.
-	result := positionOfShip + diceResult. 
-	auxResult:= self updateResult: result.
-	
+	result := positionOfShip + diceResult.
+	auxResult := self updateResult: result.
+	specialEffect := self specialEffectAtCell: auxResult.
+	specialEffect == 0
+		ifFalse: [ 
+			specialEffect destinatary == 0
+				ifTrue: [ 
+					(collectionOfPositions at: index) changePosition: result.
+					specialEffect
+						activatedBy: (collectionOfPositions at: index)
+						with: result.
 
-	specialEffect:= (self specialEffectAtCell: auxResult ).
-	(specialEffect == 0) ifFalse: [ 
-		specialEffect destinatary == 0 ifTrue:[
-			(collectionOfPositions at: index) changePosition: result  .
-			specialEffect activatedBy: (collectionOfPositions at: index) with: result .
-			
-			self verifyAllPositions]
-        ifFalse:[ 
-            specialEffect applyEffect: collectionOfPositions activatedBy: (collectionOfPositions at: index).
-				(specialEffect isKindOf: AtomicBomb) ifTrue: [ result := 0 ].
-				(collectionOfPositions at: index) changePosition: result  .
-				self verifyAllPositions.
-            ].
-		]
-	 ifTrue:[ 
-	
-				(collectionOfPositions at: index) changePosition: result  .
-				self verifyAllPositions.
-				].
+					self verifyAllPositions ]
+				ifFalse: [ 
+					specialEffect
+						applyEffect: collectionOfPositions
+						activatedBy: (collectionOfPositions at: index).
+					(specialEffect isKindOf: AtomicBomb) ifTrue: [ result := 0 ].
+					(collectionOfPositions at: index) changePosition: result.
+					self verifyAllPositions ] ]
+		ifTrue: [ 
+			(collectionOfPositions at: index) changePosition: result.
+			self verifyAllPositions ]
 ]
 
 { #category : #validation }
@@ -369,35 +400,49 @@ GameBoard >> updateResult: aResult [
 	^ auxResult .
 ]
 
-{ #category : #validations }
+{ #category : #validation }
 GameBoard >> verifyAllPositions [
-	|index player playerPosition playerParsec|
+
+	| index player playerPosition playerParsec |
 	index := 1.
 	[ index <= collectionOfPositions size ] whileTrue: [ 
-		player:= collectionOfPositions at: index.
-		playerParsec:=player isAtParsec.
-		playerPosition:= player isAtPosition.
-		[ playerParsec > parsecsByCell  ] whileTrue:[
-			player changeParsecs: (playerParsec - parsecsByCell).
-			player changePosition: playerPosition + 1.
-			playerParsec := playerParsec - parsecsByCell.
-		].
-		playerPosition:= player isAtPosition.
-		[playerPosition<0] whileTrue: [ 
-			player changePosition: cells + playerPosition.
-			player decreaseLap.
-			playerPosition := cells + playerPosition .
-			 ].
-		[playerPosition >cells] whileTrue: [ 
-			player changePosition: playerPosition - cells .
-			player increaseLap.
-			playerPosition := playerPosition - cells .
-			 ].
-		
-				
-		index := index + 1.
-	 ]
-	
+		player := collectionOfPositions at: index.
+		playerPosition := player isAtPosition.
+		playerParsec := self verifyParsecOf: player at: playerPosition.
+		playerPosition := self verifyCellsOf: player.
+		index := index + 1 ]
+]
+
+{ #category : #validation }
+GameBoard >> verifyCellsOf: player [
+
+	| playerPosition |
+	playerPosition := player isAtPosition.
+	[ playerPosition < 0 ] whileTrue: [ 
+		player changePosition: cells + playerPosition.
+		player decreaseLap.
+		playerPosition := cells + playerPosition ].
+	[ playerPosition > cells ] whileTrue: [ 
+		player changePosition: playerPosition - cells.
+		player increaseLap.
+		playerPosition := playerPosition - cells ].
+	^ playerPosition
+]
+
+{ #category : #validation }
+GameBoard >> verifyParsecOf: player at: playerPosition [
+
+	| playerParsec |
+	playerParsec := player isAtParsec.
+	[ playerParsec > parsecsByCell ] whileTrue: [ 
+		player changeParsecs: playerParsec - parsecsByCell.
+		player changePosition: playerPosition + 1.
+		playerParsec := playerParsec - parsecsByCell ].
+	[ playerParsec < 0 ] whileTrue: [ 
+		player changeParsecs: playerParsec + parsecsByCell.
+		player changePosition: playerPosition - 1.
+		playerParsec := playerParsec + parsecsByCell ].
+	^ playerParsec
 ]
 
 { #category : #validation }

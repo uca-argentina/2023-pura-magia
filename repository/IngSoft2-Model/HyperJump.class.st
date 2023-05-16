@@ -9,8 +9,10 @@ Class {
 }
 
 { #category : #initialization }
-HyperJump class >> with: amountOfParsecsToMove [ 
-	^(self new)initializeWith: amountOfParsecsToMove
+HyperJump class >> with: arrayOfPosibilities [
+	|randomNumber|
+	randomNumber := (arrayOfPosibilities size)atRandom.
+	^(self new)initializeWith: (arrayOfPosibilities at: randomNumber )
 ]
 
 { #category : #action }
