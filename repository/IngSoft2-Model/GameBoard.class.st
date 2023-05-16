@@ -47,38 +47,6 @@ GameBoard >> add: aEffect at: aNumberOfCell [
 ]
 
 { #category : #action }
-GameBoard >> addEffects: aCollectionOfProbabilities [
-	|index randomNumber probabilities|
-	index:= 0.
-	
-	probabilities := self createCollectionFrom: aCollectionOfProbabilities .
-		
-	[ index <= cells ] whileTrue: [
-		randomNumber:= 100 atRandom.
-		
-		( randomNumber >= (probabilities  at: 1) and: randomNumber < (probabilities at: 2)) ifTrue: [ 
-			self add: (WormHole new) at: index. 
-		 ].
-	 (randomNumber >= (probabilities  at: 2) and: randomNumber < (probabilities at: 3)) ifTrue: [ 
-			self add: (SpeedUp new) at: index. 
-		 ].
-	 (randomNumber >= (probabilities  at: 3) and: randomNumber < (probabilities at: 4)) ifTrue: [ 
-			self add: (MoonWalk  with: (cells atRandom)*(-1)) at: index. 
-		 ].
-	 (randomNumber >= (probabilities  at: 4) and: randomNumber < (probabilities at: 5)) ifTrue: [ 
-			self add: (HyperJump  with: (#(7 3 2 1))) at: index. 
-		 ].
-	(randomNumber >= (probabilities  at: 5) and: randomNumber < (probabilities at: 6)) ifTrue: [ 
-			self add: (AtomicBomb  new) at: index. 
-		 ].
-	
-		index := index + 1.
-		
-	 ]
-
-]
-
-{ #category : #action }
 GameBoard >> addEffects: aCollectionOfProbabilities forHyperJump: aCollectionOfDifferentParsecs [ 
 	|index randomNumber probabilities|
 	index:= 0.
