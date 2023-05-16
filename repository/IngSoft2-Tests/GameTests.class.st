@@ -18,14 +18,8 @@ Class {
 }
 
 { #category : #running }
-GameTests >> aGameBoardwith: numberOfcells and: amountOfLaps [ 
-	
-	^GameBoard with: numberOfcells  and: amountOfLaps.
-]
-
-{ #category : #running }
 GameTests >> setUp [
-	aGame:= Game initializeEmpty.
+	aGame:= ShipsGame initializeEmpty.
 	cells:= 8.
 	numberOfLaps:= 2.
 	amountOfPlayers:=1.
@@ -48,7 +42,7 @@ GameTests >> setUp [
 
 { #category : #running }
 GameTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCells and: laps [
-	aGame:= Game initializeEmpty.
+	aGame:= ShipsGame initializeEmpty.
 	
 	cells:= anAmountOfCells .
 	numberOfLaps:= laps.
@@ -56,20 +50,6 @@ GameTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCells
 	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
 	aGameBoard cellsWith: 0.
-	aGame startwith: amountOfPlayers   and: aGameBoard.
-]
-
-{ #category : #running }
-GameTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCells and: laps andAlso: parsecs [
-	aGame:= Game initializeEmpty.
-	
-	cells:= anAmountOfCells .
-	numberOfLaps:= laps.
-	amountOfPlayers := anAmountOfPlayers .
-	numberOfParsecs:=parsecs.
-	
-	aGameBoard := GameBoard with: cells and: numberOfLaps.
-	aGameBoard cellsWith: numberOfParsecs .
 	aGame startwith: amountOfPlayers   and: aGameBoard.
 ]
 
@@ -87,27 +67,6 @@ GameTests >> setUpLoadedDiceWith: array1 and: array2 [
 ]
 
 { #category : #running }
-GameTests >> setUpWith:  anAmountOfPlayers [
-	aGame:= Game initializeEmpty.
-	cells:= 8.
-	numberOfLaps:= 2.
-	amountOfPlayers := anAmountOfPlayers .
-	
-	numbers := #(1 1 ).
-	anotherNumbers := #(3 4).
-	dice1 := LoadedDice with: numbers .
-	dice2 := LoadedDice with: anotherNumbers .
-
-	arrayOfDices := OrderedCollection new.
-	arrayOfDices add: dice1 .
-	arrayOfDices add: dice2.
-	
-	
-	aGameBoard := GameBoard with: cells and: numberOfLaps.
-	aGame startwith: amountOfPlayers   and: aGameBoard.
-]
-
-{ #category : #running }
 GameTests >> should: anErrorBlock raise: anExceptionClass withMessage: anErrorMessage [
 	self
 		should: anErrorBlock 
@@ -120,8 +79,8 @@ GameTests >> should: anErrorBlock raise: anExceptionClass withMessage: anErrorMe
 { #category : #tests }
 GameTests >> test001GameIsCreated [
 
-aGame:= Game new.
-self assert:(aGame isKindOf: Game)
+aGame:= ShipsGame new.
+self assert:(aGame isKindOf: ShipsGame)
 ]
 
 { #category : #tests }
@@ -428,7 +387,7 @@ self assert: ((aGame winner)isKindOf:  Integer) .
 { #category : #tests }
 GameTests >> test015PlayWithNPlayersUntilGameEnds [
 |dice|
-aGame:= Game initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 numberOfLaps :=1.
 amountOfPlayers := 4.
 cells:= 8.
@@ -452,7 +411,7 @@ self assert: (aGame result) equals: 'The Game has ended' .
 { #category : #tests }
 GameTests >> test016PlayWithMLoadedDicesAndNPlayersThenCheckWinner [
 
-aGame:= Game initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 amountOfPlayers := 4.
 cells:= 8.
 numberOfLaps :=1.
@@ -485,7 +444,7 @@ self deny: (aGame winner) equals: (aGameBoard shipAt: 3) .
 { #category : #tests }
 GameTests >> test017PlayWithMDicesAndNPlayersUntilTheGameEnds [
 |amountOfDices|
-aGame:= Game initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 numberOfLaps :=1.
 amountOfPlayers := 4.
 cells:= 8.
@@ -651,7 +610,7 @@ self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 2) ) equals: 5 .
 { #category : #tests }
 GameTests >> test025PlayThreeTurnsWithLoadedDiceAndTwoPlayersThenCheckPositionChangeOfTheFirstPlayer [
 
-aGame:= Game initializeEmpty.
+aGame:= ShipsGame initializeEmpty.
 amountOfPlayers := 2.
 cells:= 8.
 numbers := #(1 1 )  .
@@ -1203,16 +1162,21 @@ self assert: ((aRanking at: 3)shipInPosition  )numberOfShip  equals: 2 .
 ]
 
 { #category : #tests }
-GameTests >> test048 [
-| parsecs |
-
-self setUpGameWith: 3 andGameboardWith: 10 and: 1.
+GameTests >> test048CheckDistributionOfEffectsIn1000Gameboards [
+| parsecs aProbability effectsProbabilities|
 
 parsecs := 4. 
 
-aGameBoard cellsWith: parsecs.
-aGameBoard addEffects: #(40 20 20 10 8 2).
+aProbability := ProbabilityOfEffects new.
 
+effectsProbabilities := aProbability calculate: #(40 20 20 10 8 2).
+
+self assert: ((effectsProbabilities at: 1) >39  and: (effectsProbabilities at: 1) < 40) .
+self assert: ((effectsProbabilities at: 2) >19  and: (effectsProbabilities at: 2) < 21) .
+self assert: ((effectsProbabilities at: 3) >19  and: (effectsProbabilities at: 3) < 21) .
+self assert: ((effectsProbabilities at: 4) >9  and: (effectsProbabilities at: 4) < 11) .
+self assert: ((effectsProbabilities at: 5) >7  and: (effectsProbabilities at: 5) < 9) .
+self assert: ((effectsProbabilities at: 6) >1  and: (effectsProbabilities at: 6) < 3) .
 
 
 

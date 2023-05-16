@@ -9,11 +9,6 @@ WormHole >> activatedBy: aPlayer with: aNewPosition [
 	aPlayer changePosition: (aPlayer isAtPosition -4)
 ]
 
-{ #category : #move }
-WormHole >> cellsToMove [
-	^-4.
-]
-
 { #category : #validation }
 WormHole >> destinatary [
 	^0.

@@ -78,9 +78,89 @@ GameBoard >> addEffects: aCollectionOfProbabilities [
 
 ]
 
+{ #category : #counting }
+GameBoard >> amountOfAtomicBombs [
+	|index count|
+	index := 1.
+	count := 0.
+	[ index <= aCollectionOfSpecialCells size  ] whileTrue: [ 
+		(((aCollectionOfSpecialCells at: index) typeOfSpecialEffect) isKindOf: AtomicBomb ) ifTrue: [ 
+			count := count + 1.
+			 ].
+		index:= index + 1.
+	 ].
+
+^ count .
+]
+
 { #category : #validation }
 GameBoard >> amountOfCells [
 	^cells 
+]
+
+{ #category : #counting }
+GameBoard >> amountOfHyperJumps [
+	|index count|
+	index := 1.
+	count := 0.
+	[ index <= aCollectionOfSpecialCells size  ] whileTrue: [ 
+		(((aCollectionOfSpecialCells at: index) typeOfSpecialEffect) isKindOf: HyperJump ) ifTrue: [ 
+			count := count + 1.
+			 ].
+		index:= index + 1.
+	 ].
+
+^ count .
+]
+
+{ #category : #counting }
+GameBoard >> amountOfMoonWalks [
+	|index count|
+	index := 1.
+	count := 0.
+	[ index <= aCollectionOfSpecialCells size  ] whileTrue: [ 
+		(((aCollectionOfSpecialCells at: index) typeOfSpecialEffect) isKindOf: MoonWalk ) ifTrue: [ 
+			count := count + 1.
+			 ].
+		index:= index + 1.
+	 ].
+
+^ count .
+]
+
+{ #category : #counter }
+GameBoard >> amountOfNormalCells [
+	^ cells - (aCollectionOfSpecialCells size) 
+]
+
+{ #category : #counting }
+GameBoard >> amountOfSpeedUps [
+	|index count|
+	index := 1.
+	count := 0.
+	[ index <= aCollectionOfSpecialCells size  ] whileTrue: [ 
+		(((aCollectionOfSpecialCells at: index) typeOfSpecialEffect) isKindOf: SpeedUp ) ifTrue: [ 
+			count := count + 1.
+			 ].
+		index:= index + 1.
+	 ].
+
+^ count .
+]
+
+{ #category : #calculating }
+GameBoard >> amountOfWormHoles [
+	|index count|
+	index := 1.
+	count := 0.
+	[ index <= aCollectionOfSpecialCells size  ] whileTrue: [ 
+		(((aCollectionOfSpecialCells at: index) typeOfSpecialEffect) isKindOf: WormHole) ifTrue: [ 
+			count := count + 1.
+			 ].
+		index:= index + 1.
+	 ].
+
+^ count .
 ]
 
 { #category : #initialization }
@@ -138,15 +218,6 @@ GameBoard >> initializeWith: numberOfCells and: numberOfLaps [
 	collectionOfPositions := OrderedCollection new.
 ]
 
-{ #category : #initialization }
-GameBoard >> initializeWith: numberOfCells and: numberOfLaps andAlso: numberOfParsecs [
-	cells := numberOfCells .
-	laps := numberOfLaps.
-	parsecsByCell := numberOfParsecs .
-	aCollectionOfSpecialCells := OrderedCollection new.
-	collectionOfPositions := OrderedCollection new.
-]
-
 { #category : #validation }
 GameBoard >> laps [
 	^ laps
@@ -161,12 +232,12 @@ GameBoard >> move: aPlayer adding: diceResult [
 	[ (collectionOfPositions at: index) isTheSameAs: aPlayer ] whileFalse: [ index := index + 1 ].
 	
 	positionOfShip := (collectionOfPositions at: index) isAtPosition.
-	result := positionOfShip + diceResult. "12"
+	result := positionOfShip + diceResult. 
 	auxResult:= self updateResult: result.
 	
 
 	specialEffect:= (self specialEffectAtCell: auxResult ).
-	(specialEffect == 0) ifFalse: [ "Si hay special effect"
+	(specialEffect == 0) ifFalse: [ 
 		specialEffect destinatary == 0 ifTrue:[
 			(collectionOfPositions at: index) changePosition: result  .
 			specialEffect activatedBy: (collectionOfPositions at: index) with: result .
@@ -179,7 +250,7 @@ GameBoard >> move: aPlayer adding: diceResult [
 				self verifyAllPositions.
             ].
 		]
-	 ifTrue:[ "si no hay efecto"
+	 ifTrue:[ 
 	
 				(collectionOfPositions at: index) changePosition: result  .
 				self verifyAllPositions.
