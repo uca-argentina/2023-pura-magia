@@ -68,8 +68,3 @@ Player >> isTheSameAs: aShip [
 Player >> numberOfShip [
 	^ shipNumber .
 ]
-
-{ #category : #validations }
-Player >> shipInPosition [
-	^ship
-]

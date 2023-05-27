@@ -1268,3 +1268,17 @@ self should:[ HyperJump with: amountOfParsecsToMove ] raise: Error withMessage: 
 
   
 ]
+
+{ #category : #tests }
+GameTests >> test052UsingRandomDieAndCheckingTheResult [
+| die result|
+die := Die with: 5.
+result:= die throw .
+self assert: (result > 0).
+
+
+
+
+
+  
+]
