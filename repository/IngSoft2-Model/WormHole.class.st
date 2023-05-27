@@ -5,11 +5,10 @@ Class {
 }
 
 { #category : #action }
-WormHole >> activatedBy: aPlayer with: aNewPosition [ 
-	aPlayer changePosition: (aPlayer isAtPosition -4)
-]
-
-{ #category : #validation }
-WormHole >> destinatary [
-	^0.
+WormHole >> applyTo: aGameBoard [ 
+	| turn aPlayer |
+	turn := aGameBoard turn.
+	aPlayer := aGameBoard shipAt: turn.
+	aPlayer changePosition: (aPlayer isAtPosition -4).
+	
 ]

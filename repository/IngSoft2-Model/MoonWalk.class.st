@@ -12,23 +12,18 @@ MoonWalk class >> with: anAmountOfCells [
 	^(self new) initializeWith: anAmountOfCells.
 ]
 
-{ #category : #move }
-MoonWalk >> applyEffect: allPlayers activatedBy: aPlayer [
-	|index newPosition|
+{ #category : #action }
+MoonWalk >> applyTo: aGameBoard [ 
+	|index newPosition turn|
 	index := 1.
-	[index <= allPlayers size] whileTrue: [ 
-		((allPlayers at: index) = aPlayer) ifFalse: [ 
-			newPosition := (allPlayers at: index) isAtPosition + amountOfCells.
-			(allPlayers at: index) changePosition: newPosition.
+	turn:= aGameBoard turn .
+	[index <= aGameBoard amountOfPlayers] whileTrue: [ 
+		((aGameBoard shipAt:  index) = (aGameBoard shipAt:  turn)) ifFalse: [ 
+			newPosition := (aGameBoard shipAt:  index) isAtPosition + amountOfCells.
+			(aGameBoard shipAt:  index) changePosition: newPosition.
 			 ].
 		index := index + 1. 
 		]
-	
-]
-
-{ #category : #validation }
-MoonWalk >> destinatary [
-	^1.
 ]
 
 { #category : #initialization }

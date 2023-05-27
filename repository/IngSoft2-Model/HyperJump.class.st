@@ -8,27 +8,39 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #validation }
+HyperJump class >> validateCanExistWith: aCollectionOfProbabilities [
+
+	| isOrdered previous result |
+	isOrdered := aCollectionOfProbabilities allSatisfy: [ :eachArray | 
+		             previous := eachArray first.
+		             eachArray allSatisfy: [ :value | 
+			             result := value <= previous.
+			             previous := value.
+			             result ] ].
+
+	isOrdered ifFalse: [ 
+		Error signal:
+			'Cannot create HyperJump with a collection out of order' ]
+]
+
 { #category : #initialization }
 HyperJump class >> with: arrayOfPosibilities [
 	|randomNumber|
+	self validateCanExistWith: arrayOfPosibilities.
 	randomNumber := (arrayOfPosibilities size)atRandom.
 	^(self new)initializeWith: (arrayOfPosibilities at: randomNumber )
 ]
 
 { #category : #action }
-HyperJump >> activatedBy: aPlayer with: aNewPosition [ 
-	|result|
+HyperJump >> applyTo: aGameBoard [ 
+	|result turn|
 	round := round +1.
+	turn:= aGameBoard turn.
 	(round > anAmountOfParsecsToMove  size) ifTrue: [ 
 		round :=1 ].
 	result := anAmountOfParsecsToMove  at: round.
-	aPlayer changeParsecs: result.
-
-]
-
-{ #category : #validation }
-HyperJump >> destinatary [
-	^0.
+	(aGameBoard shipAt: turn) changeParsecs: result.
 ]
 
 { #category : #initialization }

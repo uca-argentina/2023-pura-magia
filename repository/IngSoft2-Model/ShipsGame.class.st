@@ -21,7 +21,7 @@ ShipsGame >> create: anAmountOfPlayers [
 	count:=1.
 	playersCollection := OrderedCollection new.
 	[ count <= anAmountOfPlayers  ] whileTrue: [ 
-		playersCollection add: (Ship number: count) .
+		playersCollection add: (Player with: count) .
 		count :=count +1
 	 ].
 ^playersCollection.
@@ -37,14 +37,6 @@ ShipsGame >> initializeWith: aResult [
 ]
 
 { #category : #validation }
-ShipsGame >> playUntilWinner: aDice [
-
-	[ (gameboard winner) = 0 ] whileTrue: [ 
-		gameboard playRoundWith: aDice ].
-	result := 'The Game has ended'
-]
-
-{ #category : #validation }
 ShipsGame >> ranking [
 	^gameboard ranking
 ]
@@ -52,11 +44,6 @@ ShipsGame >> ranking [
 { #category : #validation }
 ShipsGame >> result [
 	^ result
-]
-
-{ #category : #starting }
-ShipsGame >> startwith: aPlayer [ 
-	result:= aPlayer 
 ]
 
 { #category : #starting }
@@ -70,14 +57,13 @@ ShipsGame >> startwith: anAmountOfPlayers and: aGameboard [
 ]
 
 { #category : #action }
-ShipsGame >> throwNextPlayer: dices [
-
+ShipsGame >> throwNextPlayer [
 	numberOfPlayer <= amountOfPlayers ifTrue:  [ 
-		gameboard turnOf: numberOfPlayer with: dices.
+		gameboard turnOf: numberOfPlayer.
 		numberOfPlayer := numberOfPlayer + 1.
 		 ]ifFalse: [ 
 			numberOfPlayer := 1.
-			gameboard turnOf: numberOfPlayer with: dices. ]
+			gameboard turnOf: numberOfPlayer. ]
 ]
 
 { #category : #validation }

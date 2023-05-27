@@ -9,8 +9,8 @@ Class {
 }
 
 { #category : #initialization }
-Cell class >> with: aSpeedUp and: aNumberOfCell [ 
-	^(self new)initializeWith: aSpeedUp and: aNumberOfCell.
+Cell class >> with: aSpecialEffect and: aNumberOfCell [ 
+	^(self new)initializeWith: aSpecialEffect and: aNumberOfCell.
 ]
 
 { #category : #initialization }

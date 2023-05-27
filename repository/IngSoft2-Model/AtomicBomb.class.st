@@ -5,16 +5,11 @@ Class {
 }
 
 { #category : #action }
-AtomicBomb >> applyEffect: aCollectionOfPlayers activatedBy: aPlayer [ 
+AtomicBomb >> applyTo: aGameBoard [ 
 	|index|
 	index := 1.	
-	[ index < aCollectionOfPlayers size ] whileTrue: [ 
-		(aCollectionOfPlayers at: index ) changePosition: 0.
+	[ index <= aGameBoard amountOfPlayers ] whileTrue: [ 
+		(aGameBoard shipAt:  index ) changePosition: 0.
 		index:= index + 1.
 	 ]
-]
-
-{ #category : #validation }
-AtomicBomb >> destinatary [
-	^1
 ]
