@@ -2,7 +2,6 @@ Class {
 	#name : #Player,
 	#superclass : #Object,
 	#instVars : [
-		'ship',
 		'cellNumber',
 		'actualLap',
 		'parsecs',

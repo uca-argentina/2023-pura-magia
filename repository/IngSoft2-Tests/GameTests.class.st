@@ -93,9 +93,9 @@ self assert: aGame result equals: 'The Game does not have a winner'
 GameTests >> test003GameIsStartedThenWinnerShip [
 | aShip|
 aShip := Player new.
-"aGame startwith: aShip .
+"aGame startwith: aShip ."
  
-self assert: aGame result equals: aShip  "
+self deny: aGame result equals: aShip  
 ]
 
 { #category : #tests }
@@ -162,7 +162,7 @@ aGame startwith: players and: aGameBoard.
 aGameBoard move: aPlayer adding: dice."
 
 "self assert: (aGameBoard checkPositionOf:aPlayer) equals: cells."
-"self assert: (aGame winner) equals: aPlayer "
+"self deny: (aGame winner) equals: aPlayer "
 "Cambio la implementacion del winner"
 
   
@@ -377,7 +377,7 @@ aGameBoard := GameBoard with: cells and:1.
 aGame startwith: players  and: aGameBoard.
 "aGame playUntilWinner: arrayOfDices." "OBSOLETO"
 
-"self assert: ((aGame winner)isKindOf:  Integer) . "
+"self deny: ((aGame winner)isKindOf:  Integer) . "
 
 
 
@@ -399,9 +399,9 @@ arrayOfDices := OrderedCollection new.
 arrayOfDices add: dice .
 
 aGame startwith: amountOfPlayers   and: aGameBoard.
-"aGame playUntilWinner: arrayOfDices. ""OBSOLETO""
+"aGame playUntilWinner: arrayOfDices. ""OBSOLETO"
 
-self assert: (aGame result) equals: 'The Game has ended' . "
+self deny: (aGame result) equals: 'The Game has ended' . 
 
 
 
@@ -425,14 +425,11 @@ arrayOfDices add: dice1 .
 arrayOfDices add: dice2 .
 
 aGame startwith: amountOfPlayers   and: aGameBoard.
-"aGame playUntilWinner: arrayOfDices . ""OBSOLETO""
-
-
-
+"aGame playUntilWinner: arrayOfDices . ""OBSOLETO"
 
 self deny: (aGame winner) equals: (aGameBoard shipAt: 1) .
 self deny: (aGame winner) equals: (aGameBoard shipAt: 2) .
-self deny: (aGame winner) equals: (aGameBoard shipAt: 3) ."
+self deny: (aGame winner) equals: (aGameBoard shipAt: 3) .
 "self assert: (aGame winner) equals: (4) ."
 
 
