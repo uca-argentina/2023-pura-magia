@@ -5,11 +5,9 @@ Class {
 }
 
 { #category : #action }
-SpeedUp >> activatedBy: aPlayer with: aNewPosition [ 
-	aPlayer changePosition: (aPlayer isAtPosition +4)
-]
-
-{ #category : #validation }
-SpeedUp >> destinatary [
-	^0.
+SpeedUp >> applyTo: aGameBoard [ 
+	| turn aPlayer |
+	turn := aGameBoard turn.
+	aPlayer := aGameBoard shipAt: turn.
+	aPlayer changePosition: (aPlayer isAtPosition +4).
 ]

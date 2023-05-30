@@ -19,7 +19,7 @@ GameTest >> create: amountOfPlayers [
 	count:=1.
 	playersCollection := OrderedCollection new.
 	[ count <= amountOfPlayers  ] whileTrue: [ 
-		playersCollection add: Ship new.
+		playersCollection add: Player  new.
 		count :=count +1
 	 ].
 ^playersCollection.
@@ -33,15 +33,6 @@ GameTest >> initializeWith: aResult [
 	gameboard := nil.
 ]
 
-{ #category : #validations }
-GameTest >> playUntilWinner: aDice [ 
-	[(gameboard winner)= false ] whileTrue: [ 
-		 gameboard playRoundWith: aDice 
-	
-	 ].
-	result := 'The Game has ended' .
-]
-
 { #category : #validation }
 GameTest >> result [
 	^ result
@@ -50,11 +41,6 @@ GameTest >> result [
 { #category : #start }
 GameTest >> start [
 	result := 'The Game does not have a winner' 
-]
-
-{ #category : #starting }
-GameTest >> startwith: aPlayer [ 
-	result:= aPlayer 
 ]
 
 { #category : #starting }

@@ -6,7 +6,9 @@ Class {
 		'collectionOfPositions',
 		'laps',
 		'aCollectionOfSpecialCells',
-		'parsecsByCell'
+		'parsecsByCell',
+		'dice',
+		'turn'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -24,12 +26,6 @@ GameBoard class >> validateCanExistWith: numberOfCells and: numberOfLaps [
 	 result  ifFalse: [ 
 		Error signal:
 			'Cannot create GameBoard with negative amount of cells or laps' ]
-]
-
-{ #category : #initialization }
-GameBoard class >> with: numberOfCells [ 
-	self validateCanExistWith: numberOfCells.
-	^(self new) initializeWith: numberOfCells 
 ]
 
 { #category : #creation }
@@ -133,6 +129,11 @@ GameBoard >> amountOfNormalCells [
 	^ cells - (aCollectionOfSpecialCells size) 
 ]
 
+{ #category : #action }
+GameBoard >> amountOfPlayers [
+	^ collectionOfPositions size.
+]
+
 { #category : #counting }
 GameBoard >> amountOfSpeedUps [
 	|index count|
@@ -164,8 +165,9 @@ GameBoard >> amountOfWormHoles [
 ]
 
 { #category : #initialization }
-GameBoard >> cellsWith: anAmountOfParsecs [
+GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
 	parsecsByCell := anAmountOfParsecs .
+	dice := aCollectionOfDice .
 ]
 
 { #category : #validation }
@@ -200,14 +202,8 @@ GameBoard >> createCollectionFrom: aCollection [
 
 { #category : #creating }
 GameBoard >> fillWith: players [
-	players do:[:each | collectionOfPositions add: (Position with: each )].
+	players do:[:each | collectionOfPositions add: each ].
 	
-]
-
-{ #category : #initialization }
-GameBoard >> initializeWith: numberOfCells [ 
-	cells := numberOfCells .
-	collectionOfPositions := OrderedCollection new.
 ]
 
 { #category : #initialization }
@@ -223,34 +219,25 @@ GameBoard >> laps [
 	^ laps
 ]
 
-{ #category : #moves }
-GameBoard >> move: aPlayer adding: diceResult [
+{ #category : #action }
+GameBoard >> move: aPlayer [ 
+	| index positionOfShip result specialEffect auxResult dieResult|
 
-	| index positionOfShip result specialEffect auxResult |
+	dieResult  := 0.
+	dieResult  := self throwVariousDices: dice.
+	
 	index := 1.
 	[ (collectionOfPositions at: index) isTheSameAs: aPlayer ] 
 		whileFalse: [ index := index + 1 ].
 	positionOfShip := (collectionOfPositions at: index) isAtPosition.
-	result := positionOfShip + diceResult.
+	result := positionOfShip + dieResult .
 	auxResult := self updateResult: result.
 	specialEffect := self specialEffectAtCell: auxResult.
-	specialEffect == 0
+	(specialEffect == 0)
 		ifFalse: [ 
-			specialEffect destinatary == 0
-				ifTrue: [ 
 					(collectionOfPositions at: index) changePosition: result.
-					specialEffect
-						activatedBy: (collectionOfPositions at: index)
-						with: result.
-
+					specialEffect applyTo: self.
 					self verifyAllPositions ]
-				ifFalse: [ 
-					specialEffect
-						applyEffect: collectionOfPositions
-						activatedBy: (collectionOfPositions at: index).
-					(specialEffect isKindOf: AtomicBomb) ifTrue: [ result := 0 ].
-					(collectionOfPositions at: index) changePosition: result.
-					self verifyAllPositions ] ]
 		ifTrue: [ 
 			(collectionOfPositions at: index) changePosition: result.
 			self verifyAllPositions ]
@@ -261,22 +248,6 @@ GameBoard >> numberOfParsecs: aShip [
 	| anotherShip |
 	anotherShip := self positionAtCollectionOf: aShip.
 	^ anotherShip isAtParsec
-]
-
-{ #category : #action }
-GameBoard >> playRoundWith: aCollectionOfDices [
-
-	| index result |
-	index := 1.
-	result := 0.
-	[ index <= collectionOfPositions size and: self winner = 0 ] 
-		whileTrue: [ 
-			result := self throwVariousDices: aCollectionOfDices.
-			self
-				move: (collectionOfPositions at: index) shipInPosition
-				adding: result.
-			index := index + 1.
-			result := 0 ]
 ]
 
 { #category : #validation }
@@ -311,7 +282,7 @@ GameBoard >> ranking [
 
 { #category : #positioning }
 GameBoard >> shipAt: index [ 
-	^ (collectionOfPositions at: index ) shipInPosition
+	^ (collectionOfPositions at: index )
 ]
 
 { #category : #validation }
@@ -346,15 +317,16 @@ GameBoard >> throwVariousDices: aCollectionOfDices [
 	^ result
 ]
 
-{ #category : #interactions }
-GameBoard >> turnOf: numberOfShip with: aCollectionOfDices [
+{ #category : #action }
+GameBoard >> turn [
+	^ turn
+]
 
-	| result |
-	result := 0.
-	result := self throwVariousDices: aCollectionOfDices.
+{ #category : #action }
+GameBoard >> turnOf: numberOfShip [
+	turn := numberOfShip .
 	self
-		move: (collectionOfPositions at: numberOfShip) shipInPosition
-		adding: result
+		move: (collectionOfPositions at: numberOfShip)
 ]
 
 { #category : #update }
@@ -387,9 +359,13 @@ GameBoard >> verifyCellsOf: player [
 	| playerPosition |
 	playerPosition := player isAtPosition.
 	[ playerPosition < 0 ] whileTrue: [ 
-		player changePosition: cells + playerPosition.
-		player decreaseLap.
-		playerPosition := cells + playerPosition ].
+		(player isAtLap = 1) ifTrue: [ 
+				player changePosition: 0.
+				playerPosition := 0.
+			] ifFalse: [  
+				player changePosition: cells + playerPosition.
+				player decreaseLap. 
+				playerPosition := cells + playerPosition ] ].
 	[ playerPosition > cells ] whileTrue: [ 
 		player changePosition: playerPosition - cells.
 		player increaseLap.
@@ -426,6 +402,6 @@ GameBoard >> winner [
 	(counter <= collectionOfPositions size and:
 		 (shipLap >= (laps + 1)))
 		ifTrue: [ 
-		^ (collectionOfPositions at: counter) shipInPosition numberOfShip ]
+		^ (collectionOfPositions at: counter) numberOfShip ]
 		ifFalse: [ ^ 0 ]
 ]
