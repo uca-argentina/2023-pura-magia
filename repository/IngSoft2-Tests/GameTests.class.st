@@ -427,9 +427,9 @@ arrayOfDices add: dice2 .
 aGame startwith: amountOfPlayers   and: aGameBoard.
 "aGame playUntilWinner: arrayOfDices . ""OBSOLETO"
 
-self deny: (aGame winner) equals: (aGameBoard shipAt: 1) .
-self deny: (aGame winner) equals: (aGameBoard shipAt: 2) .
-self deny: (aGame winner) equals: (aGameBoard shipAt: 3) .
+self deny: (aGame winner) equals: (aGameBoard player: 1) .
+self deny: (aGame winner) equals: (aGameBoard player: 2) .
+self deny: (aGame winner) equals: (aGameBoard player: 3) .
 "self assert: (aGame winner) equals: (4) ."
 
 
@@ -589,7 +589,7 @@ aGame startwith: amountOfPlayers   and: aGameBoard.
 
 aGame throwNextPlayer.
 
-self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 1) ) equals: 3 .
+self assert: (aGameBoard checkPositionOf: (aGameBoard player: 1) ) equals: 3 .
 
 
 
@@ -619,7 +619,7 @@ aGame startwith: amountOfPlayers   and: aGameBoard.
 aGame throwNextPlayer .
 aGame throwNextPlayer .
 
-self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 2) ) equals: 5 .
+self assert: (aGameBoard checkPositionOf: (aGameBoard player: 2) ) equals: 5 .
 
 
 
@@ -651,7 +651,7 @@ aGame throwNextPlayer .
 aGame throwNextPlayer .
 aGame throwNextPlayer .
 
-self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 1) ) equals: 6 .
+self assert: (aGameBoard checkPositionOf: (aGameBoard player: 1) ) equals: 6 .
 
 
 
@@ -712,7 +712,7 @@ GameTests >> test028GameBoardCircularWithXLapsAndPlayerWithLaps [
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 1) ) equals: 1 .
 
 
 
@@ -729,7 +729,7 @@ self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 aGame throwNextPlayer .
 aGame throwNextPlayer.
 
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 2 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 1) ) equals: 2 .
 
 
 
@@ -748,7 +748,7 @@ aGame throwNextPlayer .
 aGame throwNextPlayer.
 
 
-self assert: (aGameBoard checkPositionOf:(aGameBoard shipAt: 1) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:(aGameBoard player: 1) ) equals: 1 .
 
 
 
@@ -793,7 +793,7 @@ aGameBoard add: speedUp at: 3.
 
 aGame throwNextPlayer.
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 7 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 7 .
 
 
 
@@ -834,7 +834,7 @@ self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 
 aGameBoard add: wormHole at: 7.
 aGame throwNextPlayer.
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 3 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 3 .
 
 
 
@@ -853,8 +853,8 @@ self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 
 aGameBoard add: wormHole at: 2.
 aGame throwNextPlayer .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 0 .
-self assert: (aGameBoard checkLapOf:   (aGameBoard shipAt: 1) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 0 .
+self assert: (aGameBoard checkLapOf:   (aGameBoard player: 1) ) equals: 1 .
 
 
 
@@ -898,7 +898,7 @@ speedUp := SpeedUp new.
 aGameBoard add: wormHole at: 7.
 aGameBoard add: speedUp at: 3.
 aGame throwNextPlayer .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 3 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 3 .
 
 
 
@@ -942,12 +942,12 @@ aMoonWalk := MoonWalk with: -3.
 aGameBoard add: aMoonWalk at: 2 .
 aGame throwNextPlayer.
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 2) ) equals: 0 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 2) ) equals: 1 .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 3) ) equals: 0 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 3) ) equals: 1 .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 2 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 2) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 3) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 3) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 2 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 1) ) equals: 1 
 ]
 
 { #category : #tests }
@@ -966,9 +966,9 @@ aGameBoard add: anotherMoonWalk at: 7 .
 aGame throwNextPlayer. "2L1 0L1 0L1 "
 aGame throwNextPlayer. "0L1 7L1 0L1 "
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 2) ) equals: 7 .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 3) ) equals: 0 .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 0 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2) ) equals: 7 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 3) ) equals: 0 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 0 .
 
 
 
@@ -994,9 +994,9 @@ aGameBoard add: anotherMoonWalk at: 7 .
 aGame throwNextPlayer. 
 aGame throwNextPlayer. 
 
-self assert: (aGameBoard checkLapOf:   (aGameBoard shipAt: 2) ) equals: 1 .
-self assert: (aGameBoard checkLapOf:  (aGameBoard shipAt: 3) ) equals: 1 .
-self assert: (aGameBoard checkLapOf:  (aGameBoard shipAt: 1) ) equals: 1 .
+self assert: (aGameBoard checkLapOf:   (aGameBoard player: 2) ) equals: 1 .
+self assert: (aGameBoard checkLapOf:  (aGameBoard player: 3) ) equals: 1 .
+self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1) ) equals: 1 .
 
 
 
@@ -1043,14 +1043,14 @@ aGame throwNextPlayer.
 aGame throwNextPlayer.
 aGame throwNextPlayer.
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 2) ) equals: 0 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 2) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 2) ) equals: 1 .
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 3) ) equals: 0 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 3) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 3) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 3) ) equals: 1 .
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 0 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 1) ) equals: 1 .
 
 
 
@@ -1068,7 +1068,7 @@ self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 parsecs := 4. 
 
 
-self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 1)) equals: 0  .
+self assert: (aGameBoard numberOfParsecs: (aGameBoard player: 1)) equals: 0  .
 
 
 
@@ -1092,8 +1092,8 @@ aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 aGame throwNextPlayer.
 
-self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 1)) equals: 4  .
-self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 2)) equals: 3  .
+self assert: (aGameBoard numberOfParsecs: (aGameBoard player: 1)) equals: 4  .
+self assert: (aGameBoard numberOfParsecs: (aGameBoard player: 2)) equals: 3  .
 
 
 
@@ -1116,8 +1116,8 @@ aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 
 
-self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 1)) equals: 3  .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1)) equals: 4  .
+self assert: (aGameBoard numberOfParsecs: (aGameBoard player: 1)) equals: 3  .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 4  .
 
 
 
@@ -1143,9 +1143,9 @@ aGameBoard add: hyperJump  at: 8 .
 aGame throwNextPlayer.
 
 
-self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 1)) equals: 3  .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1)) equals: 1  .
-self assert: (aGameBoard checkLapOf:   (aGameBoard shipAt: 1)) equals: 2  .
+self assert: (aGameBoard numberOfParsecs: (aGameBoard player: 1)) equals: 3  .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 1  .
+self assert: (aGameBoard checkLapOf:   (aGameBoard player: 1)) equals: 2  .
 
 
 
@@ -1194,7 +1194,7 @@ aGameBoard cellsWith: parsecs and: arrayOfDices .
 aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 
-self assert: (((aGameBoard checkPositionOf:  (aGameBoard shipAt: 1)) = 4 ) or: ((aGameBoard checkPositionOf:  (aGameBoard shipAt: 1)) = 2)).
+self assert: (((aGameBoard checkPositionOf:  (aGameBoard player: 1)) = 4 ) or: ((aGameBoard checkPositionOf:  (aGameBoard player: 1)) = 2)).
 
 
 

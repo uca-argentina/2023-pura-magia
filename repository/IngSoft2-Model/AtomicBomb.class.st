@@ -9,7 +9,7 @@ AtomicBomb >> applyTo: aGameBoard [
 	|index|
 	index := 1.	
 	[ index <= aGameBoard amountOfPlayers ] whileTrue: [ 
-		(aGameBoard shipAt:  index ) changePosition: 0.
+		(aGameBoard player:  index ) changePosition: 0.
 		index:= index + 1.
 	 ]
 ]

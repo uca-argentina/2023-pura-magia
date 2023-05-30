@@ -8,6 +8,6 @@ Class {
 SpeedUp >> applyTo: aGameBoard [ 
 	| turn aPlayer |
 	turn := aGameBoard turn.
-	aPlayer := aGameBoard shipAt: turn.
+	aPlayer := aGameBoard player: turn.
 	aPlayer changePosition: (aPlayer isAtPosition +4).
 ]

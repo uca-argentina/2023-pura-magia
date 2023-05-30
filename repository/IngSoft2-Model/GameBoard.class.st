@@ -8,7 +8,8 @@ Class {
 		'aCollectionOfSpecialCells',
 		'parsecsByCell',
 		'dice',
-		'turn'
+		'turn',
+		'aCollectionOfUsedCards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -40,6 +41,15 @@ GameBoard class >> with: numberOfCells and: numberOfLaps [
 { #category : #adding }
 GameBoard >> add: aEffect at: aNumberOfCell [ 
 	aCollectionOfSpecialCells add: (Cell with: aEffect  and: aNumberOfCell).
+]
+
+{ #category : #action }
+GameBoard >> add: aCard to: aNumberOfPlayer [ 
+	|player|
+	player := self player: aNumberOfPlayer .
+	player add: aCard.
+	
+	
 ]
 
 { #category : #action }
@@ -164,6 +174,11 @@ GameBoard >> amountOfWormHoles [
 ^ count .
 ]
 
+{ #category : #action }
+GameBoard >> applyCard: aClass to: anInteger [ 
+	self shouldBeImplemented.
+]
+
 { #category : #initialization }
 GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
 	parsecsByCell := anAmountOfParsecs .
@@ -212,6 +227,7 @@ GameBoard >> initializeWith: numberOfCells and: numberOfLaps [
 	laps := numberOfLaps.
 	aCollectionOfSpecialCells := OrderedCollection new.
 	collectionOfPositions := OrderedCollection new.
+	aCollectionOfUsedCards := OrderedCollection new.
 ]
 
 { #category : #validation }
@@ -250,6 +266,11 @@ GameBoard >> numberOfParsecs: aShip [
 	^ anotherShip isAtParsec
 ]
 
+{ #category : #positioning }
+GameBoard >> player: index [ 
+	^ (collectionOfPositions at: index )
+]
+
 { #category : #validation }
 GameBoard >> playerPosition: aDice [
 	^aDice
@@ -280,11 +301,6 @@ GameBoard >> ranking [
 	 
 ]
 
-{ #category : #positioning }
-GameBoard >> shipAt: index [ 
-	^ (collectionOfPositions at: index )
-]
-
 { #category : #validation }
 GameBoard >> specialEffectAtCell: aNumberOfCell [ 
 	|counter typeOfCell|
@@ -303,6 +319,13 @@ GameBoard >> specialEffectAtCell: aNumberOfCell [
 		 ].
 	
 	^typeOfCell.
+]
+
+{ #category : #adding }
+GameBoard >> store: aTypeOfCard applyTo: aNumberOfPlayer [ 
+	|card|
+	card := aTypeOfCard applyCardTo: aNumberOfPlayer.
+	aCollectionOfUsedCards add: card.
 ]
 
 { #category : #action }

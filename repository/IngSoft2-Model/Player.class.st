@@ -5,7 +5,8 @@ Class {
 		'cellNumber',
 		'actualLap',
 		'parsecs',
-		'shipNumber'
+		'shipNumber',
+		'aCollectionOfCards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -13,6 +14,16 @@ Class {
 { #category : #initialization }
 Player class >> with: aNumberOfPlayer [
 	^ (self new) initializeWith: aNumberOfPlayer .
+]
+
+{ #category : #action }
+Player >> add: aCard [ 
+	aCollectionOfCards add: aCard.
+]
+
+{ #category : #action }
+Player >> cardsInHand [
+	^aCollectionOfCards
 ]
 
 { #category : #action }
@@ -41,6 +52,7 @@ Player >> initializeWith: aNumber [
 	cellNumber := 0 .
 	actualLap :=1.
 	parsecs := 0.
+	aCollectionOfCards := OrderedCollection new.
 ]
 
 { #category : #validation }
