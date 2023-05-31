@@ -8,7 +8,8 @@ Class {
 		'aCollectionOfSpecialCells',
 		'parsecsByCell',
 		'dice',
-		'turn'
+		'turn',
+		'aCollectionOfUsedCards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -40,6 +41,15 @@ GameBoard class >> with: numberOfCells and: numberOfLaps [
 { #category : #adding }
 GameBoard >> add: aEffect at: aNumberOfCell [ 
 	aCollectionOfSpecialCells add: (Cell with: aEffect  and: aNumberOfCell).
+]
+
+{ #category : #action }
+GameBoard >> add: aCard to: aNumberOfPlayer [ 
+	|player|
+	player := self player: aNumberOfPlayer .
+	player add: aCard.
+	
+	
 ]
 
 { #category : #action }
@@ -164,6 +174,21 @@ GameBoard >> amountOfWormHoles [
 ^ count .
 ]
 
+{ #category : #action }
+GameBoard >> applyCard: aClass to: anInteger [ 
+	self shouldBeImplemented.
+]
+
+{ #category : #action }
+GameBoard >> applyCardsTo: aPlayer [ 
+	self shouldBeImplemented.
+]
+
+{ #category : #action }
+GameBoard >> applyCardsTo: aPlayer with: anInteger [ 
+	self shouldBeImplemented.
+]
+
 { #category : #initialization }
 GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
 	parsecsByCell := anAmountOfParsecs .
@@ -212,6 +237,7 @@ GameBoard >> initializeWith: numberOfCells and: numberOfLaps [
 	laps := numberOfLaps.
 	aCollectionOfSpecialCells := OrderedCollection new.
 	collectionOfPositions := OrderedCollection new.
+	aCollectionOfUsedCards := OrderedCollection new.
 ]
 
 { #category : #validation }
@@ -221,10 +247,11 @@ GameBoard >> laps [
 
 { #category : #action }
 GameBoard >> move: aPlayer [ 
-	| index positionOfShip result specialEffect auxResult dieResult|
+	| index positionOfShip result specialEffect auxResult dieResult cardsResult|
 
 	dieResult  := 0.
 	dieResult  := self throwVariousDices: dice.
+	dieResult := dieResult + (aPlayer resultOfCards).
 	
 	index := 1.
 	[ (collectionOfPositions at: index) isTheSameAs: aPlayer ] 
@@ -248,6 +275,11 @@ GameBoard >> numberOfParsecs: aShip [
 	| anotherShip |
 	anotherShip := self positionAtCollectionOf: aShip.
 	^ anotherShip isAtParsec
+]
+
+{ #category : #positioning }
+GameBoard >> player: index [ 
+	^ (collectionOfPositions at: index )
 ]
 
 { #category : #validation }
@@ -303,6 +335,13 @@ GameBoard >> specialEffectAtCell: aNumberOfCell [
 		 ].
 	
 	^typeOfCell.
+]
+
+{ #category : #adding }
+GameBoard >> store: aCard applyTo: aNumberOfPlayer [ 
+	|cardWithPlayer|
+	cardWithPlayer  := aCard applyCardTo: aNumberOfPlayer.
+	aCollectionOfUsedCards add: cardWithPlayer.
 ]
 
 { #category : #action }

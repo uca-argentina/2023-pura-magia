@@ -40,7 +40,7 @@ HyperJump >> applyTo: aGameBoard [
 	(round > anAmountOfParsecsToMove  size) ifTrue: [ 
 		round :=1 ].
 	result := anAmountOfParsecsToMove  at: round.
-	(aGameBoard shipAt: turn) changeParsecs: result.
+	(aGameBoard player: turn) changeParsecs: result.
 ]
 
 { #category : #initialization }
