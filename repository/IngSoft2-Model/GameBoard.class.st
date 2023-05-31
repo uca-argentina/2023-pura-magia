@@ -174,21 +174,6 @@ GameBoard >> amountOfWormHoles [
 ^ count .
 ]
 
-{ #category : #action }
-GameBoard >> applyCard: aClass to: anInteger [ 
-	self shouldBeImplemented.
-]
-
-{ #category : #action }
-GameBoard >> applyCardsTo: aPlayer [ 
-	self shouldBeImplemented.
-]
-
-{ #category : #action }
-GameBoard >> applyCardsTo: aPlayer with: anInteger [ 
-	self shouldBeImplemented.
-]
-
 { #category : #initialization }
 GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
 	parsecsByCell := anAmountOfParsecs .
@@ -310,11 +295,6 @@ GameBoard >> ranking [
 	sortedArray :=sortedArray sorted: [:player1 :player2 | player1 isAtParsec   < player2 isAtParsec ].
 	^sortedArray 
 	 
-]
-
-{ #category : #positioning }
-GameBoard >> shipAt: index [ 
-	^ (collectionOfPositions at: index )
 ]
 
 { #category : #validation }
