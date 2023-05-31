@@ -18,9 +18,9 @@ MoonWalk >> applyTo: aGameBoard [
 	index := 1.
 	turn:= aGameBoard turn .
 	[index <= aGameBoard amountOfPlayers] whileTrue: [ 
-		((aGameBoard shipAt:  index) = (aGameBoard shipAt:  turn)) ifFalse: [ 
-			newPosition := (aGameBoard shipAt:  index) isAtPosition + amountOfCells.
-			(aGameBoard shipAt:  index) changePosition: newPosition.
+		((aGameBoard player:  index) = (aGameBoard player:  turn)) ifFalse: [ 
+			newPosition := (aGameBoard player:  index) isAtPosition + amountOfCells.
+			(aGameBoard player:  index) changePosition: newPosition.
 			 ].
 		index := index + 1. 
 		]

@@ -92,7 +92,7 @@ self assert: aGame result equals: 'The Game does not have a winner'
 { #category : #tests }
 GameTests >> test003GameIsStartedThenWinnerShip [
 | aShip|
-aShip := Player new.
+aShip := ShipPosition new.
 "aGame startwith: aShip ."
  
 self deny: aGame result equals: aShip  
@@ -102,7 +102,7 @@ self deny: aGame result equals: aShip
 GameTests >> test004GameIsStartedWithAGameBoardThenCheckTheAmountOfCells [
 | aShip  players|
 aGame:= GameTest initializeEmpty.
-aShip  := Player  new.
+aShip  := ShipPosition  new.
 players := OrderedCollection new.
 players add: aShip .
 cells:= 4.
@@ -117,7 +117,7 @@ self assert: aGameBoard amountOfCells equals: 4 .
 GameTests >> test005ShipHasPosition [
 | aPlayer   dice  players|
 aGame:= GameTest initializeEmpty.
-aPlayer := Player   new.
+aPlayer := ShipPosition   new.
 players := OrderedCollection new.
 players add: aPlayer .
 dice := 0.
@@ -136,7 +136,7 @@ self assert: (aGameBoard playerPosition: dice ) equals: 0.
 GameTests >> test006ShipPositionLowerThanTotalCellsThenNotWinner [
 | aPlayer   players|
 aGame:= GameTest initializeEmpty.
-aPlayer := Player new.
+aPlayer := ShipPosition new.
 players := OrderedCollection new.
 players add:aPlayer.
 cells:= 4.
@@ -152,7 +152,7 @@ self deny: aGame result equals: aPlayer.
 GameTests >> test007ShipPositionSameAsTotalCellsThenWinner [
 |  aPlayer  dice players|
 aGame:= GameTest initializeEmpty.
-aPlayer := Player new.
+aPlayer := ShipPosition new.
 players := OrderedCollection new.
 players add:aPlayer.
 cells:= 4.
@@ -172,7 +172,7 @@ aGameBoard move: aPlayer adding: dice."
 GameTests >> test008PlayerPlayTheGame2RoundsThenFinalPositionEqualsAmountOfCells [
 | aPlayer   dice players|
 aGame:= GameTest initializeEmpty.
-aPlayer := Player new.
+aPlayer := ShipPosition new.
 players := OrderedCollection new.
 players add:aPlayer.
 cells:= 4.
@@ -189,8 +189,8 @@ self assert: (aGameBoard checkPositionOf:aPlayer) equals: cells."
 GameTests >> test009PlayersPlayTheGame2RoundsThenCheckPositions [
 | marian delfi  players  dice |
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := ShipPosition new.
+delfi := ShipPosition new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -213,8 +213,8 @@ self assert: (aGameBoard  checkPositionOf: marian  )  equals: 3.
 GameTests >> test010PlayersPlayTheGame3RoundsThenPlayer1Wins [
 | marian delfi  players  dice |
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := ShipPosition new.
+delfi := ShipPosition new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -246,8 +246,8 @@ self assert: (aGameBoard  checkPositionOf: marian  )  equals: 4."
 GameTests >> test011PlayersPlayWithRoundsThenCheckPosition [
 | marian delfi  players  dice |
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := ShipPosition new.
+delfi := ShipPosition new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -275,8 +275,8 @@ aGame startwith: players  and: aGameBoard.
 GameTests >> test011PlayersRoundsUntilOneWins [
 | marian delfi  players  dice |
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := ShipPosition new.
+delfi := ShipPosition new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -306,8 +306,8 @@ self deny: (aGame winner)equals: delfi."
 GameTests >> test012PlayersRoundsUntilOneWins [
 | marian delfi  players  dice |
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := ShipPosition new.
+delfi := ShipPosition new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -335,8 +335,8 @@ aGame startwith: players  and: aGameBoard.
 GameTests >> test013PlayWithLoadedDiceThenWinsPlayer2 [
 | marian delfi  players  dice  |
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := ShipPosition new.
+delfi := ShipPosition new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -362,8 +362,8 @@ aGame startwith: players  and: aGameBoard.
 GameTests >> test014playWithRandomDiceThenWinner [
 | marian delfi  players  aDice  |
 aGame:= GameTest initializeEmpty.
-marian := Player new.
-delfi := Player new.
+marian := ShipPosition new.
+delfi := ShipPosition new.
 players := OrderedCollection new.
 players add: marian.
 players add:delfi.
@@ -427,9 +427,9 @@ arrayOfDices add: dice2 .
 aGame startwith: amountOfPlayers   and: aGameBoard.
 "aGame playUntilWinner: arrayOfDices . ""OBSOLETO"
 
-self deny: (aGame winner) equals: (aGameBoard shipAt: 1) .
-self deny: (aGame winner) equals: (aGameBoard shipAt: 2) .
-self deny: (aGame winner) equals: (aGameBoard shipAt: 3) .
+self deny: (aGame winner) equals: (aGameBoard player: 1) .
+self deny: (aGame winner) equals: (aGameBoard player: 2) .
+self deny: (aGame winner) equals: (aGameBoard player: 3) .
 "self assert: (aGame winner) equals: (4) ."
 
 
@@ -495,7 +495,7 @@ aGame startwith: amountOfPlayers   and: aGameBoard.
 { #category : #tests }
 GameTests >> test019PlayerHasAshipThenPlayerShipHasANumber [
 |aPlayer|
-aPlayer := Player with:  1.
+aPlayer := ShipPosition with:  1.
 
 
 self assert: (aPlayer numberOfShip) equals: 1.
@@ -589,7 +589,7 @@ aGame startwith: amountOfPlayers   and: aGameBoard.
 
 aGame throwNextPlayer.
 
-self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 1) ) equals: 3 .
+self assert: (aGameBoard checkPositionOf: (aGameBoard player: 1) ) equals: 3 .
 
 
 
@@ -619,7 +619,7 @@ aGame startwith: amountOfPlayers   and: aGameBoard.
 aGame throwNextPlayer .
 aGame throwNextPlayer .
 
-self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 2) ) equals: 5 .
+self assert: (aGameBoard checkPositionOf: (aGameBoard player: 2) ) equals: 5 .
 
 
 
@@ -651,7 +651,7 @@ aGame throwNextPlayer .
 aGame throwNextPlayer .
 aGame throwNextPlayer .
 
-self assert: (aGameBoard checkPositionOf: (aGameBoard shipAt: 1) ) equals: 6 .
+self assert: (aGameBoard checkPositionOf: (aGameBoard player: 1) ) equals: 6 .
 
 
 
@@ -712,7 +712,7 @@ GameTests >> test028GameBoardCircularWithXLapsAndPlayerWithLaps [
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 1) ) equals: 1 .
 
 
 
@@ -729,7 +729,7 @@ self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 aGame throwNextPlayer .
 aGame throwNextPlayer.
 
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 2 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 1) ) equals: 2 .
 
 
 
@@ -748,7 +748,7 @@ aGame throwNextPlayer .
 aGame throwNextPlayer.
 
 
-self assert: (aGameBoard checkPositionOf:(aGameBoard shipAt: 1) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:(aGameBoard player: 1) ) equals: 1 .
 
 
 
@@ -793,7 +793,7 @@ aGameBoard add: speedUp at: 3.
 
 aGame throwNextPlayer.
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 7 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 7 .
 
 
 
@@ -834,7 +834,7 @@ self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 
 aGameBoard add: wormHole at: 7.
 aGame throwNextPlayer.
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 3 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 3 .
 
 
 
@@ -853,8 +853,8 @@ self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 
 aGameBoard add: wormHole at: 2.
 aGame throwNextPlayer .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 0 .
-self assert: (aGameBoard checkLapOf:   (aGameBoard shipAt: 1) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 0 .
+self assert: (aGameBoard checkLapOf:   (aGameBoard player: 1) ) equals: 1 .
 
 
 
@@ -898,7 +898,7 @@ speedUp := SpeedUp new.
 aGameBoard add: wormHole at: 7.
 aGameBoard add: speedUp at: 3.
 aGame throwNextPlayer .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 3 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 3 .
 
 
 
@@ -942,12 +942,12 @@ aMoonWalk := MoonWalk with: -3.
 aGameBoard add: aMoonWalk at: 2 .
 aGame throwNextPlayer.
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 2) ) equals: 0 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 2) ) equals: 1 .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 3) ) equals: 0 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 3) ) equals: 1 .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 2 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 2) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 3) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 3) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 2 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 1) ) equals: 1 
 ]
 
 { #category : #tests }
@@ -966,9 +966,9 @@ aGameBoard add: anotherMoonWalk at: 7 .
 aGame throwNextPlayer. "2L1 0L1 0L1 "
 aGame throwNextPlayer. "0L1 7L1 0L1 "
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 2) ) equals: 7 .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 3) ) equals: 0 .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 0 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2) ) equals: 7 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 3) ) equals: 0 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 0 .
 
 
 
@@ -994,9 +994,9 @@ aGameBoard add: anotherMoonWalk at: 7 .
 aGame throwNextPlayer. 
 aGame throwNextPlayer. 
 
-self assert: (aGameBoard checkLapOf:   (aGameBoard shipAt: 2) ) equals: 1 .
-self assert: (aGameBoard checkLapOf:  (aGameBoard shipAt: 3) ) equals: 1 .
-self assert: (aGameBoard checkLapOf:  (aGameBoard shipAt: 1) ) equals: 1 .
+self assert: (aGameBoard checkLapOf:   (aGameBoard player: 2) ) equals: 1 .
+self assert: (aGameBoard checkLapOf:  (aGameBoard player: 3) ) equals: 1 .
+self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1) ) equals: 1 .
 
 
 
@@ -1043,14 +1043,14 @@ aGame throwNextPlayer.
 aGame throwNextPlayer.
 aGame throwNextPlayer.
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 2) ) equals: 0 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 2) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 2) ) equals: 1 .
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 3) ) equals: 0 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 3) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 3) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 3) ) equals: 1 .
 
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1) ) equals: 0 .
-self assert: (aGameBoard checkLapOf: (aGameBoard shipAt: 1) ) equals: 1 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 0 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 1) ) equals: 1 .
 
 
 
@@ -1068,7 +1068,7 @@ self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 parsecs := 4. 
 
 
-self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 1)) equals: 0  .
+self assert: (aGameBoard numberOfParsecs: (aGameBoard player: 1)) equals: 0  .
 
 
 
@@ -1092,8 +1092,8 @@ aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 aGame throwNextPlayer.
 
-self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 1)) equals: 4  .
-self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 2)) equals: 3  .
+self assert: (aGameBoard numberOfParsecs: (aGameBoard player: 1)) equals: 4  .
+self assert: (aGameBoard numberOfParsecs: (aGameBoard player: 2)) equals: 3  .
 
 
 
@@ -1116,8 +1116,8 @@ aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 
 
-self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 1)) equals: 3  .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1)) equals: 4  .
+self assert: (aGameBoard numberOfParsecs: (aGameBoard player: 1)) equals: 3  .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 4  .
 
 
 
@@ -1143,9 +1143,9 @@ aGameBoard add: hyperJump  at: 8 .
 aGame throwNextPlayer.
 
 
-self assert: (aGameBoard numberOfParsecs: (aGameBoard shipAt: 1)) equals: 3  .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard shipAt: 1)) equals: 1  .
-self assert: (aGameBoard checkLapOf:   (aGameBoard shipAt: 1)) equals: 2  .
+self assert: (aGameBoard numberOfParsecs: (aGameBoard player: 1)) equals: 3  .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 1  .
+self assert: (aGameBoard checkLapOf:   (aGameBoard player: 1)) equals: 2  .
 
 
 
@@ -1194,7 +1194,7 @@ aGameBoard cellsWith: parsecs and: arrayOfDices .
 aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 
-self assert: (((aGameBoard checkPositionOf:  (aGameBoard shipAt: 1)) = 4 ) or: ((aGameBoard checkPositionOf:  (aGameBoard shipAt: 1)) = 2)).
+self assert: (((aGameBoard checkPositionOf:  (aGameBoard player: 1)) = 4 ) or: ((aGameBoard checkPositionOf:  (aGameBoard player: 1)) = 2)).
 
 
 

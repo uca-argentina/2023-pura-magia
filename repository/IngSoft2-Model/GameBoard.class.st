@@ -8,7 +8,8 @@ Class {
 		'aCollectionOfSpecialCells',
 		'parsecsByCell',
 		'dice',
-		'turn'
+		'turn',
+		'aCollectionOfUsedCards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -40,6 +41,15 @@ GameBoard class >> with: numberOfCells and: numberOfLaps [
 { #category : #adding }
 GameBoard >> add: aEffect at: aNumberOfCell [ 
 	aCollectionOfSpecialCells add: (Cell with: aEffect  and: aNumberOfCell).
+]
+
+{ #category : #action }
+GameBoard >> add: aCard to: aNumberOfPlayer [ 
+	|player|
+	player := self player: aNumberOfPlayer .
+	player add: aCard.
+	
+	
 ]
 
 { #category : #action }
@@ -212,6 +222,7 @@ GameBoard >> initializeWith: numberOfCells and: numberOfLaps [
 	laps := numberOfLaps.
 	aCollectionOfSpecialCells := OrderedCollection new.
 	collectionOfPositions := OrderedCollection new.
+	aCollectionOfUsedCards := OrderedCollection new.
 ]
 
 { #category : #validation }
@@ -221,10 +232,11 @@ GameBoard >> laps [
 
 { #category : #action }
 GameBoard >> move: aPlayer [ 
-	| index positionOfShip result specialEffect auxResult dieResult|
+	| index positionOfShip result specialEffect auxResult dieResult cardsResult|
 
 	dieResult  := 0.
 	dieResult  := self throwVariousDices: dice.
+	dieResult := dieResult + (aPlayer resultOfCards).
 	
 	index := 1.
 	[ (collectionOfPositions at: index) isTheSameAs: aPlayer ] 
@@ -248,6 +260,11 @@ GameBoard >> numberOfParsecs: aShip [
 	| anotherShip |
 	anotherShip := self positionAtCollectionOf: aShip.
 	^ anotherShip isAtParsec
+]
+
+{ #category : #positioning }
+GameBoard >> player: index [ 
+	^ (collectionOfPositions at: index )
 ]
 
 { #category : #validation }
@@ -278,11 +295,6 @@ GameBoard >> ranking [
 	sortedArray :=sortedArray sorted: [:player1 :player2 | player1 isAtParsec   < player2 isAtParsec ].
 	^sortedArray 
 	 
-]
-
-{ #category : #positioning }
-GameBoard >> shipAt: index [ 
-	^ (collectionOfPositions at: index )
 ]
 
 { #category : #validation }
