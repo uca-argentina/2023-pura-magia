@@ -337,13 +337,6 @@ GameBoard >> specialEffectAtCell: aNumberOfCell [
 	^typeOfCell.
 ]
 
-{ #category : #adding }
-GameBoard >> store: aCard applyTo: aNumberOfPlayer [ 
-	|cardWithPlayer|
-	cardWithPlayer  := aCard applyCardTo: aNumberOfPlayer.
-	aCollectionOfUsedCards add: cardWithPlayer.
-]
-
 { #category : #action }
 GameBoard >> throwVariousDices: aCollectionOfDices [
 
