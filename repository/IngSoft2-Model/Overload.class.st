@@ -2,7 +2,8 @@ Class {
 	#name : #Overload,
 	#superclass : #Object,
 	#instVars : [
-		'numberOfPlayer'
+		'numberOfPlayer',
+		'chosenPlayer'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -10,4 +11,19 @@ Class {
 { #category : #action }
 Overload >> amountToChange [
 	^-2.
+]
+
+{ #category : #action }
+Overload >> apply: aGameBoard [ 
+	(aGameBoard player: (chosenPlayer numberOfShip)) store: self.
+]
+
+{ #category : #validation }
+Overload >> permanent [
+	^true.
+]
+
+{ #category : #instance }
+Overload >> selected: aShipPosition [ 
+	chosenPlayer := aShipPosition .
 ]

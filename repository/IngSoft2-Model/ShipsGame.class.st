@@ -5,7 +5,9 @@ Class {
 		'result',
 		'gameboard',
 		'numberOfPlayer',
-		'amountOfPlayers'
+		'amountOfPlayers',
+		'chosenCard',
+		'cardToCancell'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -16,15 +18,38 @@ ShipsGame class >> initializeEmpty [
 ]
 
 { #category : #action }
-ShipsGame >> applyCard: aCard to: chosenPlayer askedBy: aPlayer [
-	|aChosenPlayer| 
-	aChosenPlayer := gameboard player: chosenPlayer. 
-	(numberOfPlayer = aPlayer )ifTrue: [ 
-		(self verify: aCard IsInHand: aPlayer) ifTrue:[
-			aChosenPlayer store: aCard.
+ShipsGame >> applyChosenCard [
+	chosenCard apply: gameboard.
+	
+]
+
+{ #category : #action }
+ShipsGame >> cancelledCard: aCardToCancell [ 
+	cardToCancell:= aCardToCancell.
+	
+]
+
+{ #category : #assignments }
+ShipsGame >> cardDirectedTo: aShipPosition [ 
+	chosenCard selected: aShipPosition 
+]
+
+{ #category : #validation }
+ShipsGame >> chosen: aCard from: aShipPosition [ 
+	(numberOfPlayer = aShipPosition numberOfShip and: aCard permanent )ifTrue: [ 
+		(self verify: aCard IsInHand: aShipPosition) ifTrue:[
+				chosenCard:= aCard.
 			].
+		].
+		(aCard permanent )ifFalse: [ 
+			(self verify: aCard IsInHand: aShipPosition) ifTrue:[
+				chosenCard:= aCard.
+			]
 		
 		 ]
+
+
+
 ]
 
 { #category : #creation }
@@ -72,7 +97,9 @@ ShipsGame >> startwith: anAmountOfPlayers and: aGameboard [
 ShipsGame >> throwNextPlayer [
 	numberOfPlayer <= amountOfPlayers ifTrue:  [ 
 		gameboard turnOf: numberOfPlayer.
-		numberOfPlayer := numberOfPlayer + 1.
+		((numberOfPlayer := numberOfPlayer + 1)> amountOfPlayers )ifTrue: [ 
+			numberOfPlayer := 1.
+			 ].
 		 ]ifFalse: [ 
 			numberOfPlayer := 1.
 			gameboard turnOf: numberOfPlayer.
@@ -81,17 +108,16 @@ ShipsGame >> throwNextPlayer [
 ]
 
 { #category : #validation }
-ShipsGame >> verify: aCard IsInHand: aNumberOfPlayer [ 
-	|player counter anArrayOfCards selectedCard|
+ShipsGame >> verify: aCard IsInHand: aShipPosition [
+	| counter anArrayOfCards selectedCard|
 	counter :=1.
-	player :=gameboard player: aNumberOfPlayer. 
-	anArrayOfCards :=player cardsInHand.
-	
+	anArrayOfCards :=aShipPosition  cardsInHand.
 	[counter <= anArrayOfCards  size ] whileTrue: [ 
 		((anArrayOfCards at: counter ) = aCard )ifTrue: [ 
 			 anArrayOfCards remove: (anArrayOfCards at: counter).
 			^true.
 			 ].
+		counter:= counter +1.
 		
 		 ].
 	^false.

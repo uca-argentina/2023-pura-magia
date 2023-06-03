@@ -9,7 +9,8 @@ Class {
 		'parsecsByCell',
 		'dice',
 		'turn',
-		'aCollectionOfUsedCards'
+		'aCollectionOfUsedCards',
+		'lastEffectUsed'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -44,10 +45,9 @@ GameBoard >> add: aEffect at: aNumberOfCell [
 ]
 
 { #category : #action }
-GameBoard >> add: aCard to: aNumberOfPlayer [ 
-	|player|
-	player := self player: aNumberOfPlayer .
-	player add: aCard.
+GameBoard >> add: aCard to: aShipPosition [ 
+	
+	aShipPosition add: aCard.
 	
 	
 ]
@@ -231,8 +231,13 @@ GameBoard >> laps [
 ]
 
 { #category : #action }
+GameBoard >> lastEffect [
+	^lastEffectUsed.
+]
+
+{ #category : #action }
 GameBoard >> move: aPlayer [ 
-	| index positionOfShip result specialEffect auxResult dieResult cardsResult|
+	| index positionOfShip result specialEffect auxResult dieResult |
 
 	dieResult  := 0.
 	dieResult  := self throwVariousDices: dice.
@@ -249,7 +254,9 @@ GameBoard >> move: aPlayer [
 		ifFalse: [ 
 					(collectionOfPositions at: index) changePosition: result.
 					specialEffect applyTo: self.
-					self verifyAllPositions ]
+					self verifyAllPositions.
+					lastEffectUsed := specialEffect.
+					 ]
 		ifTrue: [ 
 			(collectionOfPositions at: index) changePosition: result.
 			self verifyAllPositions ]

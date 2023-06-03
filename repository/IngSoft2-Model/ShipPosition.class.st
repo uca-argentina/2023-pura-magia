@@ -23,6 +23,11 @@ ShipPosition >> add: aCard [
 ]
 
 { #category : #action }
+ShipPosition >> cardsForMe [
+	^aCollectionOfCardsForMe 
+]
+
+{ #category : #action }
 ShipPosition >> cardsInHand [
 	^aCollectionOfCards
 ]
@@ -95,6 +100,6 @@ ShipPosition >> resultOfCards [
 ]
 
 { #category : #playing }
-ShipPosition >> store: aCard [ 
-	aCollectionOfCardsForMe add: aCard.
+ShipPosition >> store: aCardChosenForMe [ 
+	aCollectionOfCardsForMe add: aCardChosenForMe.
 ]
