@@ -11,3 +11,10 @@ SpeedUp >> applyTo: aGameBoard [
 	aPlayer := aGameBoard player: turn.
 	aPlayer changePosition: (aPlayer isAtPosition +4).
 ]
+
+{ #category : #action }
+SpeedUp >> repeatFor: aShipPosition [ 
+		|actualPosition|
+	actualPosition := aShipPosition isAtPosition.
+	aShipPosition changePosition: (actualPosition +4).
+]
