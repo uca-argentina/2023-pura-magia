@@ -23,12 +23,6 @@ ShipsGame >> applyChosenCard [
 	
 ]
 
-{ #category : #action }
-ShipsGame >> cancelledCard: aCardToCancell [ 
-	cardToCancell:= aCardToCancell.
-	
-]
-
 { #category : #assignments }
 ShipsGame >> cardDirectedTo: aShipPosition [ 
 	chosenCard selected: aShipPosition 
