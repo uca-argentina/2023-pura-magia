@@ -9,9 +9,9 @@ Class {
 		'aGameBoard',
 		'numbers',
 		'anotherNumbers',
-		'dice1',
-		'dice2',
-		'arrayOfDices',
+		'die1',
+		'die2',
+		'arrayOfDie',
 		'numberOfParsecs'
 	],
 	#category : #'IngSoft2-Tests'
@@ -27,16 +27,16 @@ GameTests >> setUp [
 	
 	numbers := #(1 1 ).
 	anotherNumbers := #(3 4).
-	dice1 := LoadedDie with: numbers .
-	dice2 := LoadedDie with: anotherNumbers .
+	die1  := LoadedDie with: numbers .
+	die2  := LoadedDie with: anotherNumbers .
 
-	arrayOfDices := OrderedCollection new.
-	arrayOfDices add: dice1 .
-	arrayOfDices add: dice2.
+	arrayOfDie  := OrderedCollection new.
+	arrayOfDie  add: die1  .
+	arrayOfDie  add: die2 .
 	
 	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
-	aGameBoard cellsWith: 0 and: arrayOfDices .
+	aGameBoard cellsWith: 0 and: arrayOfDie  .
 	aGame startwith: amountOfPlayers   and: aGameBoard.
 ]
 
@@ -49,7 +49,7 @@ GameTests >> setUpGameWith:  anAmountOfPlayers andGameboardWith: anAmountOfCells
 	amountOfPlayers := anAmountOfPlayers .
 	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
-	aGameBoard cellsWith: 0 and: arrayOfDices .
+	aGameBoard cellsWith: 0 and: arrayOfDie  .
 	aGame startwith: amountOfPlayers   and: aGameBoard.
 ]
 
@@ -58,12 +58,12 @@ GameTests >> setUpLoadedDiceWith: array1 and: array2 [
 	
 	numbers := array1 .
 	anotherNumbers := array2 .
-	dice1 := LoadedDie with: numbers .
-	dice2 := LoadedDie with: anotherNumbers .
+	die1 := LoadedDie with: numbers .
+	die2 := LoadedDie with: anotherNumbers .
 
-	arrayOfDices := OrderedCollection new.
-	arrayOfDices add: dice1 .
-	arrayOfDices add: dice2.
+	arrayOfDie := OrderedCollection new.
+	arrayOfDie add: die1 .
+	arrayOfDie add: die2.
 ]
 
 { #category : #running }
@@ -255,8 +255,8 @@ cells:= 4.
 numbers := #(1 1 1)  .
 dice:= LoadedDie with:numbers.
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice .
+arrayOfDie  := OrderedCollection new.
+arrayOfDie  add: dice .
 
 aGameBoard := GameBoard with: cells and:1 .
 aGame startwith: players  and: aGameBoard.
@@ -284,8 +284,8 @@ cells:= 4.
 numbers := #(1 1 1)  .
 dice:= LoadedDie with:numbers.
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice .
+arrayOfDie  := OrderedCollection new.
+arrayOfDie  add: dice .
 
 aGameBoard := GameBoard with: cells and:1.
 aGame startwith: players  and: aGameBoard.
@@ -315,8 +315,8 @@ cells:= 4.
 numbers := #(1 2 3)  .
 dice:= LoadedDie with:numbers.
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice .
+arrayOfDie := OrderedCollection new.
+arrayOfDie add: dice .
 
 aGameBoard := GameBoard with: cells and:1.
 aGame startwith: players  and: aGameBoard.
@@ -345,8 +345,8 @@ dice:= LoadedDie .
 numbers := #(1 2 1 4)  .
 dice := LoadedDie with: numbers .
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice .
+arrayOfDie := OrderedCollection new.
+arrayOfDie add: dice .
 
 aGameBoard := GameBoard with: cells and:1.
 aGame startwith: players  and: aGameBoard.
@@ -370,8 +370,8 @@ players add:delfi.
 cells:= 4.
 aDice := Die with: 4.
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: aDice .
+arrayOfDie := OrderedCollection new.
+arrayOfDie add: aDice .
 
 aGameBoard := GameBoard with: cells and:1.
 aGame startwith: players  and: aGameBoard.
@@ -395,8 +395,8 @@ dice:= LoadedDie .
 numbers := #(1 2 1 4)  .
 dice := LoadedDie with: numbers .
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice .
+arrayOfDie := OrderedCollection new.
+arrayOfDie add: dice .
 
 aGame startwith: amountOfPlayers   and: aGameBoard.
 "aGame playUntilWinner: arrayOfDices. ""OBSOLETO"
@@ -417,12 +417,12 @@ cells:= 8.
 numberOfLaps :=1.
 numbers := #(1 1 1 1)  .
 anotherNumbers := #(2 2 2 4)  .
-dice1 := LoadedDie with: numbers .
-dice2 := LoadedDie with: anotherNumbers .
+die1 := LoadedDie with: numbers .
+die2 := LoadedDie with: anotherNumbers .
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2 .
+arrayOfDie := OrderedCollection new.
+arrayOfDie add: die1 .
+arrayOfDie add: die2 .
 
 aGame startwith: amountOfPlayers   and: aGameBoard.
 "aGame playUntilWinner: arrayOfDices . ""OBSOLETO"
@@ -447,12 +447,12 @@ amountOfPlayers := 4.
 cells:= 8.
 
 amountOfDices := 2.
-dice1 := Die with: 3 .
-dice2 := Die with: 5 .
+die1 := Die with: 3 .
+die2 := Die with: 5 .
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2 .
+arrayOfDie  := OrderedCollection new.
+arrayOfDie add: die1 .
+arrayOfDie add: die2 .
 
 aGame startwith: amountOfPlayers   and: aGameBoard.
 "aGame playUntilWinner: arrayOfDices ." "OBSOLETO"
@@ -472,12 +472,12 @@ numberOfLaps :=1.
 
 numbers := #(1 1 1 1)  .
 anotherNumbers := #(2 2 2 4)  .
-dice1 := LoadedDie with: numbers .
-dice2 := LoadedDie with: anotherNumbers .
+die1 := LoadedDie with: numbers .
+die2 := LoadedDie with: anotherNumbers .
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2 .
+arrayOfDie := OrderedCollection new.
+arrayOfDie add: die1 .
+arrayOfDie add: die2 .
 
 aGame startwith: amountOfPlayers   and: aGameBoard.
 "aGame playUntilWinner: arrayOfDices ." "OBSOLETO"
@@ -517,25 +517,25 @@ aGame:= ShipsGame initializeEmpty.
 	
 	numbers := #(1 1 ).
 	anotherNumbers := #(3 4).
-	dice1 := LoadedDie with: numbers .
-	dice2 := LoadedDie with: anotherNumbers .
+	die1  := LoadedDie with: numbers .
+	die2  := LoadedDie with: anotherNumbers .
 
-	arrayOfDices := OrderedCollection new.
-	arrayOfDices add: dice1 .
-	arrayOfDices add: dice2.
+	arrayOfDie  := OrderedCollection new.
+	arrayOfDie add: die1  .
+	arrayOfDie add: die2 .
 	
 	
 	aGameBoard := GameBoard with: cells and: numberOfLaps.
-	aGameBoard cellsWith: 0 and: arrayOfDices .
+	aGameBoard cellsWith: 0 and: arrayOfDie .
 	aGame startwith: amountOfPlayers   and: aGameBoard.
 	
 amountOfPlayers := 4.
 numberOfLaps:=1.
 numbers := #(2 1 1 1)  .
-dice1 := LoadedDie with: numbers .
+die1  := LoadedDie with: numbers .
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
+arrayOfDie := OrderedCollection new.
+arrayOfDie add: die1  .
 
 "aGame playUntilWinner: arrayOfDices .
 
@@ -576,15 +576,15 @@ GameTests >> test023PlayerThrowWithTurns [
 amountOfPlayers := 4.
 numbers := #(1 1 1 1)  .
 anotherNumbers := #(2 2 2 4)  .
-dice1 := LoadedDie with: numbers .
-dice2 := LoadedDie with: anotherNumbers .
+die1  := LoadedDie with: numbers .
+die2  := LoadedDie with: anotherNumbers .
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2 .
+arrayOfDie := OrderedCollection new.
+arrayOfDie add: die1  .
+arrayOfDie add: die2  .
 
 aGameBoard := GameBoard with: cells and: 1 .
-aGameBoard cellsWith: 0 and: arrayOfDices .
+aGameBoard cellsWith: 0 and: arrayOfDie .
 aGame startwith: amountOfPlayers   and: aGameBoard.
 
 aGame throwNextPlayer.
@@ -605,21 +605,21 @@ amountOfPlayers := 4.
 
 numbers := #(1 1 1 1)  .
 anotherNumbers := #(2 4 2 4)  .
-dice1 := LoadedDie with: numbers .
-dice2 := LoadedDie with: anotherNumbers .
+die1  := LoadedDie with: numbers .
+die1  := LoadedDie with: anotherNumbers .
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2 .
+arrayOfDie := OrderedCollection new.
+arrayOfDie add: die1 .
+arrayOfDie add: die2 .
 
 aGameBoard := GameBoard with: cells and: 1.
-aGameBoard cellsWith: 0 and: arrayOfDices .
+aGameBoard cellsWith: 0 and: arrayOfDie .
 aGame startwith: amountOfPlayers   and: aGameBoard.
 
 aGame throwNextPlayer .
 aGame throwNextPlayer .
 
-self assert: (aGameBoard checkPositionOf: (aGameBoard player: 2) ) equals: 5 .
+self assert: (aGameBoard checkPositionOf: (aGameBoard player: 2) ) equals: 8 .
 
 
 
@@ -635,16 +635,16 @@ amountOfPlayers := 2.
 cells:= 8.
 numbers := #(1 1 )  .
 anotherNumbers := #(2 2)  .
-dice1 := LoadedDie with: numbers .
-dice2 := LoadedDie with: anotherNumbers .
+die1  := LoadedDie with: numbers .
+die2  := LoadedDie with: anotherNumbers .
 
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2 .
+arrayOfDie := OrderedCollection new.
+arrayOfDie add: die1  .
+arrayOfDie add: die2  .
 
 aGameBoard := GameBoard with: cells and: 1.
-aGameBoard cellsWith: 0 and: arrayOfDices .
+aGameBoard cellsWith: 0 and: arrayOfDie .
 aGame startwith: amountOfPlayers   and: aGameBoard.
 
 aGame throwNextPlayer .
@@ -665,12 +665,12 @@ GameTests >> test026PlayThreeTurnsWithDiceAndCheckThereIsAWinner [
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 self setUpGameWith: 1 andGameboardWith: 2 and: 1.
 
-dice1 := Die with: 4 .
-dice2 := Die with: 8.
+die1 := Die with: 4 .
+die2 := Die with: 8.
 
-arrayOfDices := OrderedCollection new.
-arrayOfDices add: dice1 .
-arrayOfDices add: dice2 .
+arrayOfDie := OrderedCollection new.
+arrayOfDie add: die1 .
+arrayOfDie add: die2 .
 
 aGame throwNextPlayer.
 aGame throwNextPlayer.
@@ -1087,7 +1087,7 @@ self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
 amountOfParsecsToMove:= #(#(4 3 2 1)).
 parsecs := 4. 
 hyperJump := HyperJump with: amountOfParsecsToMove .
-aGameBoard cellsWith: parsecs and: arrayOfDices .
+aGameBoard cellsWith: parsecs and: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 aGame throwNextPlayer.
@@ -1111,7 +1111,7 @@ self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
 amountOfParsecsToMove:= #(#(7 3 2 1)).
 parsecs := 4. 
 hyperJump := HyperJump with: amountOfParsecsToMove .
-aGameBoard cellsWith: parsecs and: arrayOfDices .
+aGameBoard cellsWith: parsecs and: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 
@@ -1137,7 +1137,7 @@ parsecs := 4.
 
 hyperJump := HyperJump with: amountOfParsecsToMove .
 
-aGameBoard cellsWith: parsecs and: arrayOfDices .
+aGameBoard cellsWith: parsecs and: arrayOfDie .
 aGameBoard add: hyperJump  at: 8 .
 
 aGame throwNextPlayer.
@@ -1163,7 +1163,7 @@ self setUpLoadedDiceWith: #(1 1 2) and: #(3 2 4).
 amountOfParsecsToMove:= #(7 3 2 1).
 parsecs := 4. 
 
-aGameBoard cellsWith: parsecs and: arrayOfDices .
+aGameBoard cellsWith: parsecs and: arrayOfDie .
 aGame throwNextPlayer.
 aGame throwNextPlayer.
 aGame throwNextPlayer.
@@ -1190,7 +1190,7 @@ self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
 arrayOfPosibilities:= #(#(7 3 2 1) #(-3 -4)).
 parsecs := 4. 
 hyperJump := HyperJump with: arrayOfPosibilities .
-aGameBoard cellsWith: parsecs and: arrayOfDices .
+aGameBoard cellsWith: parsecs and: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 

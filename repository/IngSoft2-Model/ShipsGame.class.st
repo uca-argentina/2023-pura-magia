@@ -24,13 +24,15 @@ ShipsGame >> applyChosenCard [
 ]
 
 { #category : #assignments }
-ShipsGame >> cardDirectedTo: aShipPosition [ 
-	chosenCard selected: aShipPosition 
+ShipsGame >> cardDirectedTo: aNumberOfShip [ 
+	chosenCard selected: (gameboard player: aNumberOfShip) 
 ]
 
 { #category : #validation }
-ShipsGame >> chosen: aCard from: aShipPosition [ 
-	(numberOfPlayer = aShipPosition numberOfShip and: aCard permanent )ifTrue: [ 
+ShipsGame >> chosen: aCard from: aNumberOfShip [ 
+	| aShipPosition |
+	aShipPosition := gameboard player: aNumberOfShip.
+	(numberOfPlayer = aNumberOfShip and: aCard permanent )ifTrue: [ 
 		(self verify: aCard IsInHand: aShipPosition) ifTrue:[
 				chosenCard:= aCard.
 			].

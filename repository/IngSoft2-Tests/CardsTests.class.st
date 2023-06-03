@@ -92,7 +92,7 @@ CardsTests >> test006PlayerStartTheGameThen2OverloadCardsAreAsigned [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 	
-	player:=aGameBoard player: 1.
+	player:= 1.
 
 	aGameBoard add: overload to: player.
 	aGameBoard add: overload to: player.
@@ -112,8 +112,8 @@ CardsTests >> test007PlayerStartTheGameWith2OverloadCardsThenApplyEffect [
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 
 	
-	player:=aGameBoard player: 1.
-	player2:=aGameBoard player: 2.
+	player:=1.
+	player2:=2.
 
 	
 	aGameBoard add: overload to: player.
@@ -145,8 +145,8 @@ CardsTests >> test008PlayerStartTheGameWith2OSpeedCardsThenApplyEffectToThemSelf
 	speed := Speed  new.
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
-	player:=aGameBoard player: 1.
-	player2:=aGameBoard player: 2.
+	player:= 1.
+	player2:=2.
 
 	aGameBoard add: speed to: player.
 	aGameBoard add: speed to: player.
@@ -177,8 +177,8 @@ CardsTests >> test009PlayerStartTheGameWith2OAcelerationCardsThenApplyEffect [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	acceleration  := Acceleration   new.
-	player:=aGameBoard player: 1.
-	player2:=aGameBoard player: 2.
+	player:= 1.
+	player2:=2.
 
 	aGameBoard add: acceleration to: player.
 	aGameBoard add: acceleration  to: player.
@@ -213,8 +213,8 @@ CardsTests >> test010PlayWithCancelletionCardForOverload [
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 
 	
-	player:=aGameBoard player: 1.
-	player2:=aGameBoard player: 2.
+	player:= 1.
+	player2:=2.
 
 	
 	aGameBoard add: overload to: player.
@@ -256,8 +256,8 @@ CardsTests >> test011PlayWithCancelletionCardForSpeed [
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 
 	
-	player:=aGameBoard player: 1.
-	player2:=aGameBoard player: 2.
+	player:= 1.
+	player2:=2.
 
 	aGameBoard add: overload to: player.
 	aGameBoard add: speed  to: player.
@@ -293,8 +293,8 @@ CardsTests >> test012PlayWithCancelletionCardForAcceleration [
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 
 	
-	player:=aGameBoard player: 1.
-	player2:=aGameBoard player: 2.
+	player:= 1.
+	player2:=2.
 
 	aGameBoard add: overload to: player.
 	aGameBoard add: acceleration  to: player.
@@ -329,8 +329,8 @@ CardsTests >> test013PlayWithRepeatCardEffectSpeedUpToThemself [
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 
 	aGameBoard add: speedUp at: 3.
-	player:=aGameBoard player: 1.
-	player2:=aGameBoard player: 2.
+	player:= 1.
+	player2:=2.
 
 	aGameBoard add: repeat   to: player.
 
@@ -357,18 +357,16 @@ CardsTests >> test013PlayWithRepeatCardEffectWormHole [
 
 	aGameBoard add: wormHole at: 3.
 	
-	player:=aGameBoard player: 1.
-	player2:=aGameBoard player: 2.
+	player:= 1.
+	player2:=2.
 
 	aGameBoard add: repeat   to: player.
-
+	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
 	aGame chosen: repeat   from: player.
 	aGame cardDirectedTo: player2. 
 	aGame applyChosenCard.
-	
-	
 	
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 1 .
 ]
