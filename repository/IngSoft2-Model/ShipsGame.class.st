@@ -7,7 +7,8 @@ Class {
 		'numberOfPlayer',
 		'amountOfPlayers',
 		'chosenCard',
-		'cardToCancell'
+		'cardToCancell',
+		'lastUsedCard'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -21,6 +22,11 @@ ShipsGame class >> initializeEmpty [
 ShipsGame >> applyChosenCard [
 	chosenCard apply: gameboard.
 	
+	lastUsedCard := chosenCard .
+	
+	(chosenCard isKindOf: Redo)	ifTrue: [ 
+				lastUsedCard := chosenCard redoCard.
+			 ]
 ]
 
 { #category : #assignments }
@@ -32,7 +38,9 @@ ShipsGame >> cardDirectedTo: aNumberOfShip [
 ShipsGame >> chosen: aCard from: aNumberOfShip [ 
 	| aShipPosition |
 	aShipPosition := gameboard player: aNumberOfShip.
-	(numberOfPlayer = aNumberOfShip and: aCard permanent )ifTrue: [ 
+	aShipPosition fillRedoWith: lastUsedCard. 
+	
+	(aCard permanent and: (self playerTurn: aNumberOfShip))ifTrue: [ 
 		(self verify: aCard IsInHand: aShipPosition) ifTrue:[
 				chosenCard:= aCard.
 			].
@@ -40,9 +48,10 @@ ShipsGame >> chosen: aCard from: aNumberOfShip [
 		(aCard permanent )ifFalse: [ 
 			(self verify: aCard IsInHand: aShipPosition) ifTrue:[
 				chosenCard:= aCard.
-			]
+				self cardDirectedTo: aNumberOfShip  .
+			].
 		
-		 ]
+		 ].
 
 
 
@@ -67,6 +76,14 @@ ShipsGame >> initializeWith: aResult [
 	gameboard := nil.
 	numberOfPlayer := 1.
 	amountOfPlayers := 0.
+]
+
+{ #category : #validation }
+ShipsGame >> playerTurn: aNumberOfShip [
+	aNumberOfShip = numberOfPlayer
+		ifFalse: [ 
+		Error signal: 'Cannot use permanent card when its not their turn' ]
+		ifTrue: [ ^ true ]
 ]
 
 { #category : #validation }

@@ -26,7 +26,7 @@ sizeOfCollection:= aCollectionOfTemporalVariables size.
 
 { #category : #calculating }
 ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCollectionOfDifferentParsecs [ 
-	|index gameboards totalWormHoles totalSpeedUps totalMoonWalks totalHyperJumps totalAtomicBombs totalNormalCells totalCells finalArray arrayWithTemporalVariables|
+	|index gameboards totalWormHoles totalSpeedUps totalMoonWalks totalHyperJumps totalAtomicBombs totalNormalCells totalCells finalArray arrayWithTemporalVariables totalSpecialCardsCells|
 	gameboards := self createArrayOfGameBoards: arrayOfEffectsProbabilities forHyperJump: aCollectionOfDifferentParsecs .
 	index := 1.
 		totalWormHoles := 0.
@@ -35,6 +35,7 @@ ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCo
 		totalHyperJumps := 0. 
 		totalAtomicBombs := 0. 
 		totalNormalCells := 0.
+		totalSpecialCardsCells := 0.
 		totalCells:= 0.
 		
 	[ index <= (gameboards size) ] whileTrue: [
@@ -43,8 +44,10 @@ ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCo
 		totalSpeedUps := totalSpeedUps + (gameboards at: index) amountOfSpeedUps. 
 		totalMoonWalks := totalMoonWalks + (gameboards at: index) amountOfMoonWalks. 
 		totalHyperJumps := totalHyperJumps + (gameboards at: index) amountOfHyperJumps. 
-		totalAtomicBombs := totalAtomicBombs + (gameboards at: index) amountOfAtomicBombs. 
+		totalAtomicBombs := totalAtomicBombs + (gameboards at: index) amountOfAtomicBombs.
+		totalSpecialCardsCells := totalSpecialCardsCells + (gameboards at: index) amountOfSpecialCardsCells.
 		totalNormalCells := totalNormalCells + (gameboards at: index) amountOfNormalCells.
+		
 		
 		totalCells:= (gameboards at: index) amountOfCells + totalCells.
 		
@@ -58,7 +61,9 @@ ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCo
 	arrayWithTemporalVariables add: totalMoonWalks.
 	arrayWithTemporalVariables add: totalHyperJumps.
 	arrayWithTemporalVariables add: totalAtomicBombs.
+	arrayWithTemporalVariables add: totalSpecialCardsCells.
 	arrayWithTemporalVariables add: totalCells.
+	
 	
 	finalArray := self averageProbabilities: arrayWithTemporalVariables .
 	

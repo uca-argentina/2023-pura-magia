@@ -47,6 +47,20 @@ ShipPosition >> decreaseLap [
 	actualLap := actualLap -1.
 ]
 
+{ #category : #action }
+ShipPosition >> fillRedoWith: lastUsedCard [ 
+	|counter|
+	counter := 1.
+	
+	[ counter <= aCollectionOfCards size ] whileTrue: [ 
+		((aCollectionOfCards at: counter) isKindOf: Redo) ifTrue: [ 
+				(aCollectionOfCards at: counter) redo: lastUsedCard .
+			 ].
+			counter := counter + 1.
+	 ]
+	
+]
+
 { #category : #changes }
 ShipPosition >> increaseLap [
 	actualLap:=actualLap +1.
