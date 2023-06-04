@@ -42,6 +42,16 @@ CardsTests >> setUpLoadedDiceWith: array1 and: array2 [
 	arrayOfDices add: dice2.
 ]
 
+{ #category : #running }
+CardsTests >> should: anErrorBlock raise: anExceptionClass withMessage: anErrorMessage [
+	self
+		should: anErrorBlock 
+		raise: anExceptionClass 
+		withExceptionDo: [ :error |
+			self assert: error messageText equals: anErrorMessage 
+			 ].
+]
+
 { #category : #tests }
 CardsTests >> test001TypeCardOverloadExistsThenAssert [
 	
@@ -346,7 +356,7 @@ CardsTests >> test013PlayWithRepeatCardEffectSpeedUpToThemself [
 ]
 
 { #category : #tests }
-CardsTests >> test013PlayWithRepeatCardEffectWormHole [
+CardsTests >> test014PlayWithRepeatCardEffectWormHole [
 	| overload  player player2  cancellation repeat wormHole|
 	wormHole := WormHole  new.
 	cancellation:= Cancellation new.
@@ -369,4 +379,339 @@ CardsTests >> test013PlayWithRepeatCardEffectWormHole [
 	aGame applyChosenCard.
 	
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 1 .
+]
+
+{ #category : #tests }
+CardsTests >> test015PlayWithRepeatCardEffectMoonWalk [
+	| overload  player player2  cancellation repeat moonWalk|
+	moonWalk := MoonWalk with: -3.
+	cancellation:= Cancellation new.
+	repeat  := Repeat new.
+	overload := Overload  new.
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+
+	aGameBoard add: moonWalk at: 3.
+	
+	player:= 1.
+	player2:=2.
+
+	aGameBoard add: repeat   to: player.
+	
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+	aGame chosen: repeat   from: player.
+	aGame applyChosenCard.
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 2 .
+]
+
+{ #category : #tests }
+CardsTests >> test016PlayWithRepeatCardEffectAtomicBomb [
+	| overload  player player2  cancellation repeat anAtomicBomb|
+	anAtomicBomb := AtomicBomb new.
+
+	cancellation:= Cancellation new.
+	repeat  := Repeat new.
+	overload := Overload  new.
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	aGameBoard add: anAtomicBomb at: 5 .
+
+	player:= 1.
+	player2:=2.
+
+	aGameBoard add: repeat   to: player.
+	
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+	aGame chosen: repeat   from: player.
+	aGame applyChosenCard.
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 0 .
+]
+
+{ #category : #tests }
+CardsTests >> test017PlayWithRepeatCardEffectHyperJump [
+	| overload  player player2  cancellation repeat amountOfParsecsToMove parsecs hyperJump |
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	amountOfParsecsToMove:= #(#(7 3 2 1)).
+	parsecs := 4. 
+	hyperJump := HyperJump with: amountOfParsecsToMove .
+	aGameBoard cellsWith: parsecs and: arrayOfDices .
+	
+	cancellation:= Cancellation new.
+	repeat  := Repeat new.
+	overload := Overload  new.
+	
+	aGameBoard add: hyperJump at: 3 .
+
+	player:= 1.
+	player2:=2.
+
+	aGameBoard add: repeat   to: player.
+	
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+	aGame chosen: repeat   from: player.
+	aGame cardDirectedTo: player . 
+	aGame applyChosenCard.
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 5 .
+	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
+]
+
+{ #category : #tests }
+CardsTests >> test018PlayWithRedoCardAndOverloadCard [
+	| overload redo player player2 |
+
+	overload := Overload  new.
+	redo:= Redo new.
+	
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: overload to: player.
+	aGameBoard add: overload to: player.
+	
+	aGameBoard add: redo to: player2.
+	aGameBoard add: overload to: player2.
+
+	aGame chosen: overload from: player.
+	aGame cardDirectedTo: player2.
+	aGame applyChosenCard.
+	
+	aGame throwNextPlayer . 
+	
+	aGame chosen: redo from: player2.
+	aGame cardDirectedTo: player .
+	aGame applyChosenCard .
+	
+	aGame throwNextPlayer . 
+	aGame throwNextPlayer . 
+	aGame throwNextPlayer .
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 4 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 6 .
+		
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test019PlayWithRedoCardAndAccelerationCard [
+	| acceleration redo player player2 |
+
+	acceleration := Acceleration new.
+	redo:= Redo new.
+	
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: acceleration to: player.
+	aGameBoard add: acceleration to: player.
+	
+	aGameBoard add: redo to: player2.
+	aGameBoard add: acceleration to: player2.
+
+	aGame chosen: acceleration from: player.
+	aGame applyChosenCard.
+	
+	aGame throwNextPlayer . 
+	
+	aGame chosen: redo from: player2.
+	aGame applyChosenCard .
+	
+	aGame throwNextPlayer . 
+	aGame throwNextPlayer . 
+	aGame throwNextPlayer .
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 1 .
+	self assert: (aGameBoard checkLapOf:   (aGameBoard player: 1)) equals: 2 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 6 .
+	self assert: (aGameBoard checkLapOf:   (aGameBoard player: 2)) equals: 2 .
+		
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test020PlayWithRedoCardAndSpeedCard [
+	| speed redo player player2 |
+
+	speed := Speed new.
+	redo:= Redo new.
+	
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: speed to: player.
+	aGameBoard add: speed to: player.
+	
+	aGameBoard add: redo to: player2.
+	aGameBoard add: speed to: player2.
+
+	aGame chosen: speed from: player.
+	aGame cardDirectedTo: player.
+	aGame applyChosenCard.
+	
+	aGame throwNextPlayer . 
+	
+	aGame chosen: redo from: player2.
+	aGame cardDirectedTo: player2 .
+	aGame applyChosenCard .
+	
+	aGame throwNextPlayer . 
+	aGame throwNextPlayer . 
+	aGame throwNextPlayer .
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 8 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 4 .
+		
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test021PlayWithRedoCardAndCancellationCard [
+	| speed cancellation redo player player2 |
+
+	speed := Speed new.
+	cancellation := Cancellation new.
+	redo:= Redo new.
+	
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: speed to: player.
+	aGameBoard add: cancellation to: player.
+	
+	aGameBoard add: redo to: player2.
+	aGameBoard add: speed to: player2.
+
+	aGame chosen: speed from: player.
+	aGame cardDirectedTo: player.
+	aGame applyChosenCard.
+	
+	aGame throwNextPlayer . "1-P4 2-P0"
+	
+	aGame chosen: speed from: player2.
+	aGame cardDirectedTo: player2 .
+	aGame applyChosenCard .
+	
+	aGame throwNextPlayer . "1-P4 2-P6"
+	
+	aGame chosen: cancellation from: player.
+	cancellation canceled: speed.
+	aGame cardDirectedTo: player2.
+	aGame applyChosenCard.
+	
+	aGame chosen: redo from: player2.
+	aGame cardDirectedTo: player .
+	aGame applyChosenCard .
+	
+	aGame throwNextPlayer . "1-P7 2-P6"
+	aGame throwNextPlayer . "1-P7L1 2-P3L2"
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 7 .
+	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 3 .
+	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 2)) equals: 2 .
+		
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test022PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhenItsTheirTurn [
+	| speed redo player player2 |
+
+	speed := Speed new.
+	redo:= Redo new.
+	
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: speed to: player.
+	aGameBoard add: speed to: player.
+	
+	aGameBoard add: redo to: player2.
+	aGameBoard add: redo to: player2.
+
+	aGame chosen: speed from: player.
+	aGame cardDirectedTo: player.
+	aGame applyChosenCard.
+	
+	aGame throwNextPlayer . 
+	
+	aGame chosen: redo from: player2.
+	aGame cardDirectedTo: player2 .
+	aGame applyChosenCard .
+	
+	aGame chosen: redo from: player2.
+	aGame cardDirectedTo: player2 .
+	aGame applyChosenCard .
+	
+	aGame throwNextPlayer . 
+	aGame throwNextPlayer . 
+	aGame throwNextPlayer .
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 8 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 6 .
+		
+	
+	
+	
+]
+
+{ #category : #tests }
+CardsTests >> test023PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhenItsNOTTheirTurn [
+	| speed redo player player2 |
+
+	speed := Speed new.
+	redo:= Redo new.
+	
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+
+	player:=1.
+	player2:=2.
+	
+	aGameBoard add: speed to: player.
+	aGameBoard add: speed to: player.
+	
+	aGameBoard add: redo to: player2.
+	aGameBoard add: redo to: player2.
+
+	aGame chosen: speed from: player.
+	aGame cardDirectedTo: player.
+	aGame applyChosenCard.
+	
+	self should:  [aGame chosen: redo from: player2] raise: Error withMessage: 'Cannot use permanent card when its not their turn'.
+		
+	
+	
+	
 ]

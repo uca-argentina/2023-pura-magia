@@ -14,7 +14,7 @@ WormHole >> applyTo: aGameBoard [
 ]
 
 { #category : #action }
-WormHole >> repeatFor: aShipPosition [ 
+WormHole >> repeatFor: aShipPosition using: aGameBoard [ 
 	|actualPosition|
 	actualPosition := aShipPosition isAtPosition.
 	aShipPosition changePosition: (actualPosition -4).

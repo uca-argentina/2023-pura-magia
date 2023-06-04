@@ -48,3 +48,13 @@ HyperJump >> initializeWith: amountOfParsecsToMove [
 	anAmountOfParsecsToMove:=amountOfParsecsToMove  .
 	round:= 0.
 ]
+
+{ #category : #action }
+HyperJump >> repeatFor: aShipPosition using: aGameBoard [ 
+	|result turn|
+	round := round +1.
+		(round > anAmountOfParsecsToMove  size) ifTrue: [ 
+		round :=1 ].
+	result:= (anAmountOfParsecsToMove  at: round) + aShipPosition isAtParsec .
+	(aShipPosition ) changeParsecs: result.
+]

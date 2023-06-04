@@ -15,12 +15,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #validation }
-GameBoard class >> validateCanExistWith: anAmountOfCells [ 
-	anAmountOfCells > 1 ifFalse:  [ 
-		 Error signal: 'Cannot create GameBoard with negative amount of cells'].
-]
-
 { #category : #validating }
 GameBoard class >> validateCanExistWith: numberOfCells and: numberOfLaps [
 	|result|
@@ -77,6 +71,9 @@ GameBoard >> addEffects: aCollectionOfProbabilities forHyperJump: aCollectionOfD
 		 ].
 	(randomNumber >= (probabilities  at: 5) and: randomNumber < (probabilities at: 6)) ifTrue: [ 
 			self add: (AtomicBomb  new) at: index. 
+		 ].
+	(randomNumber >= (probabilities  at: 6) and: randomNumber < (probabilities at: 7)) ifTrue: [ 
+			self add: (CardAssignation new) at: index. 
 		 ].
 	
 		index := index + 1.
@@ -146,6 +143,21 @@ GameBoard >> amountOfPlayers [
 ]
 
 { #category : #counting }
+GameBoard >> amountOfSpecialCardsCells [
+	|index count|
+	index := 1.
+	count := 0.
+	[ index <= aCollectionOfSpecialCells size  ] whileTrue: [ 
+		(((aCollectionOfSpecialCells at: index) typeOfSpecialEffect) isKindOf: CardAssignation) ifTrue: [ 
+			count := count + 1.
+			 ].
+		index:= index + 1.
+	 ].
+
+^ count .
+]
+
+{ #category : #counting }
 GameBoard >> amountOfSpeedUps [
 	|index count|
 	index := 1.
@@ -211,10 +223,43 @@ GameBoard >> createCollectionFrom: aCollection [
 	
 ]
 
+{ #category : #assign }
+GameBoard >> designateRandomCardTo: numberOfShip [
+	|probabilities randomNumber|
+	probabilities := #(0 10 20 30 40 50 60) .
+		
+		randomNumber:= 60 atRandom.
+		
+		( randomNumber >= (probabilities  at: 1) and: randomNumber < (probabilities at: 2)) ifTrue: [
+			self add: (Overload new) to: numberOfShip.
+		 ].
+	 (randomNumber >= (probabilities  at: 2) and: randomNumber < (probabilities at: 3)) ifTrue: [ 
+			self add: (Speed new) to: numberOfShip.
+		 ].
+	 (randomNumber >= (probabilities  at: 3) and: randomNumber < (probabilities at: 4)) ifTrue: [ 
+			self add: (Cancellation new) to: numberOfShip.
+		 ].
+	 (randomNumber >= (probabilities  at: 4) and: randomNumber < (probabilities at: 5)) ifTrue: [ 
+			self add: (Redo new) to: numberOfShip.
+		 ].
+	(randomNumber >= (probabilities  at: 5) and: randomNumber < (probabilities at: 6)) ifTrue: [ 
+			self add: (Acceleration new) to: numberOfShip. 
+		 ].
+	(randomNumber >= (probabilities  at: 6) and: randomNumber <= (probabilities at: 7)) ifTrue: [ 
+			self add: (Repeat new) to: numberOfShip. 
+		 ].
+]
+
 { #category : #creating }
 GameBoard >> fillWith: players [
-	players do:[:each | collectionOfShipPositions  add: each ].
-	
+	|counter|
+	counter := 1.
+	players do: [ :each | collectionOfShipPositions add: each ].
+	[ counter <= (collectionOfShipPositions size) ] whileTrue:[
+		self designateRandomCardTo: counter.
+		self designateRandomCardTo: counter.
+		counter := counter + 1.
+		]
 ]
 
 { #category : #initialization }
@@ -273,13 +318,6 @@ GameBoard >> numberOfParsecs: aShip [
 { #category : #positioning }
 GameBoard >> player: index [ 
 	^ (collectionOfShipPositions  at: index )
-]
-
-{ #category : #validation }
-GameBoard >> playerPosition: aDice [
-	^aDice
-	
-	"Este mensaje quedó de los primeros tests antes de descubrir Position"
 ]
 
 { #category : #validation }

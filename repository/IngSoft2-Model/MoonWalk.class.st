@@ -30,3 +30,17 @@ MoonWalk >> applyTo: aGameBoard [
 MoonWalk >> initializeWith: anAmountOfCells [ 
 	amountOfCells:= anAmountOfCells .
 ]
+
+{ #category : #action }
+MoonWalk >> repeatFor: aChosenShip using: aGameBoard [ 
+	|index newPosition |
+	index := 1.
+	
+	[index <= aGameBoard amountOfPlayers] whileTrue: [ 
+		((aGameBoard player:  index) = (aChosenShip )) ifFalse: [ 
+			newPosition := (aGameBoard player:  index) isAtPosition + amountOfCells.
+			(aGameBoard player:  index) changePosition: newPosition.
+			 ].
+		index := index + 1. 
+		]
+]
