@@ -15,12 +15,6 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #validation }
-GameBoard class >> validateCanExistWith: anAmountOfCells [ 
-	anAmountOfCells > 1 ifFalse:  [ 
-		 Error signal: 'Cannot create GameBoard with negative amount of cells'].
-]
-
 { #category : #validating }
 GameBoard class >> validateCanExistWith: numberOfCells and: numberOfLaps [
 	|result|
@@ -324,13 +318,6 @@ GameBoard >> numberOfParsecs: aShip [
 { #category : #positioning }
 GameBoard >> player: index [ 
 	^ (collectionOfShipPositions  at: index )
-]
-
-{ #category : #validation }
-GameBoard >> playerPosition: aDice [
-	^aDice
-	
-	"Este mensaje quedó de los primeros tests antes de descubrir Position"
 ]
 
 { #category : #validation }

@@ -1249,3 +1249,25 @@ aGame throwNextPlayer .
 self assert: ((aGameBoard player: 1) cardsInHand size) equals: 3.
 
 ]
+
+{ #category : #tests }
+GameTests >> test054GameUsingWormholeAndShipDecreasesLapWhenFalling [
+| wormHole|
+wormHole:= WormHole  new.
+
+self setUpLoadedDiceWith: #(1 1 ) and: #(5 0 ).
+self setUpGameWith: 1 andGameboardWith: 4 and: 2.
+
+aGameBoard add: wormHole at: 3.
+
+aGame throwNextPlayer.
+self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1) ) equals: 2 .
+aGame throwNextPlayer.
+self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1) ) equals: 1 .
+
+
+
+
+
+  
+]

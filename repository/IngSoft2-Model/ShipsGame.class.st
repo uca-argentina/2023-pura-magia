@@ -35,26 +35,22 @@ ShipsGame >> cardDirectedTo: aNumberOfShip [
 ]
 
 { #category : #validation }
-ShipsGame >> chosen: aCard from: aNumberOfShip [ 
+ShipsGame >> chosen: aCard from: aNumberOfShip [
+
 	| aShipPosition |
 	aShipPosition := gameboard player: aNumberOfShip.
-	aShipPosition fillRedoWith: lastUsedCard. 
-	
-	(aCard permanent and: (self playerTurn: aNumberOfShip))ifTrue: [ 
-		(self verify: aCard IsInHand: aShipPosition) ifTrue:[
-				chosenCard:= aCard.
-			].
-		].
-		(aCard permanent )ifFalse: [ 
-			(self verify: aCard IsInHand: aShipPosition) ifTrue:[
-				chosenCard:= aCard.
-				self cardDirectedTo: aNumberOfShip  .
-			].
-		
-		 ].
+	aShipPosition fillRedoWith: lastUsedCard.
 
+	aCard permanent ifFalse: [ 
+		(self verify: aCard IsInHand: aShipPosition) ifTrue: [ 
+			chosenCard := aCard.
+			self cardDirectedTo: aNumberOfShip.
+			 ] ].
 
-
+	(aCard permanent) ifTrue: [
+		(self playerTurn: aNumberOfShip) ifTrue:[
+		(self verify: aCard IsInHand: aShipPosition) ifTrue: [ 
+			chosenCard := aCard ] ] ].
 ]
 
 { #category : #creation }

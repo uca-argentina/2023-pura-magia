@@ -13,13 +13,6 @@ SpeedUp >> applyTo: aGameBoard [
 ]
 
 { #category : #action }
-SpeedUp >> repeatFor: aShipPosition [ 
-		|actualPosition|
-	actualPosition := aShipPosition isAtPosition.
-	aShipPosition changePosition: (actualPosition +4).
-]
-
-{ #category : #action }
 SpeedUp >> repeatFor: aShipPosition using: aGameBoard [ 
 	|actualPosition|
 	actualPosition := aShipPosition isAtPosition.
