@@ -21,11 +21,6 @@ Redo >> apply: aGameBoard [
 ]
 
 { #category : #validation }
-Redo >> permanent [
-	^ (cardToRedo permanent)
-]
-
-{ #category : #validation }
 Redo >> permanent: aShipsGame verify: aNumberOfShip [
 	(cardToRedo permanent) ifFalse: [ 
 		(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
