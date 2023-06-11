@@ -33,6 +33,14 @@ Cancellation >> permanent [
 	^false.
 ]
 
+{ #category : #validation }
+Cancellation >> permanent: aShipsGame verify: aNumberOfShip [ 
+	(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
+			aShipsGame chosenCard: self.
+			aShipsGame cardDirectedTo: aNumberOfShip.
+			 ].
+]
+
 { #category : #action }
 Cancellation >> removeFrom: collectionCards [ 
 	|counter|

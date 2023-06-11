@@ -107,8 +107,8 @@ CardsTests >> test006PlayerStartTheGameThen2OverloadCardsAreAsigned [
 	aGameBoard add: overload to: player.
 	aGameBoard add: overload to: player.
 
-	self assert: ((((aGameBoard player: 1) cardsInHand ) at: 1) isKindOf: Overload).
-	self assert: ((((aGameBoard player: 1) cardsInHand ) at: 2) isKindOf: Overload).
+	self assert: ((((aGameBoard player: 1) cardsInHand ) at: 3) isKindOf: Overload).
+	self assert: ((((aGameBoard player: 1) cardsInHand ) at: 4) isKindOf: Overload).
 	
 	
 ]
@@ -167,10 +167,7 @@ CardsTests >> test008PlayerStartTheGameWith2OSpeedCardsThenApplyEffectToThemSelf
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
 	
-	aGame chosen: speed from: player.
-	aGame cardDirectedTo: player.
-	aGame applyChosenCard.
-	
+	aGame chooseAndApply: speed from: player to: player.
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
 	
@@ -198,9 +195,8 @@ CardsTests >> test009PlayerStartTheGameWith2OAcelerationCardsThenApplyEffect [
 	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
-	aGame chosen: acceleration from: player.
 	
-	aGame applyChosenCard.
+	aGame chooseAndApply: acceleration from: player.
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
 	
@@ -233,15 +229,8 @@ CardsTests >> test010PlayWithCancelletionCardForOverload [
 	aGameBoard add: overload to: player2.
 	aGameBoard add: cancellation to: player2.
 
-	aGame chosen: overload from: player.
-	aGame cardDirectedTo: player2.
-	aGame applyChosenCard.
-	
-	aGame chosen: cancellation from: player2.
-	cancellation canceled: overload.
-	aGame cardDirectedTo: player2.
-	aGame applyChosenCard.
-
+	aGame chooseAndApply: overload  from: player  to: player2 .
+	aGame chooseAndApply: cancellation from: player2 to: player2 canceled: overload .
 	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
@@ -274,19 +263,11 @@ CardsTests >> test011PlayWithCancelletionCardForSpeed [
 	
 	aGameBoard add: overload to: player2.
 	aGameBoard add: cancellation to: player2.
-
-	aGame chosen: speed  from: player.
-	aGame cardDirectedTo: player.
-	aGame applyChosenCard.
 	
+	aGame chooseAndApply: speed from: player to: player . 
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
-	
-	aGame chosen: cancellation from: player2.
-	cancellation canceled: speed.
-	aGame cardDirectedTo: player.
-	aGame applyChosenCard.
-	
+	aGame chooseAndApply: cancellation from: player2  to: player  canceled: speed .	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
 	
@@ -312,16 +293,12 @@ CardsTests >> test012PlayWithCancelletionCardForAcceleration [
 	aGameBoard add: overload to: player2.
 	aGameBoard add: cancellation to: player2.
 
-	aGame chosen: acceleration  from: player.
-	aGame applyChosenCard.
-	
+	aGame chooseAndApply: acceleration  from: player . 
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
 	
-	aGame chosen: cancellation from: player2.
-	cancellation canceled: acceleration .
-	aGame applyChosenCard.
-	
+	aGame chooseAndApply: cancellation from: player2  canceled: acceleration .	
+
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
 	
@@ -345,11 +322,7 @@ CardsTests >> test013PlayWithRepeatCardEffectSpeedUpToThemself [
 	aGameBoard add: repeat   to: player.
 
 	aGame throwNextPlayer .
-	
-	aGame chosen: repeat   from: player.
-	aGame cardDirectedTo: player.
-	aGame applyChosenCard.
-	
+	aGame chooseAndApply: repeat  from: player  to: player . 
 	aGame throwNextPlayer .
 	
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 3 .
@@ -374,9 +347,7 @@ CardsTests >> test014PlayWithRepeatCardEffectWormHole [
 	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
-	aGame chosen: repeat   from: player.
-	aGame cardDirectedTo: player2. 
-	aGame applyChosenCard.
+	aGame chooseAndApply: repeat  from: player  to: player2  . 
 	
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 1 .
 ]
@@ -400,8 +371,7 @@ CardsTests >> test015PlayWithRepeatCardEffectMoonWalk [
 	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
-	aGame chosen: repeat   from: player.
-	aGame applyChosenCard.
+	aGame chooseAndApply: repeat  from: player. 
 	
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 2 .
 ]
@@ -426,21 +396,33 @@ CardsTests >> test016PlayWithRepeatCardEffectAtomicBomb [
 	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
-	aGame chosen: repeat   from: player.
-	aGame applyChosenCard.
+	aGame chooseAndApply: repeat  from: player. 
 	
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 0 .
 ]
 
 { #category : #tests }
 CardsTests >> test017PlayWithRepeatCardEffectHyperJump [
-	| overload  player player2  cancellation repeat amountOfParsecsToMove parsecs hyperJump |
+	| overload  player player2  cancellation repeat amountOfParsecsToMove parsecs hyperJump parsc1 light1 parsc2 light2 collection1 |
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	
-	amountOfParsecsToMove:= #(#(7 3 2 1)).
-	parsecs := 4. 
-	hyperJump := HyperJump with: amountOfParsecsToMove .
+	parsc1 := Parsecs with: 7.
+light1 := LightYears with: 9.
+parsc2 := Parsecs with: 2.
+light2 := LightYears with: 3.
+
+amountOfParsecsToMove:= OrderedCollection new.
+collection1:=OrderedCollection new.
+collection1 add: parsc1 .
+collection1 add: light1  .
+collection1 add: parsc2   .
+collection1 add: light2  .
+
+amountOfParsecsToMove add: collection1 .
+parsecs := 4. 
+hyperJump := HyperJump with: amountOfParsecsToMove .
+	
 	aGameBoard cellsWith: parsecs and: arrayOfDices .
 	
 	cancellation:= Cancellation new.
@@ -456,10 +438,8 @@ CardsTests >> test017PlayWithRepeatCardEffectHyperJump [
 	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
-	aGame chosen: repeat   from: player.
-	aGame cardDirectedTo: player . 
-	aGame applyChosenCard.
-	
+	aGame chooseAndApply: repeat  from: player  to: player .
+		
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 5 .
 	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
 ]
@@ -483,16 +463,9 @@ CardsTests >> test018PlayWithRedoCardAndOverloadCard [
 	aGameBoard add: redo to: player2.
 	aGameBoard add: overload to: player2.
 
-	aGame chosen: overload from: player.
-	aGame cardDirectedTo: player2.
-	aGame applyChosenCard.
-	
+	aGame chooseAndApply: overload from: player to: player2 . 
 	aGame throwNextPlayer . 
-	
-	aGame chosen: redo from: player2.
-	aGame cardDirectedTo: player .
-	aGame applyChosenCard .
-	
+	aGame chooseAndApply: redo  from: player2  to: player .
 	aGame throwNextPlayer . 
 	aGame throwNextPlayer . 
 	aGame throwNextPlayer .
@@ -524,14 +497,9 @@ CardsTests >> test019PlayWithRedoCardAndAccelerationCard [
 	aGameBoard add: redo to: player2.
 	aGameBoard add: acceleration to: player2.
 
-	aGame chosen: acceleration from: player.
-	aGame applyChosenCard.
-	
+	aGame chooseAndApply: acceleration  from: player . 
 	aGame throwNextPlayer . 
-	
-	aGame chosen: redo from: player2.
-	aGame applyChosenCard .
-	
+	aGame chooseAndApply: redo   from: player2 . 
 	aGame throwNextPlayer . 
 	aGame throwNextPlayer . 
 	aGame throwNextPlayer .
@@ -565,16 +533,9 @@ CardsTests >> test020PlayWithRedoCardAndSpeedCard [
 	aGameBoard add: redo to: player2.
 	aGameBoard add: speed to: player2.
 
-	aGame chosen: speed from: player.
-	aGame cardDirectedTo: player.
-	aGame applyChosenCard.
-	
+	aGame chooseAndApply: speed  from: player  to: player . 
 	aGame throwNextPlayer . 
-	
-	aGame chosen: redo from: player2.
-	aGame cardDirectedTo: player2 .
-	aGame applyChosenCard .
-	
+	aGame chooseAndApply: redo   from: player2  to: player2 . 
 	aGame throwNextPlayer . 
 	aGame throwNextPlayer . 
 	aGame throwNextPlayer .
@@ -606,28 +567,12 @@ CardsTests >> test021PlayWithRedoCardAndCancellationCard [
 	
 	aGameBoard add: redo to: player2.
 	aGameBoard add: speed to: player2.
-
-	aGame chosen: speed from: player.
-	aGame cardDirectedTo: player.
-	aGame applyChosenCard.
-	
+	aGame chooseAndApply: speed from: player  to: player. 
 	aGame throwNextPlayer . "1-P4 2-P0"
-	
-	aGame chosen: speed from: player2.
-	aGame cardDirectedTo: player2 .
-	aGame applyChosenCard .
-	
+	aGame chooseAndApply: speed from: player2  to: player2. 
 	aGame throwNextPlayer . "1-P4 2-P6"
-	
-	aGame chosen: cancellation from: player.
-	cancellation canceled: speed.
-	aGame cardDirectedTo: player2.
-	aGame applyChosenCard.
-	
-	aGame chosen: redo from: player2.
-	aGame cardDirectedTo: player .
-	aGame applyChosenCard .
-	
+	aGame chooseAndApply: cancellation  from: player to: player2  canceled: speed .
+	aGame chooseAndApply: redo  from: player2  to: player . 	
 	aGame throwNextPlayer . "1-P7 2-P6"
 	aGame throwNextPlayer . "1-P7L1 2-P3L2"
 	
@@ -660,20 +605,10 @@ CardsTests >> test022PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 	aGameBoard add: redo to: player2.
 	aGameBoard add: redo to: player2.
 
-	aGame chosen: speed from: player.
-	aGame cardDirectedTo: player.
-	aGame applyChosenCard.
-	
+	aGame chooseAndApply: speed  from: player  to: player .
 	aGame throwNextPlayer . 
-	
-	aGame chosen: redo from: player2.
-	aGame cardDirectedTo: player2 .
-	aGame applyChosenCard .
-	
-	aGame chosen: redo from: player2.
-	aGame cardDirectedTo: player2 .
-	aGame applyChosenCard .
-	
+	aGame chooseAndApply: redo   from: player2  to: player2 .
+	aGame chooseAndApply: redo   from: player2  to: player2 .
 	aGame throwNextPlayer . 
 	aGame throwNextPlayer . 
 	aGame throwNextPlayer .
@@ -704,10 +639,8 @@ CardsTests >> test023PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 	
 	aGameBoard add: redo to: player2.
 	aGameBoard add: redo to: player2.
-
-	aGame chosen: speed from: player.
-	aGame cardDirectedTo: player.
-	aGame applyChosenCard.
+	
+	aGame chooseAndApply: speed  from: player  to: player .
 	
 	self should:  [aGame chosen: redo from: player2] raise: Error withMessage: 'Cannot use permanent card when its not their turn'.
 		

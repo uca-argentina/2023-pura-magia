@@ -21,8 +21,17 @@ Redo >> apply: aGameBoard [
 ]
 
 { #category : #validation }
-Redo >> permanent [
-	^ (cardToRedo permanent)
+Redo >> permanent: aShipsGame verify: aNumberOfShip [
+	(cardToRedo permanent) ifFalse: [ 
+		(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
+			aShipsGame chosenCard: self.
+			aShipsGame cardDirectedTo: aNumberOfShip.
+			 ] ].
+
+	(cardToRedo permanent) ifTrue: [
+		(aShipsGame playerTurn: aNumberOfShip) ifTrue:[
+		(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
+			aShipsGame chosenCard: self ] ] ].
 ]
 
 { #category : #action }

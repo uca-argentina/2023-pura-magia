@@ -23,6 +23,13 @@ Overload >> permanent [
 	^true.
 ]
 
+{ #category : #validation }
+Overload >> permanent: aShipsGame verify: aNumberOfShip [ 
+	(aShipsGame playerTurn: aNumberOfShip) ifTrue:[	
+	(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
+			aShipsGame chosenCard: self ]. ] .
+]
+
 { #category : #instance }
 Overload >> selected: aShipPosition [ 
 	chosenPlayer := aShipPosition .

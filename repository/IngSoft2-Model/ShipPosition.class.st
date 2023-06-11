@@ -34,7 +34,7 @@ ShipPosition >> cardsInHand [
 
 { #category : #action }
 ShipPosition >> changeParsecs: anAmountOfParsecs [ 
-	parsecs := anAmountOfParsecs.
+	parsecs := parsecs  plus: (Parsecs with: anAmountOfParsecs)   .
 ]
 
 { #category : #changes }
@@ -71,7 +71,7 @@ ShipPosition >> initializeWith: aNumber [
 	shipNumber  := aNumber .
 	cellNumber := 0 .
 	actualLap :=1.
-	parsecs := 0.
+	parsecs := Parsecs with:0.
 	aCollectionOfCards := OrderedCollection new.
 	aCollectionOfCardsForMe := OrderedCollection new.
 ]
@@ -83,7 +83,7 @@ ShipPosition >> isAtLap [
 
 { #category : #validation }
 ShipPosition >> isAtParsec [
-	^parsecs.
+	^parsecs .
 ]
 
 { #category : #validation }
