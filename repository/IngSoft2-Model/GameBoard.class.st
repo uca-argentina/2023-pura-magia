@@ -338,7 +338,7 @@ GameBoard >> ranking [
 	array := collectionOfShipPositions .
 	sortedArray := array sorted: [:player1 :player2 | player1 isAtLap    < player2  isAtLap  ].
 	sortedArray := sortedArray sorted: [:player1 :player2 | player1 isAtPosition  < player2  isAtPosition ].
-	sortedArray :=sortedArray sorted: [:player1 :player2 | player1 isAtParsec   < player2 isAtParsec ].
+	sortedArray :=sortedArray sorted: [:player1 :player2 | (player1 isAtParsec)nominalValue < (player2 isAtParsec)nominalValue  ].
 	^sortedArray 
 	 
 ]
@@ -435,13 +435,13 @@ GameBoard >> verifyCellsOf: player [
 GameBoard >> verifyParsecOf: player at: playerPosition [
 
 	| playerParsec |
-	playerParsec := player isAtParsec.
+	playerParsec := (player isAtParsec)nominalValue.
 	[ playerParsec > parsecsByCell ] whileTrue: [ 
-		player changeParsecs: playerParsec - parsecsByCell.
+		player changeParsecs:  ((-1)*(parsecsByCell)).
 		player changePosition: playerPosition + 1.
 		playerParsec := playerParsec - parsecsByCell ].
 	[ playerParsec < 0 ] whileTrue: [ 
-		player changeParsecs: playerParsec + parsecsByCell.
+		player changeParsecs: parsecsByCell.
 		player changePosition: playerPosition - 1.
 		playerParsec := playerParsec + parsecsByCell ].
 	^ playerParsec

@@ -15,7 +15,7 @@ HyperJump class >> validateCanExistWith: aCollectionOfProbabilities [
 	isOrdered := aCollectionOfProbabilities allSatisfy: [ :eachArray | 
 		             previous := eachArray first.
 		             eachArray allSatisfy: [ :value | 
-			             result := value <= previous.
+			             result := ((value) parsecs)nominalValue  <= ((previous)parsecs)nominalValue.
 			             previous := value.
 			             result ] ].
 
@@ -39,7 +39,7 @@ HyperJump >> applyTo: aGameBoard [
 	turn:= aGameBoard turn.
 	(round > anAmountOfParsecsToMove  size) ifTrue: [ 
 		round :=1 ].
-	result := anAmountOfParsecsToMove  at: round.
+	result := ((anAmountOfParsecsToMove  at: round) parsecs)nominalValue.
 	(aGameBoard player: turn) changeParsecs: result.
 ]
 
@@ -51,10 +51,11 @@ HyperJump >> initializeWith: amountOfParsecsToMove [
 
 { #category : #action }
 HyperJump >> repeatFor: aShipPosition using: aGameBoard [ 
-	|result turn|
+	|result |
 	round := round +1.
 		(round > anAmountOfParsecsToMove  size) ifTrue: [ 
 		round :=1 ].
-	result:= (anAmountOfParsecsToMove  at: round) + aShipPosition isAtParsec .
-	(aShipPosition ) changeParsecs: result.
+	
+	result := ((anAmountOfParsecsToMove  at: round) parsecs)nominalValue.
+	(aShipPosition) changeParsecs: result.
 ]

@@ -23,3 +23,10 @@ Acceleration >> apply: aGameBoard [
 Acceleration >> permanent [
 	^true.
 ]
+
+{ #category : #validation }
+Acceleration >> permanent: aShipsGame verify: aNumberOfShip [ 
+	(aShipsGame playerTurn: aNumberOfShip) ifTrue:[	
+	(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
+			aShipsGame chosenCard: self ]. ] .
+]

@@ -25,6 +25,20 @@ Redo >> permanent [
 	^ (cardToRedo permanent)
 ]
 
+{ #category : #validation }
+Redo >> permanent: aShipsGame verify: aNumberOfShip [
+	(cardToRedo permanent) ifFalse: [ 
+		(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
+			aShipsGame chosenCard: self.
+			aShipsGame cardDirectedTo: aNumberOfShip.
+			 ] ].
+
+	(cardToRedo permanent) ifTrue: [
+		(aShipsGame playerTurn: aNumberOfShip) ifTrue:[
+		(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
+			aShipsGame chosenCard: self ] ] ].
+]
+
 { #category : #action }
 Redo >> redo: lastUsedCard [ 
 	cardToRedo := lastUsedCard .

@@ -22,6 +22,13 @@ Speed >> permanent [
 	^true
 ]
 
+{ #category : #validation }
+Speed >> permanent: aShipsGame verify: aNumberOfShip [ 
+	(aShipsGame playerTurn: aNumberOfShip) ifTrue:[	
+	(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
+			aShipsGame chosenCard: self ]. ] .
+]
+
 { #category : #selection }
 Speed >> selected: aShipPosition [ 
 	chosenPlayer := aShipPosition .

@@ -21,6 +21,14 @@ Repeat >> permanent [
 	^false.
 ]
 
+{ #category : #validation }
+Repeat >> permanent: aShipsGame verify: aNumberOfShip [ 
+	(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
+			aShipsGame chosenCard: self.
+			aShipsGame cardDirectedTo: aNumberOfShip.
+			 ].
+]
+
 { #category : #intance }
 Repeat >> selected: aShipPosition [ 
 	chosenShip:= aShipPosition.

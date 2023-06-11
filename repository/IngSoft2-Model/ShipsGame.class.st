@@ -34,6 +34,34 @@ ShipsGame >> cardDirectedTo: aNumberOfShip [
 	chosenCard selected: (gameboard player: aNumberOfShip) 
 ]
 
+{ #category : #action }
+ShipsGame >> chooseAndApply: aCard from: aNumberOfPlayer [ 
+	self chosen: aCard from: aNumberOfPlayer.
+	self applyChosenCard.
+]
+
+{ #category : #action }
+ShipsGame >> chooseAndApply: aCancellation from: aNumberOfPlayer canceled: anAcceleration [ 
+	self chosen: aCancellation from: aNumberOfPlayer.
+	aCancellation canceled: anAcceleration .
+	self applyChosenCard.
+]
+
+{ #category : #action }
+ShipsGame >> chooseAndApply: aCard from: aNumberOfPlayer to: aChosenNumberOfPlayer [
+	self chosen: aCard from: aNumberOfPlayer.
+	self cardDirectedTo: aChosenNumberOfPlayer.
+	self applyChosenCard.
+]
+
+{ #category : #action }
+ShipsGame >> chooseAndApply: aCancellation from: aNumberOfPlayer to: chosenNumberOfPlayer canceled: aCancelledCard [ 
+	self chosen: aCancellation from: aNumberOfPlayer.
+	aCancellation  canceled: aCancelledCard.
+	self cardDirectedTo: chosenNumberOfPlayer.
+	self applyChosenCard.
+]
+
 { #category : #validation }
 ShipsGame >> chosen: aCard from: aNumberOfShip [
 
@@ -41,7 +69,9 @@ ShipsGame >> chosen: aCard from: aNumberOfShip [
 	aShipPosition := gameboard player: aNumberOfShip.
 	aShipPosition fillRedoWith: lastUsedCard.
 
-	aCard permanent ifFalse: [ 
+	aCard permanent: self verify: aNumberOfShip .
+	
+	"aCard permanent ifFalse: [ 
 		(self verify: aCard IsInHand: aShipPosition) ifTrue: [ 
 			chosenCard := aCard.
 			self cardDirectedTo: aNumberOfShip.
@@ -50,7 +80,12 @@ ShipsGame >> chosen: aCard from: aNumberOfShip [
 	(aCard permanent) ifTrue: [
 		(self playerTurn: aNumberOfShip) ifTrue:[
 		(self verify: aCard IsInHand: aShipPosition) ifTrue: [ 
-			chosenCard := aCard ] ] ].
+			chosenCard := aCard ] ] ]."
+]
+
+{ #category : #instance }
+ShipsGame >> chosenCard: aCard [ 
+	chosenCard := aCard .
 ]
 
 { #category : #creation }
@@ -117,8 +152,9 @@ ShipsGame >> throwNextPlayer [
 ]
 
 { #category : #validation }
-ShipsGame >> verify: aCard IsInHand: aShipPosition [
-	| counter anArrayOfCards selectedCard|
+ShipsGame >> verify: aCard IsInHand: aNumberOfShip [
+	| counter anArrayOfCards selectedCard aShipPosition|
+	aShipPosition := gameboard player: aNumberOfShip .
 	counter :=1.
 	anArrayOfCards :=aShipPosition  cardsInHand.
 	[counter <= anArrayOfCards  size ] whileTrue: [ 
