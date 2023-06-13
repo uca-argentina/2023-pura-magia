@@ -40,9 +40,9 @@ GameBoard >> add: aEffect at: aNumberOfCell [
 
 { #category : #action }
 GameBoard >> add: aCard to: numberOfPlayer [ 
-	| aShipPosition |
-	aShipPosition :=(self player: numberOfPlayer). 
-	aShipPosition add: aCard.
+	| aShip |
+	aShip :=(self player: numberOfPlayer). 
+	aShip add: aCard.
 	
 	
 ]
@@ -197,7 +197,7 @@ GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
 GameBoard >> checkLapOf: aShip [ 
 	| anotherShip |
 	anotherShip := self positionAtCollectionOf: aShip.
-	^ anotherShip isAtLap.
+	^ (anotherShip shipPosition ) isAtLap.
 ]
 
 { #category : #validation }
@@ -205,7 +205,7 @@ GameBoard >> checkPositionOf: aShip [
 
 	| anotherShip |
 	anotherShip := self positionAtCollectionOf: aShip.
-	^ anotherShip isAtPosition
+	^ ((anotherShip shipPosition ) isAtPosition)
 ]
 
 { #category : #action }
@@ -221,6 +221,16 @@ GameBoard >> createCollectionFrom: aCollection [
 
 ^ newCollection .
 	
+]
+
+{ #category : #action }
+GameBoard >> createPositionIn: aResult with: aShipPosition [ 
+	^(self verifyCellsOf: aShipPosition at: aResult).
+]
+
+{ #category : #creation }
+GameBoard >> createWithNew: aResult with: aShipPosition [ 
+	^(self verifyParsecsOf: aShipPosition at: aResult).
 ]
 
 { #category : #assign }
@@ -282,37 +292,38 @@ GameBoard >> lastEffect [
 ]
 
 { #category : #action }
-GameBoard >> move: aPlayer [ 
-	| index positionOfShip result specialEffect auxResult dieResult |
+GameBoard >> move: aShip [ 
+	| index positionOfShip result specialEffect auxResult dieResult newPosition |
 
 	dieResult  := 0.
 	dieResult  := self throwVariousDices: dieCollection .
-	dieResult := dieResult + (aPlayer resultOfCards).
+	dieResult := dieResult + (aShip   resultOfCards).
 	
 	index := 1.
-	[ (collectionOfShipPositions  at: index) isTheSameAs: aPlayer ] 
+	[ (collectionOfShipPositions  at: index) isTheSameAs: aShip ] 
 		whileFalse: [ index := index + 1 ].
-	positionOfShip := (collectionOfShipPositions  at: index) isAtPosition.
+	positionOfShip := ((collectionOfShipPositions  at: index)shipPosition) isAtPosition.
 	result := positionOfShip + dieResult .
 	auxResult := self updateResult: result.
 	specialEffect := self specialEffectAtCell: auxResult.
 	(specialEffect == 0)
 		ifFalse: [ 
-					(collectionOfShipPositions  at: index) changePosition: result.
+					newPosition := (self createPositionIn: result with:((collectionOfShipPositions  at:index)shipPosition)).
+			(collectionOfShipPositions  at: index) changePosition: newPosition.
 					specialEffect applyTo: self.
-					self verifyAllPositions.
 					lastEffectUsed := specialEffect.
 					 ]
 		ifTrue: [ 
-			(collectionOfShipPositions  at: index) changePosition: result.
-			self verifyAllPositions ]
+			newPosition := (self createPositionIn: result with:((collectionOfShipPositions  at: index)shipPosition)).
+			(collectionOfShipPositions  at: index) changePosition: newPosition.
+			 ]
 ]
 
 { #category : #validation }
 GameBoard >> numberOfParsecs: aShip [ 
 	| anotherShip |
 	anotherShip := self positionAtCollectionOf: aShip.
-	^ anotherShip isAtParsec
+	^ ((anotherShip shipPosition ) isAtParsec)
 ]
 
 { #category : #positioning }
@@ -336,9 +347,9 @@ GameBoard >> positionAtCollectionOf: aShip [
 GameBoard >> ranking [
 	| array sortedArray |
 	array := collectionOfShipPositions .
-	sortedArray := array sorted: [:player1 :player2 | player1 isAtLap    < player2  isAtLap  ].
-	sortedArray := sortedArray sorted: [:player1 :player2 | player1 isAtPosition  < player2  isAtPosition ].
-	sortedArray :=sortedArray sorted: [:player1 :player2 | (player1 isAtParsec)nominalValue < (player2 isAtParsec)nominalValue  ].
+	sortedArray := array sorted: [:player1 :player2 | (player1 shipPosition ) isAtLap    < (player2 shipPosition ) isAtLap  ].
+	sortedArray := sortedArray sorted: [:player1 :player2 | (player1 shipPosition )isAtPosition  < (player2 shipPosition )  isAtPosition ].
+	sortedArray :=sortedArray sorted: [:player1 :player2 | ((player1 shipPosition) isAtParsec )nominalValue  < ((player2 shipPosition ) isAtParsec)nominalValue  ].
 	^sortedArray 
 	 
 ]
@@ -398,53 +409,65 @@ GameBoard >> updateResult: aResult [
 	^ auxResult .
 ]
 
-{ #category : #validation }
-GameBoard >> verifyAllPositions [
-
-	| index player playerPosition playerParsec |
-	index := 1.
-	[ index <= collectionOfShipPositions  size ] whileTrue: [ 
-		player := collectionOfShipPositions  at: index.
-		playerPosition := player isAtPosition.
-		playerParsec := self verifyParsecOf: player at: playerPosition.
-		playerPosition := self verifyCellsOf: player.
-		index := index + 1 ]
-]
-
-{ #category : #validation }
-GameBoard >> verifyCellsOf: player [
-
-	| playerPosition |
-	playerPosition := player isAtPosition.
-	[ playerPosition < 0 ] whileTrue: [ 
-		(player isAtLap = 1) ifTrue: [ 
-				player changePosition: 0.
-				playerPosition := 0.
+{ #category : #action }
+GameBoard >> verifyCellsOf: aShipPosition at: aResult [ 
+	|newShipPosition  result playerPosition position newLap parsec|
+	playerPosition := aShipPosition isAtPosition .
+	result := aResult. 
+	(result   <= cells) ifTrue: [ 
+		newLap:=aShipPosition isAtLap.
+		parsec := aShipPosition isAtParsec .
+		newShipPosition := ShipPosition createWith: result  at: newLap and: parsec .] .
+	[ result   < 0 ] whileTrue: [ 
+		(aShipPosition isAtLap = 1) ifTrue: [ 
+				newShipPosition := ShipPosition createNew.
+				result :=0 .
 			] ifFalse: [  
-				player changePosition: cells + playerPosition.
-				player decreaseLap. 
-				playerPosition := cells + playerPosition ] ].
-	[ playerPosition > cells ] whileTrue: [ 
-		player changePosition: playerPosition - cells.
-		player increaseLap.
-		playerPosition := playerPosition - cells ].
-	^ playerPosition
+				position:=cells + result.
+				newLap:= ((aShipPosition isAtLap)-1) .
+				parsec := aShipPosition isAtParsec .
+				newShipPosition := ShipPosition createWith: position at: newLap and: parsec .
+				result := cells + result ] ].
+	[ result   > cells ] whileTrue: [ 
+		position:=result-cells.
+		newLap:= ((aShipPosition isAtLap)+1) .
+		parsec := aShipPosition isAtParsec .
+		newShipPosition := ShipPosition createWith: position at: newLap and: parsec .
+		result := result - cells ].
+	
+	^ newShipPosition 
+
 ]
 
-{ #category : #validation }
-GameBoard >> verifyParsecOf: player at: playerPosition [
-
-	| playerParsec |
-	playerParsec := (player isAtParsec)nominalValue.
-	[ playerParsec > parsecsByCell ] whileTrue: [ 
-		player changeParsecs:  ((-1)*(parsecsByCell)).
-		player changePosition: playerPosition + 1.
-		playerParsec := playerParsec - parsecsByCell ].
-	[ playerParsec < 0 ] whileTrue: [ 
-		player changeParsecs: parsecsByCell.
-		player changePosition: playerPosition - 1.
-		playerParsec := playerParsec + parsecsByCell ].
-	^ playerParsec
+{ #category : #action }
+GameBoard >> verifyParsecsOf: aShipPosition at: aNewParsec [
+	|newShipPosition  result  position newLap parsecs |
+	result := aNewParsec + (aShipPosition isAtParsec )nominalValue . 
+	(result   <= parsecsByCell ) ifTrue: [ 
+		newLap:=aShipPosition isAtLap.
+		position := aShipPosition isAtPosition . 
+		newShipPosition := ShipPosition createWith: position   at: newLap and: (Parsecs with: aNewParsec)   .] .
+	[ result   < 0 ] whileTrue: [ 
+		position:=aShipPosition isAtPosition -1.
+		newShipPosition := self verifyCellsOf: aShipPosition  at: position.
+		position := newShipPosition isAtPosition .
+		newLap := newShipPosition isAtLap .
+		parsecs := Parsecs with: (result+parsecsByCell ) .
+		newShipPosition := ShipPosition createWith: position at: newLap and: parsecs .
+		result :=result +parsecsByCell . 
+		  ].
+		
+	[ result   > parsecsByCell  ] whileTrue: [ 
+		
+		position:=aShipPosition isAtPosition +1.
+		newShipPosition := self verifyCellsOf: aShipPosition  at: position.
+		position := newShipPosition isAtPosition .
+		newLap := newShipPosition isAtLap .
+		parsecs := Parsecs with: (result-parsecsByCell) .
+		newShipPosition := ShipPosition createWith: position at: newLap and: parsecs  .
+		result := result - parsecsByCell ].
+	
+	^ newShipPosition 
 ]
 
 { #category : #validation }
@@ -452,7 +475,7 @@ GameBoard >> winner [
 
 	| counter shipLap|
 	counter := 1.
-	shipLap:=(collectionOfShipPositions  at: counter) isAtLap. 
+	shipLap:=((collectionOfShipPositions  at: counter)shipPosition ) isAtLap. 
 	[ (counter >= collectionOfShipPositions  size or:
 			 (shipLap >= (laps + 1))) ] 
 		whileFalse: [ counter := counter + 1 ].

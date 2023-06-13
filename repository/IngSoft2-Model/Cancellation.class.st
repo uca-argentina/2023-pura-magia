@@ -14,7 +14,7 @@ Cancellation >> apply: aGameBoard [
 	counter :=1.
 	
 	[counter <= aGameBoard amountOfPlayers]whileTrue: [ 
-			collectionCards:= (aGameBoard player: counter) cardsForMe.
+			collectionCards:= ((aGameBoard player: counter)shipCards ) cardsForMe.
 			self removeFrom: collectionCards. 
 			counter:=counter+1.
 	

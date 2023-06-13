@@ -14,7 +14,7 @@ Acceleration >> apply: aGameBoard [
 	|counter|
 	counter := 1.
 	[ counter <= aGameBoard amountOfPlayers ]whileTrue: [ 
-			(aGameBoard player: counter)store: (self).
+			((aGameBoard player: counter)shipCards)  store: (self).
 			counter := counter +1.
 	 ]
 ]

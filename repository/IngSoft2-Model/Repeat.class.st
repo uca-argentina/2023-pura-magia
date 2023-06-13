@@ -13,7 +13,6 @@ Repeat >> apply: aGameBoard [
 	counter:=1.
 	lastEffectUsed:= aGameBoard lastEffect  .
 	lastEffectUsed repeatFor: chosenShip using: aGameBoard . 
-	aGameBoard verifyAllPositions.	
 ]
 
 { #category : #validation }

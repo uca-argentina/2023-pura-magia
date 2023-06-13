@@ -6,15 +6,19 @@ Class {
 
 { #category : #action }
 SpeedUp >> applyTo: aGameBoard [ 
-	| turn aPlayer |
+	| turn shipPosition newCell newShipPosition|
 	turn := aGameBoard turn.
-	aPlayer := aGameBoard player: turn.
-	aPlayer changePosition: (aPlayer isAtPosition +4).
+	shipPosition := (aGameBoard player: turn)shipPosition .
+	newCell:=(shipPosition isAtPosition +4).
+	newShipPosition:= aGameBoard verifyCellsOf: shipPosition   at: newCell .
+	(aGameBoard player: turn) changePosition: newShipPosition.
 ]
 
 { #category : #action }
-SpeedUp >> repeatFor: aShipPosition using: aGameBoard [ 
-	|actualPosition|
-	actualPosition := aShipPosition isAtPosition.
-	aShipPosition changePosition: (actualPosition +4).
+SpeedUp >> repeatFor: aShip using: aGameBoard [ 
+	|newCell newShipPosition shipPosition|
+	newCell := (((aShip shipPosition ) isAtPosition)+4).
+	shipPosition := aShip shipPosition .
+	newShipPosition:= aGameBoard verifyCellsOf: shipPosition   at: newCell .
+	aShip  changePosition: newShipPosition.
 ]

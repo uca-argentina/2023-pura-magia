@@ -107,8 +107,8 @@ CardsTests >> test006PlayerStartTheGameThen2OverloadCardsAreAsigned [
 	aGameBoard add: overload to: player.
 	aGameBoard add: overload to: player.
 
-	self assert: ((((aGameBoard player: 1) cardsInHand ) at: 3) isKindOf: Overload).
-	self assert: ((((aGameBoard player: 1) cardsInHand ) at: 4) isKindOf: Overload).
+	self assert: (((((aGameBoard player: 1)shipCards ) cardsInHand ) at: 3) isKindOf: Overload).
+	self assert: (((((aGameBoard player: 1)shipCards ) cardsInHand ) at: 4) isKindOf: Overload).
 	
 	
 ]
@@ -132,9 +132,7 @@ CardsTests >> test007PlayerStartTheGameWith2OverloadCardsThenApplyEffect [
 	aGameBoard add: overload to: player2.
 	aGameBoard add: overload to: player2.
 
-	aGame chosen: overload from: player.
-	aGame cardDirectedTo: player2.
-	aGame applyChosenCard.
+	aGame chooseAndApply: overload  from: player  to: player2. 
 	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
@@ -398,7 +396,7 @@ CardsTests >> test016PlayWithRepeatCardEffectAtomicBomb [
 	aGame throwNextPlayer .
 	aGame chooseAndApply: repeat  from: player. 
 	
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 0 .
+	self assert: (aGameBoard checkPositionOf:  ((aGameBoard player: 2)) ) equals: 0 .
 ]
 
 { #category : #tests }
