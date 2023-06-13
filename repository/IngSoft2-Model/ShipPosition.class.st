@@ -13,6 +13,21 @@ Class {
 }
 
 { #category : #initialization }
+ShipPosition class >> createNew [
+	^(self new)initializeNew.
+]
+
+{ #category : #creation }
+ShipPosition class >> createWith: aNumberOfCell at: aNumberOfLap [ 
+	 ^(self new) initializeWith: aNumberOfCell and: aNumberOfLap. 
+]
+
+{ #category : #creation }
+ShipPosition class >> createWith: aNumberOfCell at: aNumberOfLap and: aParsec [
+	 ^(self new) initializeWith: aNumberOfCell and: aNumberOfLap and: aParsec. 
+]
+
+{ #category : #initialization }
 ShipPosition class >> with: aNumberOfPlayer [
 	^ (self new) initializeWith: aNumberOfPlayer .
 ]
@@ -25,11 +40,6 @@ ShipPosition >> add: aCard [
 { #category : #action }
 ShipPosition >> cardsForMe [
 	^aCollectionOfCardsForMe 
-]
-
-{ #category : #action }
-ShipPosition >> cardsInHand [
-	^aCollectionOfCards
 ]
 
 { #category : #action }
@@ -67,13 +77,23 @@ ShipPosition >> increaseLap [
 ]
 
 { #category : #initialization }
-ShipPosition >> initializeWith: aNumber [ 
-	shipNumber  := aNumber .
+ShipPosition >> initializeNew [
 	cellNumber := 0 .
 	actualLap :=1.
 	parsecs := Parsecs with:0.
-	aCollectionOfCards := OrderedCollection new.
-	aCollectionOfCardsForMe := OrderedCollection new.
+]
+
+{ #category : #initialization }
+ShipPosition >> initializeWith: aNumberOfCell and: aNumberOfLap [ 
+	cellNumber := aNumberOfCell .
+	actualLap := aNumberOfLap .
+]
+
+{ #category : #initialization }
+ShipPosition >> initializeWith: aNumberOfCell and: aNumberOfLap and: aParsec [
+	cellNumber := aNumberOfCell .
+	actualLap := aNumberOfLap .
+	parsecs := aParsec .
 ]
 
 { #category : #validation }
@@ -89,11 +109,6 @@ ShipPosition >> isAtParsec [
 { #category : #validation }
 ShipPosition >> isAtPosition [
 	^ cellNumber 
-]
-
-{ #category : #'tests - validation' }
-ShipPosition >> isTheSameAs: aShip [ 
-	^ aShip numberOfShip = shipNumber  .
 ]
 
 { #category : #validation }

@@ -65,22 +65,12 @@ ShipsGame >> chooseAndApply: aCancellation from: aNumberOfPlayer to: chosenNumbe
 { #category : #validation }
 ShipsGame >> chosen: aCard from: aNumberOfShip [
 
-	| aShipPosition |
-	aShipPosition := gameboard player: aNumberOfShip.
-	aShipPosition fillRedoWith: lastUsedCard.
+	| aShip |
+	aShip := gameboard player: aNumberOfShip.
+	(aShip shipCards )  fillRedoWith: lastUsedCard.
 
 	aCard permanent: self verify: aNumberOfShip .
 	
-	"aCard permanent ifFalse: [ 
-		(self verify: aCard IsInHand: aShipPosition) ifTrue: [ 
-			chosenCard := aCard.
-			self cardDirectedTo: aNumberOfShip.
-			 ] ].
-
-	(aCard permanent) ifTrue: [
-		(self playerTurn: aNumberOfShip) ifTrue:[
-		(self verify: aCard IsInHand: aShipPosition) ifTrue: [ 
-			chosenCard := aCard ] ] ]."
 ]
 
 { #category : #instance }
@@ -94,7 +84,7 @@ ShipsGame >> create: anAmountOfPlayers [
 	count:=1.
 	playersCollection := OrderedCollection new.
 	[ count <= anAmountOfPlayers  ] whileTrue: [ 
-		playersCollection add: (ShipPosition with: count) .
+		playersCollection add: (Ship with: count) .
 		count :=count +1
 	 ].
 ^playersCollection.
@@ -153,10 +143,10 @@ ShipsGame >> throwNextPlayer [
 
 { #category : #validation }
 ShipsGame >> verify: aCard IsInHand: aNumberOfShip [
-	| counter anArrayOfCards selectedCard aShipPosition|
-	aShipPosition := gameboard player: aNumberOfShip .
+	| counter anArrayOfCards selectedCard aShipCards|
+	aShipCards := (gameboard player: aNumberOfShip)shipCards  .
 	counter :=1.
-	anArrayOfCards :=aShipPosition  cardsInHand.
+	anArrayOfCards :=aShipCards cardsInHand.
 	[counter <= anArrayOfCards  size ] whileTrue: [ 
 		((anArrayOfCards at: counter ) = aCard )ifTrue: [ 
 			 anArrayOfCards remove: (anArrayOfCards at: counter).

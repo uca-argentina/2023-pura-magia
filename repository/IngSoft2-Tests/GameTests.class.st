@@ -495,7 +495,7 @@ aGame startwith: amountOfPlayers   and: aGameBoard.
 { #category : #tests }
 GameTests >> test019PlayerHasAshipThenPlayerShipHasANumber [
 |aPlayer|
-aPlayer := ShipPosition with:  1.
+aPlayer := Ship with:  1.
 
 
 self assert: (aPlayer numberOfShip) equals: 1.
@@ -810,7 +810,7 @@ aGameBoard add: anSpecialCard at: 4.
 
 aGame throwNextPlayer .
 
-self assert: ((aGameBoard player: 1) cardsInHand size) equals: 3.
+self assert: (((aGameBoard player: 1)shipCards) cardsInHand size) equals: 3.
 
 ]
 
@@ -854,7 +854,7 @@ self assert: ((parsecs plus: lightYears)nominalValue) equals: 5
 
 { #category : #tests }
 GameTests >> test056GameWithLightYearsAndParsecsInHyperJump [
-| parsecs hyperJump amountOfParsecsToMove parsc1 parsc2 light1 light2 collection1 |
+| parsecs hyperJump amountOfParsecsToMove parsc1 parsc2 light1 light2 collection1 aShip|
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 6 ).
@@ -877,13 +877,27 @@ aGameBoard cellsWith: parsecs and: arrayOfDie .
 aGameBoard add: hyperJump  at: 3 .
 aGame throwNextPlayer.
 
-
-self assert: ((aGameBoard numberOfParsecs: (aGameBoard player: 1))nominalValue)  equals: 3  .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 4  .
+aShip:=((aGameBoard player: 1)).
+self assert: ((aGameBoard numberOfParsecs: (aGameBoard player: 1)  )nominalValue)  equals: 3  .
+self assert: (aGameBoard checkPositionOf:  aShip ) equals: 4  .
 
 aGame throwNextPlayer.
-self assert: ((aGameBoard numberOfParsecs: (aGameBoard player: 1))nominalValue)  equals: 2  .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 4  .
+self assert: ((aGameBoard numberOfParsecs: aShip )nominalValue)  equals: 2  .
+self assert: (aGameBoard checkPositionOf:  aShip ) equals: 4  .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test057GamePlayersWithShipPositionShipCards [
+
+self setUpGameWith: 1 andGameboardWith: 4 and: 1.
+
+self assert: (((aGameBoard player: 1)shipPosition)isAtPosition ) equals: 0
 
 
 

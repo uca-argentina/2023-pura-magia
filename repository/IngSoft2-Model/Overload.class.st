@@ -15,7 +15,7 @@ Overload >> amountToChange [
 
 { #category : #action }
 Overload >> apply: aGameBoard [ 
-	(aGameBoard player: (chosenPlayer numberOfShip)) store: self.
+	((aGameBoard player: (chosenPlayer numberOfShip))shipCards ) store: self.
 ]
 
 { #category : #validation }

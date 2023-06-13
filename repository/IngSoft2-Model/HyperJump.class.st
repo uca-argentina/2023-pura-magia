@@ -34,13 +34,15 @@ HyperJump class >> with: arrayOfPosibilities [
 
 { #category : #action }
 HyperJump >> applyTo: aGameBoard [ 
-	|result turn|
+	|parsecs turn aShip newPosition|
 	round := round +1.
 	turn:= aGameBoard turn.
+	aShip:=aGameBoard player: turn.
 	(round > anAmountOfParsecsToMove  size) ifTrue: [ 
 		round :=1 ].
-	result := ((anAmountOfParsecsToMove  at: round) parsecs)nominalValue.
-	(aGameBoard player: turn) changeParsecs: result.
+	parsecs := ((anAmountOfParsecsToMove  at: round) parsecs)nominalValue.
+	newPosition := aGameBoard  createWithNew: parsecs with: aShip shipPosition  .
+	(aShip) changePosition:  newPosition.
 ]
 
 { #category : #initialization }
@@ -50,12 +52,12 @@ HyperJump >> initializeWith: amountOfParsecsToMove [
 ]
 
 { #category : #action }
-HyperJump >> repeatFor: aShipPosition using: aGameBoard [ 
-	|result |
+HyperJump >> repeatFor: aChosenShip using: aGameBoard [ 
+	|result parsecs newPosition|
 	round := round +1.
 		(round > anAmountOfParsecsToMove  size) ifTrue: [ 
 		round :=1 ].
-	
-	result := ((anAmountOfParsecsToMove  at: round) parsecs)nominalValue.
-	(aShipPosition) changeParsecs: result.
+	parsecs := ((anAmountOfParsecsToMove  at: round) parsecs)nominalValue.
+	newPosition := aGameBoard  createWithNew: parsecs with: (aChosenShip shipPosition)  .
+	(aChosenShip) changePosition:  newPosition.
 ]

@@ -6,16 +6,20 @@ Class {
 
 { #category : #action }
 WormHole >> applyTo: aGameBoard [ 
-	| turn aPlayer |
+	| turn aShip newPosition newCell|
 	turn := aGameBoard turn.
-	aPlayer := aGameBoard player: turn.
-	aPlayer changePosition: (aPlayer isAtPosition -4).
+	aShip := aGameBoard player: turn.
+	newCell:=((aShip shipPosition ) isAtPosition) -4.
+	newPosition := (aGameBoard  createPositionIn: newCell with:((aShip)shipPosition)).
+	(aShip) changePosition: newPosition.
 	
 ]
 
 { #category : #action }
-WormHole >> repeatFor: aShipPosition using: aGameBoard [ 
-	|actualPosition|
-	actualPosition := aShipPosition isAtPosition.
-	aShipPosition changePosition: (actualPosition -4).
+WormHole >> repeatFor: aShip using: aGameBoard [ 
+	|newCell newShipPosition shipPosition|
+	newCell := (((aShip shipPosition ) isAtPosition)-4).
+	shipPosition := aShip shipPosition .
+	newShipPosition:= aGameBoard verifyCellsOf: shipPosition   at: newCell .
+	aShip  changePosition: newShipPosition.
 ]
