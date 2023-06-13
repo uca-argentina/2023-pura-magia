@@ -208,11 +208,6 @@ GameBoard >> checkPositionOf: aShip [
 	^ ((anotherShip shipPosition ) isAtPosition)
 ]
 
-{ #category : #creation }
-GameBoard >> create: aClass in: anInteger with: aShip [ 
-	self shouldBeImplemented.
-]
-
 { #category : #action }
 GameBoard >> createCollectionFrom: aCollection [ 
 	|index newCollection|
@@ -414,39 +409,6 @@ GameBoard >> updateResult: aResult [
 	^ auxResult .
 ]
 
-{ #category : #validation }
-GameBoard >> verifyAllPositions [
-
-	| index player playerPosition playerParsec |
-	index := 1.
-	[ index <= collectionOfShipPositions  size ] whileTrue: [ 
-		player := collectionOfShipPositions  at: index.
-		playerPosition := player isAtPosition.
-		playerParsec := self verifyParsecOf: player at: playerPosition.
-		playerPosition := self verifyCellsOf: player.
-		index := index + 1 ]
-]
-
-{ #category : #validation }
-GameBoard >> verifyCellsOf: player [
-
-	| playerPosition |
-	playerPosition := player isAtPosition.
-	[ playerPosition < 0 ] whileTrue: [ 
-		(player isAtLap = 1) ifTrue: [ 
-				player changePosition: 0.
-				playerPosition := 0.
-			] ifFalse: [  
-				player changePosition: cells + playerPosition.
-				player decreaseLap. 
-				playerPosition := cells + playerPosition ] ].
-	[ playerPosition > cells ] whileTrue: [ 
-		player changePosition: playerPosition - cells.
-		player increaseLap.
-		playerPosition := playerPosition - cells ].
-	^ playerPosition
-]
-
 { #category : #action }
 GameBoard >> verifyCellsOf: aShipPosition at: aResult [ 
 	|newShipPosition  result playerPosition position newLap parsec|
@@ -475,22 +437,6 @@ GameBoard >> verifyCellsOf: aShipPosition at: aResult [
 	
 	^ newShipPosition 
 
-]
-
-{ #category : #validation }
-GameBoard >> verifyParsecOf: player at: playerPosition [
-
-	| playerParsec |
-	playerParsec := (player isAtParsec)nominalValue.
-	[ playerParsec > parsecsByCell ] whileTrue: [ 
-		player changeParsecs:  ((-1)*(parsecsByCell)).
-		player changePosition: playerPosition + 1.
-		playerParsec := playerParsec - parsecsByCell ].
-	[ playerParsec < 0 ] whileTrue: [ 
-		player changeParsecs: parsecsByCell.
-		player changePosition: playerPosition - 1.
-		playerParsec := playerParsec + parsecsByCell ].
-	^ playerParsec
 ]
 
 { #category : #action }
