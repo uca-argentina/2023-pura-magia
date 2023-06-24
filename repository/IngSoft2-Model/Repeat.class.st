@@ -2,10 +2,16 @@ Class {
 	#name : #Repeat,
 	#superclass : #Object,
 	#instVars : [
-		'chosenShip'
+		'chosenShip',
+		'shipsGame'
 	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #initialization }
+Repeat class >> with: aShipsGame [ 
+	^(self new) initializeWith: aShipsGame .
+]
 
 { #category : #action }
 Repeat >> apply: aGameBoard [ 
@@ -13,6 +19,25 @@ Repeat >> apply: aGameBoard [
 	counter:=1.
 	lastEffectUsed:= aGameBoard lastEffect  .
 	lastEffectUsed repeatFor: chosenShip using: aGameBoard . 
+	^(self)
+]
+
+{ #category : #action }
+Repeat >> from: aNumberOfShip [
+	shipsGame  chosen: self from: aNumberOfShip.
+	shipsGame  applyChosenCard.
+]
+
+{ #category : #action }
+Repeat >> from: aNumberOfShip to: aChosenNumberOfShip [
+	shipsGame chosen: self from: aNumberOfShip.
+	shipsGame cardDirectedTo: aChosenNumberOfShip.
+	shipsGame applyChosenCard.
+]
+
+{ #category : #initialization }
+Repeat >> initializeWith: aShipsGame [ 
+	shipsGame := aShipsGame .
 ]
 
 { #category : #validation }

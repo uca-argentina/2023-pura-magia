@@ -3,10 +3,16 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'numberOfPlayer',
-		'chosenPlayer'
+		'chosenPlayer',
+		'shipsGame'
 	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #initialization }
+Overload class >> with: aShipsGame [
+	^(self new) initializeWith: aShipsGame .
+]
 
 { #category : #action }
 Overload >> amountToChange [
@@ -16,6 +22,19 @@ Overload >> amountToChange [
 { #category : #action }
 Overload >> apply: aGameBoard [ 
 	((aGameBoard player: (chosenPlayer numberOfShip))shipCards ) store: self.
+	^(self)
+]
+
+{ #category : #action }
+Overload >> from: aNumberOfShip applyTo: aChosenNumberOfShip [ 
+	shipsGame chosen: self from: aNumberOfShip.
+	shipsGame cardDirectedTo: aChosenNumberOfShip.
+	shipsGame applyChosenCard.
+]
+
+{ #category : #initialization }
+Overload >> initializeWith: aShipsGame [
+	shipsGame := aShipsGame .
 ]
 
 { #category : #validation }

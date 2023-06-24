@@ -3,10 +3,16 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'cardToRedo',
-		'chosenShip'
+		'chosenShip',
+		'shipsGame'
 	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #initialization }
+Redo class >> with: aShipsGame [
+	^(self new) initializeWith: aShipsGame .
+]
 
 { #category : #action }
 Redo >> apply: aGameBoard [
@@ -16,8 +22,37 @@ Redo >> apply: aGameBoard [
 			cardToRedo selected: chosenShip .
 			cardToRedo apply: aGameBoard .	
 		 ].
+	^ cardToRedo .
 
 	 
+]
+
+{ #category : #action }
+Redo >> cancellationFrom: aNumberOfPlayer to: aChosenNumberOfPlayer canceled: aCard [
+	|lastCardUsedInGame aGameboard|
+	lastCardUsedInGame := shipsGame lastUsedCard.
+	aGameboard := shipsGame gameboard.
+	lastCardUsedInGame selected: aChosenNumberOfPlayer .
+	lastCardUsedInGame  canceled: aCard.
+	lastCardUsedInGame apply: aGameboard .
+]
+
+{ #category : #action }
+Redo >> from: aNumberOfShip [
+	shipsGame  chosen: self from: aNumberOfShip.
+	shipsGame  applyChosenCard.
+]
+
+{ #category : #action }
+Redo >> from: aNumberOfShip to: aChosenNumberOfShip [
+	shipsGame chosen: self from: aNumberOfShip.
+	shipsGame cardDirectedTo: aChosenNumberOfShip.
+	shipsGame applyChosenCard.
+]
+
+{ #category : #initialization }
+Redo >> initializeWith: aShipsGame [ 
+	shipsGame := aShipsGame .
 ]
 
 { #category : #validation }
@@ -37,11 +72,6 @@ Redo >> permanent: aShipsGame verify: aNumberOfShip [
 { #category : #action }
 Redo >> redo: lastUsedCard [ 
 	cardToRedo := lastUsedCard .
-]
-
-{ #category : #validation }
-Redo >> redoCard [
-	^cardToRedo .
 ]
 
 { #category : #instance }
