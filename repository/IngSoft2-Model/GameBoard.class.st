@@ -10,7 +10,8 @@ Class {
 		'dieCollection',
 		'turn',
 		'aCollectionOfUsedCards',
-		'lastEffectUsed'
+		'lastEffectUsed',
+		'aCollectionOfAccelerations'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -31,6 +32,11 @@ GameBoard class >> with: numberOfCells and: numberOfLaps [
 	
 	
 	 
+]
+
+{ #category : #action }
+GameBoard >> accelerations [
+	^aCollectionOfAccelerations .
 ]
 
 { #category : #adding }
@@ -279,6 +285,7 @@ GameBoard >> initializeWith: numberOfCells and: numberOfLaps [
 	aCollectionOfSpecialCells := OrderedCollection new.
 	collectionOfShipPositions := OrderedCollection new.
 	aCollectionOfUsedCards := OrderedCollection new.
+	aCollectionOfAccelerations := OrderedCollection new.
 ]
 
 { #category : #validation }
@@ -293,30 +300,38 @@ GameBoard >> lastEffect [
 
 { #category : #action }
 GameBoard >> move: aShip [ 
-	| index positionOfShip result specialEffect auxResult dieResult newPosition |
+	| aNumberOfShip positionOfShip result specialEffect auxResult dieResult |
 
-	dieResult  := 0.
-	dieResult  := self throwVariousDices: dieCollection .
-	dieResult := dieResult + (aShip   resultOfCards).
+	dieResult := self resultOf: aShip .
+	aNumberOfShip := aShip numberOfShip.
 	
-	index := 1.
-	[ (collectionOfShipPositions  at: index) isTheSameAs: aShip ] 
-		whileFalse: [ index := index + 1 ].
-	positionOfShip := ((collectionOfShipPositions  at: index)shipPosition) isAtPosition.
+	positionOfShip := ((collectionOfShipPositions  at: aNumberOfShip)shipPosition) isAtPosition.
 	result := positionOfShip + dieResult .
 	auxResult := self updateResult: result.
 	specialEffect := self specialEffectAtCell: auxResult.
 	(specialEffect == 0)
 		ifFalse: [ 
-					newPosition := (self createPositionIn: result with:((collectionOfShipPositions  at:index)shipPosition)).
-			(collectionOfShipPositions  at: index) changePosition: newPosition.
-					specialEffect applyTo: self.
-					lastEffectUsed := specialEffect.
+					self move:(collectionOfShipPositions at: aNumberOfShip) using: specialEffect and: result  .
 					 ]
-		ifTrue: [ 
-			newPosition := (self createPositionIn: result with:((collectionOfShipPositions  at: index)shipPosition)).
-			(collectionOfShipPositions  at: index) changePosition: newPosition.
+		ifTrue: [
+			self move: (collectionOfShipPositions at: aNumberOfShip) using: result .
 			 ]
+]
+
+{ #category : #action }
+GameBoard >> move: aShip using: result [ 
+	|newPosition|
+	newPosition := (self createPositionIn: result with:(aShip shipPosition)).
+	aShip changePosition: newPosition.
+]
+
+{ #category : #action }
+GameBoard >> move: aShip using: specialEffect and: result [ 
+	|newPosition|
+	newPosition := (self createPositionIn: result with:(aShip shipPosition)).
+	aShip changePosition: newPosition.
+	specialEffect applyTo: self.
+	lastEffectUsed := specialEffect.
 ]
 
 { #category : #validation }
@@ -354,6 +369,15 @@ GameBoard >> ranking [
 	 
 ]
 
+{ #category : #action }
+GameBoard >> resultOf: aShip [
+	|dieResult|
+	dieResult  := 0.
+	dieResult  := self throwVariousDices: dieCollection .
+	dieResult := dieResult + (aShip   resultOfCards) + self sumOfAccelerations.
+	^dieResult .
+]
+
 { #category : #validation }
 GameBoard >> specialEffectAtCell: aNumberOfCell [ 
 	|counter typeOfCell|
@@ -372,6 +396,16 @@ GameBoard >> specialEffectAtCell: aNumberOfCell [
 		 ].
 	
 	^typeOfCell.
+]
+
+{ #category : #adding }
+GameBoard >> store: anAcceleration [ 
+	aCollectionOfAccelerations add: anAcceleration.
+]
+
+{ #category : #action }
+GameBoard >> sumOfAccelerations [
+	^ aCollectionOfAccelerations size.
 ]
 
 { #category : #action }

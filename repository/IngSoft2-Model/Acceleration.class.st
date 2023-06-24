@@ -1,8 +1,16 @@
 Class {
 	#name : #Acceleration,
 	#superclass : #Object,
+	#instVars : [
+		'shipsGame'
+	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #initialization }
+Acceleration class >> with: aShipsGame [ 
+ ^(self new) initializeWith: aShipsGame.
+]
 
 { #category : #action }
 Acceleration >> amountToChange [
@@ -10,13 +18,20 @@ Acceleration >> amountToChange [
 ]
 
 { #category : #action }
-Acceleration >> apply: aGameBoard [ 
-	|counter|
-	counter := 1.
-	[ counter <= aGameBoard amountOfPlayers ]whileTrue: [ 
-			((aGameBoard player: counter)shipCards)  store: (self).
-			counter := counter +1.
-	 ]
+Acceleration >> apply: aGameBoard [
+	aGameBoard store: self.
+	^(self)
+]
+
+{ #category : #action }
+Acceleration >> applyToAllFrom: aNumberOfShip [ 
+	shipsGame chosen: self from: aNumberOfShip.
+	shipsGame applyChosenCard.
+]
+
+{ #category : #initialization }
+Acceleration >> initializeWith: aShipsGame [ 
+	shipsGame := aShipsGame .
 ]
 
 { #category : #validation }

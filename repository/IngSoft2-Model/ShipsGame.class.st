@@ -20,46 +20,12 @@ ShipsGame class >> initializeEmpty [
 
 { #category : #action }
 ShipsGame >> applyChosenCard [
-	chosenCard apply: gameboard.
-	
-	lastUsedCard := chosenCard .
-	
-	(chosenCard isKindOf: Redo)	ifTrue: [ 
-				lastUsedCard := chosenCard redoCard.
-			 ]
+	lastUsedCard := chosenCard apply: gameboard .
 ]
 
 { #category : #assignments }
 ShipsGame >> cardDirectedTo: aNumberOfShip [ 
 	chosenCard selected: (gameboard player: aNumberOfShip) 
-]
-
-{ #category : #action }
-ShipsGame >> chooseAndApply: aCard from: aNumberOfPlayer [ 
-	self chosen: aCard from: aNumberOfPlayer.
-	self applyChosenCard.
-]
-
-{ #category : #action }
-ShipsGame >> chooseAndApply: aCancellation from: aNumberOfPlayer canceled: anAcceleration [ 
-	self chosen: aCancellation from: aNumberOfPlayer.
-	aCancellation canceled: anAcceleration .
-	self applyChosenCard.
-]
-
-{ #category : #action }
-ShipsGame >> chooseAndApply: aCard from: aNumberOfPlayer to: aChosenNumberOfPlayer [
-	self chosen: aCard from: aNumberOfPlayer.
-	self cardDirectedTo: aChosenNumberOfPlayer.
-	self applyChosenCard.
-]
-
-{ #category : #action }
-ShipsGame >> chooseAndApply: aCancellation from: aNumberOfPlayer to: chosenNumberOfPlayer canceled: aCancelledCard [ 
-	self chosen: aCancellation from: aNumberOfPlayer.
-	aCancellation  canceled: aCancelledCard.
-	self cardDirectedTo: chosenNumberOfPlayer.
-	self applyChosenCard.
 ]
 
 { #category : #validation }
@@ -90,6 +56,11 @@ ShipsGame >> create: anAmountOfPlayers [
 ^playersCollection.
 ]
 
+{ #category : #action }
+ShipsGame >> gameboard [
+	^ gameboard
+]
+
 { #category : #intialization }
 ShipsGame >> initializeWith: aResult [
 
@@ -97,6 +68,11 @@ ShipsGame >> initializeWith: aResult [
 	gameboard := nil.
 	numberOfPlayer := 1.
 	amountOfPlayers := 0.
+]
+
+{ #category : #action }
+ShipsGame >> lastUsedCard [
+	^ lastUsedCard
 ]
 
 { #category : #validation }

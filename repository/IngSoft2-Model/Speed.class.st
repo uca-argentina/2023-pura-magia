@@ -2,10 +2,16 @@ Class {
 	#name : #Speed,
 	#superclass : #Object,
 	#instVars : [
-		'chosenPlayer'
+		'chosenPlayer',
+		'shipsGame'
 	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #initialization }
+Speed class >> with: aShipsGame [ 
+	^(self new) initializeWith: aShipsGame .
+]
 
 { #category : #action }
 Speed >> amountToChange [
@@ -14,7 +20,20 @@ Speed >> amountToChange [
 
 { #category : #action }
 Speed >> apply: aGameBoard [ 
-	((aGameBoard player: (chosenPlayer numberOfShip))shipCards ) store: (self).
+	((aGameBoard player: (chosenPlayer numberOfShip))shipCards ) store: (self). 
+	^(self)
+]
+
+{ #category : #action }
+Speed >> from: aNumberOfShip applyTo: aChosenNumberOfShip [ 
+	shipsGame chosen: self from: aNumberOfShip.
+	shipsGame cardDirectedTo: aChosenNumberOfShip.
+	shipsGame applyChosenCard.
+]
+
+{ #category : #initialization }
+Speed >> initializeWith: aShipsGame [ 
+	shipsGame := aShipsGame .
 ]
 
 { #category : #validation }
