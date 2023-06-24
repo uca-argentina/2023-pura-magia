@@ -74,11 +74,6 @@ Redo >> redo: lastUsedCard [
 	cardToRedo := lastUsedCard .
 ]
 
-{ #category : #validation }
-Redo >> redoCard [
-	^cardToRedo .
-]
-
 { #category : #instance }
 Redo >> selected: aShipPosition [ 
 	chosenShip := aShipPosition .

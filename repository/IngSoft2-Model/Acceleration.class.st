@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #initialization }
-Acceleration class >> with: aShipsGame [ 
- ^(self new) initializeWith: aShipsGame.
+Acceleration class >> amountToChange [
+	^1.
 ]
 
-{ #category : #action }
-Acceleration >> amountToChange [
-	^1.
+{ #category : #initialization }
+Acceleration class >> with: aShipsGame [ 
+ ^(self new) initializeWith: aShipsGame.
 ]
 
 { #category : #action }

@@ -405,7 +405,7 @@ GameBoard >> store: anAcceleration [
 
 { #category : #action }
 GameBoard >> sumOfAccelerations [
-	^ aCollectionOfAccelerations size.
+	^ (aCollectionOfAccelerations size) * (Acceleration amountToChange).
 ]
 
 { #category : #action }

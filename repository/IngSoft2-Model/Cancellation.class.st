@@ -67,11 +67,6 @@ Cancellation >> initializeWith: aShipsGame [
 	shipsGame := aShipsGame .
 ]
 
-{ #category : #action }
-Cancellation >> permanent [
-	^false.
-]
-
 { #category : #validation }
 Cancellation >> permanent: aShipsGame verify: aNumberOfShip [ 
 	(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
