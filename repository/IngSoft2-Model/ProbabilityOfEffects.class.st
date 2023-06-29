@@ -7,28 +7,23 @@ Class {
 { #category : #calculating }
 ProbabilityOfEffects >> averageProbabilities: aCollectionOfTemporalVariables [
 
-|finalAverages index sizeOfCollection total numberWithDecimals|
-finalAverages := OrderedCollection new.
-index := 1.
-sizeOfCollection:= aCollectionOfTemporalVariables size.
-[ index <= (sizeOfCollection - 1) ] whileTrue: [
-	
-	numberWithDecimals:= ((aCollectionOfTemporalVariables at: index )/(aCollectionOfTemporalVariables at: sizeOfCollection)) .
-	total:= (numberWithDecimals * 100) asFloat .
-	finalAverages add: total .
-	index := index + 1.
-	
-	 ].
-^ finalAverages .
+	| finalAverages sizeOfCollection total numberWithDecimals |
+	finalAverages := OrderedCollection new.
+	sizeOfCollection := aCollectionOfTemporalVariables size.
 
-	
+	1 to: sizeOfCollection - 1 do: [ :index | 
+		numberWithDecimals := (aCollectionOfTemporalVariables at: index) / (aCollectionOfTemporalVariables at: sizeOfCollection).
+		total := (numberWithDecimals * 100) asFloat.
+		finalAverages add: total ].
+
+	^ finalAverages
 ]
 
 { #category : #calculating }
 ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCollectionOfDifferentParsecs [ 
-	|index gameboards totalWormHoles totalSpeedUps totalMoonWalks totalHyperJumps totalAtomicBombs totalNormalCells totalCells finalArray arrayWithTemporalVariables totalSpecialCardsCells|
+	|gameboards totalWormHoles totalSpeedUps totalMoonWalks totalHyperJumps totalAtomicBombs totalNormalCells totalCells finalArray arrayWithTemporalVariables totalSpecialCardsCells|
 	gameboards := self createArrayOfGameBoards: arrayOfEffectsProbabilities forHyperJump: aCollectionOfDifferentParsecs .
-	index := 1.
+	
 		totalWormHoles := 0.
 		totalSpeedUps := 0. 
 		totalMoonWalks := 0. 
@@ -38,21 +33,18 @@ ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCo
 		totalSpecialCardsCells := 0.
 		totalCells:= 0.
 		
-	[ index <= (gameboards size) ] whileTrue: [
+	   gameboards do: [ :each | 
+		totalWormHoles := totalWormHoles + each amountOfWormHoles.
+		totalSpeedUps := totalSpeedUps + each amountOfSpeedUps. 
+		totalMoonWalks := totalMoonWalks + each amountOfMoonWalks. 
+		totalHyperJumps := totalHyperJumps + each amountOfHyperJumps. 
+		totalAtomicBombs := totalAtomicBombs + each amountOfAtomicBombs.
+		totalSpecialCardsCells := totalSpecialCardsCells + each amountOfSpecialCardsCells.
+		totalNormalCells := totalNormalCells + each amountOfNormalCells.
 		
-		totalWormHoles := totalWormHoles + (gameboards at: index) amountOfWormHoles.
-		totalSpeedUps := totalSpeedUps + (gameboards at: index) amountOfSpeedUps. 
-		totalMoonWalks := totalMoonWalks + (gameboards at: index) amountOfMoonWalks. 
-		totalHyperJumps := totalHyperJumps + (gameboards at: index) amountOfHyperJumps. 
-		totalAtomicBombs := totalAtomicBombs + (gameboards at: index) amountOfAtomicBombs.
-		totalSpecialCardsCells := totalSpecialCardsCells + (gameboards at: index) amountOfSpecialCardsCells.
-		totalNormalCells := totalNormalCells + (gameboards at: index) amountOfNormalCells.
 		
+		totalCells:= each amountOfCells + totalCells.].
 		
-		totalCells:= (gameboards at: index) amountOfCells + totalCells.
-		
-		index := index + 1.
-	 ].
 	
 	arrayWithTemporalVariables := OrderedCollection new.
 	arrayWithTemporalVariables add: totalNormalCells.
@@ -71,15 +63,13 @@ ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCo
 ]
 
 { #category : #creation }
-ProbabilityOfEffects >> createArrayOfGameBoards: arrayOfEffectsProbabilites forHyperJump: aCollectionOfDifferentParsecs [  
-	|index array|
-	index:= 1.
-	array := OrderedCollection new.
-	
-[ index <= 10000 ] whileTrue: [ 
-	array add: ((GameBoard with: 100 and: 1) addEffects: arrayOfEffectsProbabilites forHyperJump: aCollectionOfDifferentParsecs ).
-	index := index + 1.
-	 ].
+ProbabilityOfEffects >> createArrayOfGameBoards: arrayOfEffectsProbabilites forHyperJump: aCollectionOfDifferentParsecs [
 
-^ array .
+	| array |
+	array := OrderedCollection new.
+	1 to: 5000 do: [ :index | 
+		array add: ((GameBoard with: 100 and: 1) addEffects: arrayOfEffectsProbabilites
+		forHyperJump: aCollectionOfDifferentParsecs) ].
+
+	^ array
 ]

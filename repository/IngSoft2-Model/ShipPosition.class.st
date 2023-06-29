@@ -4,9 +4,7 @@ Class {
 	#instVars : [
 		'cellNumber',
 		'actualLap',
-		'parsecs',
-		'aCollectionOfCards',
-		'aCollectionOfCardsForMe'
+		'parsecs'
 	],
 	#category : #'IngSoft2-Model'
 }

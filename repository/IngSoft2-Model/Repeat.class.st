@@ -41,11 +41,11 @@ Repeat >> initializeWith: aShipsGame [
 ]
 
 { #category : #validation }
-Repeat >> permanent: aShipsGame verify: aNumberOfShip [ 
-	(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
-			aShipsGame chosenCard: self.
-			aShipsGame cardDirectedTo: aNumberOfShip.
-			 ].
+Repeat >> permanent: aShipsGame verify: aNumberOfShip [
+
+	(aShipsGame verify: self IsInHand: aNumberOfShip) ifFalse: [ ^ self ].
+	aShipsGame chosenCard: self.
+	aShipsGame cardDirectedTo: aNumberOfShip
 ]
 
 { #category : #intance }

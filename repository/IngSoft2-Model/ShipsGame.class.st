@@ -7,7 +7,6 @@ Class {
 		'numberOfPlayer',
 		'amountOfPlayers',
 		'chosenCard',
-		'cardToCancell',
 		'lastUsedCard'
 	],
 	#category : #'IngSoft2-Model'
@@ -46,14 +45,14 @@ ShipsGame >> chosenCard: aCard [
 
 { #category : #creation }
 ShipsGame >> create: anAmountOfPlayers [
-	|playersCollection count|
-	count:=1.
+
+	| playersCollection |
 	playersCollection := OrderedCollection new.
-	[ count <= anAmountOfPlayers  ] whileTrue: [ 
-		playersCollection add: (Ship with: count) .
-		count :=count +1
-	 ].
-^playersCollection.
+
+	1 to: anAmountOfPlayers do: [ :count | 
+	playersCollection add: (Ship with: count) ].
+
+	^ playersCollection
 ]
 
 { #category : #action }
@@ -119,19 +118,16 @@ ShipsGame >> throwNextPlayer [
 
 { #category : #validation }
 ShipsGame >> verify: aCard IsInHand: aNumberOfShip [
-	| counter anArrayOfCards selectedCard aShipCards|
-	aShipCards := (gameboard player: aNumberOfShip)shipCards  .
-	counter :=1.
-	anArrayOfCards :=aShipCards cardsInHand.
-	[counter <= anArrayOfCards  size ] whileTrue: [ 
-		((anArrayOfCards at: counter ) = aCard )ifTrue: [ 
-			 anArrayOfCards remove: (anArrayOfCards at: counter).
-			^true.
-			 ].
-		counter:= counter +1.
-		
-		 ].
-	^false.
+
+	| anArrayOfCards aShipCards |
+	aShipCards := (gameboard player: aNumberOfShip) shipCards.
+
+	anArrayOfCards := aShipCards cardsInHand.
+
+	(anArrayOfCards includes: aCard) ifTrue: [ 
+		anArrayOfCards remove: aCard.
+		^ true ].
+	^ false
 ]
 
 { #category : #validation }
