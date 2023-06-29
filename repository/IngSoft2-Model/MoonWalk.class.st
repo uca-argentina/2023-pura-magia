@@ -13,19 +13,16 @@ MoonWalk class >> with: anAmountOfCells [
 ]
 
 { #category : #action }
-MoonWalk >> applyTo: aGameBoard [ 
-	|index turn newCell newShipPosition shipPosition|
-	index := 1.
-	turn:= aGameBoard turn .
-	[index <= aGameBoard amountOfPlayers] whileTrue: [ 
-		((aGameBoard player:  index) = (aGameBoard player:  turn)) ifFalse: [ 
-			shipPosition:= (aGameBoard player:  index)shipPosition .
-			newCell := (shipPosition ) isAtPosition + amountOfCells.
-			newShipPosition:= aGameBoard verifyCellsOf: shipPosition    at: newCell .
-			(aGameBoard player:  index) changePosition: newShipPosition .
-			 ].
-		index := index + 1. 
-		]
+MoonWalk >> applyTo: aGameBoard [
+
+	| turn newCell newShipPosition shipPosition |
+	turn := aGameBoard turn.
+	1 to: aGameBoard amountOfPlayers do: [ :index | 
+		(aGameBoard player: index) = (aGameBoard player: turn) ifFalse: [ 
+			shipPosition := (aGameBoard player: index) shipPosition.
+			newCell := shipPosition isAtPosition + amountOfCells.
+			newShipPosition := aGameBoard verifyCellsOf: shipPosition at: newCell.
+			(aGameBoard player: index) changePosition: newShipPosition ] ]
 ]
 
 { #category : #initialization }
@@ -34,17 +31,13 @@ MoonWalk >> initializeWith: anAmountOfCells [
 ]
 
 { #category : #action }
-MoonWalk >> repeatFor: aChosenShip using: aGameBoard [ 
-	|index  newCell shipPosition newShipPosition|
-	index := 1.
-	
-	[index <= aGameBoard amountOfPlayers] whileTrue: [ 
-		((aGameBoard player:  index) = (aChosenShip )) ifFalse: [ 
-			newCell :=( (aGameBoard player:  index)shipPosition ) isAtPosition + amountOfCells.
-			shipPosition:= (aGameBoard player:  index)shipPosition.
-			newShipPosition:= aGameBoard verifyCellsOf: shipPosition   at: newCell .
-			(aGameBoard player:  index) changePosition: newShipPosition.
-			 ].
-		index := index + 1. 
-		]
+MoonWalk >> repeatFor: aChosenShip using: aGameBoard [
+
+	| newCell shipPosition newShipPosition |
+	1 to: aGameBoard amountOfPlayers do: [ :index | 
+		(aGameBoard player: index) = aChosenShip ifFalse: [ 
+			newCell := (aGameBoard player: index) shipPosition isAtPosition + amountOfCells.
+			shipPosition := (aGameBoard player: index) shipPosition.
+			newShipPosition := aGameBoard verifyCellsOf: shipPosition at: newCell.
+			(aGameBoard player: index) changePosition: newShipPosition ] ]
 ]

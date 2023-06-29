@@ -53,7 +53,7 @@ HyperJump >> initializeWith: amountOfParsecsToMove [
 
 { #category : #action }
 HyperJump >> repeatFor: aChosenShip using: aGameBoard [ 
-	|result parsecs newPosition|
+	| parsecs newPosition|
 	round := round +1.
 		(round > anAmountOfParsecsToMove  size) ifTrue: [ 
 		round :=1 ].

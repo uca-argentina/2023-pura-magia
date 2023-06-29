@@ -2,7 +2,6 @@ Class {
 	#name : #Overload,
 	#superclass : #Object,
 	#instVars : [
-		'numberOfPlayer',
 		'chosenPlayer',
 		'shipsGame'
 	],

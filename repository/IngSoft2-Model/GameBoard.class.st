@@ -55,13 +55,11 @@ GameBoard >> add: aCard to: numberOfPlayer [
 
 { #category : #action }
 GameBoard >> addEffects: aCollectionOfProbabilities forHyperJump: aCollectionOfDifferentParsecs [ 
-	|index randomNumber probabilities|
-	index:= 0.
-	
-	probabilities := self createCollectionFrom: aCollectionOfProbabilities .
+	|randomNumber probabilities|
 		
-	[ index <= cells ] whileTrue: [
-		randomNumber:= 100 atRandom.
+	probabilities := self createCollectionFrom: aCollectionOfProbabilities .
+	
+	0 to: cells do: [ :index | randomNumber:= 100 atRandom.
 		
 		( randomNumber >= (probabilities  at: 1) and: randomNumber < (probabilities at: 2)) ifTrue: [ 
 			self add: (WormHole new) at: index. 
@@ -80,27 +78,20 @@ GameBoard >> addEffects: aCollectionOfProbabilities forHyperJump: aCollectionOfD
 		 ].
 	(randomNumber >= (probabilities  at: 6) and: randomNumber < (probabilities at: 7)) ifTrue: [ 
 			self add: (CardAssignation new) at: index. 
-		 ].
-	
-		index := index + 1.
-		
-	 ]
+		 ].].
 
 ]
 
 { #category : #counting }
 GameBoard >> amountOfAtomicBombs [
-	|index count|
-	index := 1.
-	count := 0.
-	[ index <= aCollectionOfSpecialCells size  ] whileTrue: [ 
-		(((aCollectionOfSpecialCells at: index) typeOfSpecialEffect) isKindOf: AtomicBomb ) ifTrue: [ 
-			count := count + 1.
-			 ].
-		index:= index + 1.
-	 ].
 
-^ count .
+	| count |
+	count := 0.
+	aCollectionOfSpecialCells do: [ :each | 
+		(each typeOfSpecialEffect isKindOf: AtomicBomb) ifTrue: [ 
+			count := count + 1 ] ].
+
+	^ count
 ]
 
 { #category : #validation }
@@ -215,18 +206,17 @@ GameBoard >> checkPositionOf: aShip [
 ]
 
 { #category : #action }
-GameBoard >> createCollectionFrom: aCollection [ 
-	|index newCollection|
-	index:= 2.
-	newCollection := OrderedCollection new .
-	newCollection add: (aCollection at: 1).
-	[ index <= aCollection size ] whileTrue: [ 
-		newCollection add: ((newCollection at: index-1) + (aCollection at: index)).
-		index := index + 1.
-	 ].
+GameBoard >> createCollectionFrom: aCollection [
 
-^ newCollection .
-	
+	| newCollection |
+	newCollection := OrderedCollection new.
+	newCollection add: (aCollection at: 1).
+	2 to: aCollection size do: [ :index | 
+		newCollection add:
+			(newCollection at: index - 1) + (aCollection at: index) ].
+
+
+	^ newCollection
 ]
 
 { #category : #action }
@@ -268,14 +258,12 @@ GameBoard >> designateRandomCardTo: numberOfShip [
 
 { #category : #creating }
 GameBoard >> fillWith: players [
-	|counter|
-	counter := 1.
+	
 	players do: [ :each | collectionOfShipPositions add: each ].
-	[ counter <= (collectionOfShipPositions size) ] whileTrue:[
+
+	1 to: collectionOfShipPositions size do: [ :counter | 
 		self designateRandomCardTo: counter.
-		self designateRandomCardTo: counter.
-		counter := counter + 1.
-		]
+		self designateRandomCardTo: counter ]
 ]
 
 { #category : #initialization }
@@ -374,28 +362,21 @@ GameBoard >> resultOf: aShip [
 	|dieResult|
 	dieResult  := 0.
 	dieResult  := self throwVariousDices: dieCollection .
-	dieResult := dieResult + (aShip   resultOfCards) + self sumOfAccelerations.
+	dieResult := dieResult + (aShip   resultOfCards) + (self sumOfAccelerations).
 	^dieResult .
 ]
 
 { #category : #validation }
-GameBoard >> specialEffectAtCell: aNumberOfCell [ 
-	|counter typeOfCell|
-	counter :=1.
-	typeOfCell := 0. 
-	[counter <= aCollectionOfSpecialCells size] whileTrue: [ 
-		(((aCollectionOfSpecialCells at: counter ) numberOfSpecialCell) = aNumberOfCell )ifTrue: [
-			typeOfCell :=(aCollectionOfSpecialCells at: counter)typeOfSpecialEffect.
-			counter := counter +1.
-			]
-		ifFalse: [
-			counter := counter +1.
-			
-			].
-		
-		 ].
-	
-	^typeOfCell.
+GameBoard >> specialEffectAtCell: aNumberOfCell [
+
+	| typeOfCell |
+	typeOfCell := 0.
+	aCollectionOfSpecialCells do: [ :each | 
+		each numberOfSpecialCell = aNumberOfCell
+			ifTrue: [ typeOfCell := each typeOfSpecialEffect ]
+			ifFalse: [  ] ].
+
+	^ typeOfCell
 ]
 
 { #category : #adding }
@@ -411,12 +392,10 @@ GameBoard >> sumOfAccelerations [
 { #category : #action }
 GameBoard >> throwVariousDices: aCollectionOfDices [
 
-	| counter result |
-	counter := 1.
+	| result |
 	result := 0.
-	[ counter <= aCollectionOfDices size ] whileTrue: [ 
-		result := result + (aCollectionOfDices at: counter) throw.
-		counter := counter + 1 ].
+	aCollectionOfDices do: [ :each | result := result + each throw ].
+
 	^ result
 ]
 

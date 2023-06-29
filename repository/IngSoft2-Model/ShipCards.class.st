@@ -29,16 +29,11 @@ ShipCards >> cardsInHand [
 ]
 
 { #category : #action }
-ShipCards >> fillRedoWith: lastUsedCard [ 
-	|counter|
-	counter := 1.
-	
-	[ counter <= aCollectionOfCards size ] whileTrue: [ 
-		((aCollectionOfCards at: counter) isKindOf: Redo) ifTrue: [ 
-				(aCollectionOfCards at: counter) redo: lastUsedCard .
-			 ].
-			counter := counter + 1.
-	 ]
+ShipCards >> fillRedoWith: lastUsedCard [
+
+	aCollectionOfCards do: [ :each | 
+		(each isKindOf: Redo) ifTrue: [ 
+			each redo: lastUsedCard ] ]
 ]
 
 { #category : #initialization }
@@ -49,14 +44,13 @@ ShipCards >> initializeNew [
 
 { #category : #action }
 ShipCards >> resultOfCards [
-	|counter result|
-	counter := 1.
-	result :=0.
-	[ counter <= aCollectionOfCardsForMe size  ] whileTrue: [ 
-		result:= result+  (aCollectionOfCardsForMe at: counter) amountToChange.
-		counter:= counter+1.
-	 ].
-	^result.
+
+	| result |
+	result := 0.
+	aCollectionOfCardsForMe do: [ :each | 
+		result := result + each amountToChange ].
+
+	^ result
 ]
 
 { #category : #action }

@@ -31,14 +31,12 @@ Cancellation >> applyForAccelerationTo: aGameBoard [
 ]
 
 { #category : #action }
-Cancellation >> applyForOtherCardsTo: aGameBoard [ 
-	|counter collectionCards|
-	counter:= 1.
-	[counter <= aGameBoard amountOfPlayers]whileTrue: [ 
-			collectionCards:= ((aGameBoard player: counter)shipCards ) cardsForMe.
-			self removeFrom: collectionCards. 
-			counter:=counter+1.
-	 ].
+Cancellation >> applyForOtherCardsTo: aGameBoard [
+
+	| collectionCards |
+	1 to: aGameBoard amountOfPlayers do: [ :counter | 
+		collectionCards := (aGameBoard player: counter) shipCards cardsForMe.
+		self removeFrom: collectionCards ]
 ]
 
 { #category : #initialization }
@@ -68,11 +66,11 @@ Cancellation >> initializeWith: aShipsGame [
 ]
 
 { #category : #validation }
-Cancellation >> permanent: aShipsGame verify: aNumberOfShip [ 
-	(aShipsGame verify: self IsInHand: aNumberOfShip) ifTrue: [ 
-			aShipsGame chosenCard: self.
-			aShipsGame cardDirectedTo: aNumberOfShip.
-			 ].
+Cancellation >> permanent: aShipsGame verify: aNumberOfShip [
+
+	(aShipsGame verify: self IsInHand: aNumberOfShip) ifFalse: [ ^ self ].
+	aShipsGame chosenCard: self.
+	aShipsGame cardDirectedTo: aNumberOfShip
 ]
 
 { #category : #action }
@@ -83,15 +81,11 @@ Cancellation >> removeAcceleration: aGameBoard [
 ]
 
 { #category : #action }
-Cancellation >> removeFrom: collectionCards [ 
-	|counter|
-	counter :=1.
-	[ counter <= collectionCards size ]whileTrue:[
-		((collectionCards at: counter) =  cardToRemove ) ifTrue: [ 
-			(collectionCards) remove: (collectionCards at: counter) .
-			 ].
-		counter:=counter +1.
-	] 
+Cancellation >> removeFrom: collectionCards [
+
+	(collectionCards includes: cardToRemove) ifTrue: [ 
+		collectionCards remove: cardToRemove ]
+	
 ]
 
 { #category : #instance }

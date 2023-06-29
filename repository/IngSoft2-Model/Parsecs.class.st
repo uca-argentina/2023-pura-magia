@@ -28,6 +28,7 @@ Parsecs >> parsecs [
 ]
 
 { #category : #action }
-Parsecs >> plus: aMeasureUnit [ 
-	^ Parsecs  with: ( nominalValue + (aMeasureUnit parsecs) nominalValue  )
+Parsecs >> plus: aMeasureUnit [
+
+	^ self class with: nominalValue + aMeasureUnit parsecs nominalValue
 ]
