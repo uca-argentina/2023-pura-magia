@@ -484,6 +484,43 @@ self assert: (aGameBoard checkLapOf:   (aGameBoard player: 1)) equals: 2  .
 ]
 
 { #category : #tests }
+EffectsTests >> test047HyperJumpCausesNegativeParsecsThenChangePosition [
+| parsecs hyperJump amountOfParsecsToMove parsc1 light1 parsc2 light2 collection1 |
+
+self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+
+parsc1 := Parsecs with: -7.
+light1 := LightYears with: -9.
+parsc2 := Parsecs with: -1.
+light2 := LightYears with: -3.
+
+amountOfParsecsToMove:= OrderedCollection new.
+collection1:=OrderedCollection new.
+collection1 add: light2 .
+collection1 add: parsc2  .
+collection1 add: light1    .
+collection1 add: parsc1  .
+
+amountOfParsecsToMove add: collection1 .
+parsecs := 4. 
+hyperJump := HyperJump with: amountOfParsecsToMove .
+aGameBoard cellsWith: parsecs and: arrayOfDie .
+aGameBoard add: hyperJump  at: 3 .
+aGame throwNextPlayer.
+
+
+self assert: ((aGameBoard numberOfParsecs: (aGameBoard player: 1)) nominalValue ) equals: 3  .
+self assert: ((aGameBoard checkPositionOf:  (aGameBoard player: 1))) equals: 2  .
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
 EffectsTests >> test048GameUsingHyperJumpWithMultipleArrayWithParsecs [
 | parsecs hyperJump  arrayOfPosibilities parsc1 light1 parsc2 light2 parsc3 parsc4 amountOfParsecsToMove collection1 collection2 |
 
