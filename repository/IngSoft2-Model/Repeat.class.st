@@ -18,7 +18,7 @@ Repeat >> apply: aGameBoard [
 	|lastEffectUsed counter|
 	counter:=1.
 	lastEffectUsed:= aGameBoard lastEffect  .
-	lastEffectUsed repeatFor: chosenShip using: aGameBoard . 
+	lastEffectUsed applyTo: aGameBoard  for: chosenShip  .
 	^(self)
 ]
 

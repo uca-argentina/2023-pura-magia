@@ -34,13 +34,13 @@ ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCo
 		totalCells:= 0.
 		
 	   gameboards do: [ :each | 
-		totalWormHoles := totalWormHoles + each amountOfWormHoles.
-		totalSpeedUps := totalSpeedUps + each amountOfSpeedUps. 
-		totalMoonWalks := totalMoonWalks + each amountOfMoonWalks. 
-		totalHyperJumps := totalHyperJumps + each amountOfHyperJumps. 
-		totalAtomicBombs := totalAtomicBombs + each amountOfAtomicBombs.
-		totalSpecialCardsCells := totalSpecialCardsCells + each amountOfSpecialCardsCells.
-		totalNormalCells := totalNormalCells + each amountOfNormalCells.
+		totalWormHoles := totalWormHoles + (each amountOf: WormHole).
+		totalSpeedUps := totalSpeedUps + (each amountOf: SpeedUp). 
+		totalMoonWalks := totalMoonWalks + (each amountOf: MoonWalk). 
+		totalHyperJumps := totalHyperJumps + (each amountOf: HyperJump). 
+		totalAtomicBombs := totalAtomicBombs + (each amountOf: AtomicBomb).
+		totalSpecialCardsCells := totalSpecialCardsCells + (each amountOf: CardAssignation).
+		totalNormalCells := totalNormalCells + (each amountOfNormalCells).
 		
 		
 		totalCells:= each amountOfCells + totalCells.].

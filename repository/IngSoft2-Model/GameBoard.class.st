@@ -83,12 +83,12 @@ GameBoard >> addEffects: aCollectionOfProbabilities forHyperJump: aCollectionOfD
 ]
 
 { #category : #counting }
-GameBoard >> amountOfAtomicBombs [
+GameBoard >> amountOf: typeOfSpecialEffect [
 
 	| count |
 	count := 0.
 	aCollectionOfSpecialCells do: [ :each | 
-		(each typeOfSpecialEffect isKindOf: AtomicBomb) ifTrue: [ 
+		(each typeOfSpecialEffect isKindOf: typeOfSpecialEffect) ifTrue: [ 
 			count := count + 1 ] ].
 
 	^ count
@@ -97,36 +97,6 @@ GameBoard >> amountOfAtomicBombs [
 { #category : #validation }
 GameBoard >> amountOfCells [
 	^cells 
-]
-
-{ #category : #counting }
-GameBoard >> amountOfHyperJumps [
-	|index count|
-	index := 1.
-	count := 0.
-	[ index <= aCollectionOfSpecialCells size  ] whileTrue: [ 
-		(((aCollectionOfSpecialCells at: index) typeOfSpecialEffect) isKindOf: HyperJump ) ifTrue: [ 
-			count := count + 1.
-			 ].
-		index:= index + 1.
-	 ].
-
-^ count .
-]
-
-{ #category : #counting }
-GameBoard >> amountOfMoonWalks [
-	|index count|
-	index := 1.
-	count := 0.
-	[ index <= aCollectionOfSpecialCells size  ] whileTrue: [ 
-		(((aCollectionOfSpecialCells at: index) typeOfSpecialEffect) isKindOf: MoonWalk ) ifTrue: [ 
-			count := count + 1.
-			 ].
-		index:= index + 1.
-	 ].
-
-^ count .
 ]
 
 { #category : #counter }
@@ -139,55 +109,75 @@ GameBoard >> amountOfPlayers [
 	^ collectionOfShipPositions  size.
 ]
 
-{ #category : #counting }
-GameBoard >> amountOfSpecialCardsCells [
-	|index count|
-	index := 1.
-	count := 0.
-	[ index <= aCollectionOfSpecialCells size  ] whileTrue: [ 
-		(((aCollectionOfSpecialCells at: index) typeOfSpecialEffect) isKindOf: CardAssignation) ifTrue: [ 
-			count := count + 1.
-			 ].
-		index:= index + 1.
-	 ].
-
-^ count .
-]
-
-{ #category : #counting }
-GameBoard >> amountOfSpeedUps [
-	|index count|
-	index := 1.
-	count := 0.
-	[ index <= aCollectionOfSpecialCells size  ] whileTrue: [ 
-		(((aCollectionOfSpecialCells at: index) typeOfSpecialEffect) isKindOf: SpeedUp ) ifTrue: [ 
-			count := count + 1.
-			 ].
-		index:= index + 1.
-	 ].
-
-^ count .
-]
-
-{ #category : #calculating }
-GameBoard >> amountOfWormHoles [
-	|index count|
-	index := 1.
-	count := 0.
-	[ index <= aCollectionOfSpecialCells size  ] whileTrue: [ 
-		(((aCollectionOfSpecialCells at: index) typeOfSpecialEffect) isKindOf: WormHole) ifTrue: [ 
-			count := count + 1.
-			 ].
-		index:= index + 1.
-	 ].
-
-^ count .
-]
-
 { #category : #initialization }
 GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
 	parsecsByCell := anAmountOfParsecs .
 	dieCollection := aCollectionOfDice .
+]
+
+{ #category : #action }
+GameBoard >> change: aShipPosition changingLap: aResult [ 
+	 |result position newLap parsec newShipPosition|
+	result := aResult .
+		[ result   > cells ] whileTrue: [ 
+		position:=result-cells.
+		newLap:= ((aShipPosition isAtLap)+1) .
+		parsec := aShipPosition isAtParsec .
+		newShipPosition := ShipPosition createWith: position at: newLap and: parsec .
+		result := result - cells ].
+	^newShipPosition .
+]
+
+{ #category : #action }
+GameBoard >> change: aShipPosition withMoreParsecsThanMax: aResult [ 
+	|result position newShipPosition newLap parsecs|
+	result:= aResult .
+	[ result   > parsecsByCell  ] whileTrue: [ 
+		
+		position:=aShipPosition isAtPosition +1.
+		newShipPosition := self verifyCellsOf: aShipPosition  at: position.
+		position := newShipPosition isAtPosition .
+		newLap := newShipPosition isAtLap .
+		parsecs := Parsecs with: (result-parsecsByCell) .
+		newShipPosition := ShipPosition createWith: position at: newLap and: parsecs  .
+		result := result - parsecsByCell ].
+	^newShipPosition .
+]
+
+{ #category : #action }
+GameBoard >> change: aShipPosition withNegative: aResult [ 
+	|newShipPosition result position newLap parsec|
+	result := aResult .
+	[ result   < 0 ] whileTrue: [ 
+		(aShipPosition isAtLap = 1) ifTrue: [ 
+				newShipPosition := ShipPosition createNew.
+				result :=0 .
+			] ifFalse: [  
+				position:=cells + result.
+				newLap:= ((aShipPosition isAtLap)-1) .
+				parsec := aShipPosition isAtParsec .
+				newShipPosition := ShipPosition createWith: position at: newLap and: parsec .
+				result := cells + result ] ].
+		
+		^newShipPosition 
+		
+]
+
+{ #category : #action }
+GameBoard >> change: aShipPosition withNegativeParsecs: aResult [ 
+	|newShipPosition  result  position newLap parsecs |
+	result := aResult .
+	[ result   < 0 ] whileTrue: [ 
+		
+		position:=aShipPosition isAtPosition -1.
+		newShipPosition := self verifyCellsOf: aShipPosition  at: position.
+		position := newShipPosition isAtPosition .
+		newLap := newShipPosition isAtLap .
+		parsecs := Parsecs with: (result+parsecsByCell ) .
+		newShipPosition := ShipPosition createWith: position at: newLap and: parsecs .
+		result :=result +parsecsByCell . 
+		  ].
+	^newShipPosition 
 ]
 
 { #category : #validation }
@@ -315,10 +305,11 @@ GameBoard >> move: aShip using: result [
 
 { #category : #action }
 GameBoard >> move: aShip using: specialEffect and: result [ 
-	|newPosition|
+	|newPosition turnShip|
 	newPosition := (self createPositionIn: result with:(aShip shipPosition)).
 	aShip changePosition: newPosition.
-	specialEffect applyTo: self.
+	turnShip:= self player:  (self turn) .
+	specialEffect applyTo:  self  for: turnShip  . 
 	lastEffectUsed := specialEffect.
 ]
 
@@ -424,61 +415,39 @@ GameBoard >> updateResult: aResult [
 
 { #category : #action }
 GameBoard >> verifyCellsOf: aShipPosition at: aResult [ 
-	|newShipPosition  result playerPosition position newLap parsec|
+	|newShipPosition  result playerPosition  newLap parsec|
 	playerPosition := aShipPosition isAtPosition .
 	result := aResult. 
 	(result   <= cells) ifTrue: [ 
 		newLap:=aShipPosition isAtLap.
 		parsec := aShipPosition isAtParsec .
 		newShipPosition := ShipPosition createWith: result  at: newLap and: parsec .] .
-	[ result   < 0 ] whileTrue: [ 
-		(aShipPosition isAtLap = 1) ifTrue: [ 
-				newShipPosition := ShipPosition createNew.
-				result :=0 .
-			] ifFalse: [  
-				position:=cells + result.
-				newLap:= ((aShipPosition isAtLap)-1) .
-				parsec := aShipPosition isAtParsec .
-				newShipPosition := ShipPosition createWith: position at: newLap and: parsec .
-				result := cells + result ] ].
-	[ result   > cells ] whileTrue: [ 
-		position:=result-cells.
-		newLap:= ((aShipPosition isAtLap)+1) .
-		parsec := aShipPosition isAtParsec .
-		newShipPosition := ShipPosition createWith: position at: newLap and: parsec .
-		result := result - cells ].
+	(result < 0 )ifTrue: [
+		newShipPosition := self change: aShipPosition withNegative: result].
+	(result > cells)ifTrue:[
+		newShipPosition := self change: aShipPosition changingLap: result.
+		].
+
 	
 	^ newShipPosition 
+
 
 ]
 
 { #category : #action }
 GameBoard >> verifyParsecsOf: aShipPosition at: aNewParsec [
-	|newShipPosition  result  position newLap parsecs |
+	|newShipPosition  result  position newLap |
 	result := aNewParsec + (aShipPosition isAtParsec )nominalValue . 
 	(result   <= parsecsByCell ) ifTrue: [ 
 		newLap:=aShipPosition isAtLap.
 		position := aShipPosition isAtPosition . 
 		newShipPosition := ShipPosition createWith: position   at: newLap and: (Parsecs with: aNewParsec)   .] .
-	[ result   < 0 ] whileTrue: [ 
-		position:=aShipPosition isAtPosition -1.
-		newShipPosition := self verifyCellsOf: aShipPosition  at: position.
-		position := newShipPosition isAtPosition .
-		newLap := newShipPosition isAtLap .
-		parsecs := Parsecs with: (result+parsecsByCell ) .
-		newShipPosition := ShipPosition createWith: position at: newLap and: parsecs .
-		result :=result +parsecsByCell . 
-		  ].
-		
-	[ result   > parsecsByCell  ] whileTrue: [ 
-		
-		position:=aShipPosition isAtPosition +1.
-		newShipPosition := self verifyCellsOf: aShipPosition  at: position.
-		position := newShipPosition isAtPosition .
-		newLap := newShipPosition isAtLap .
-		parsecs := Parsecs with: (result-parsecsByCell) .
-		newShipPosition := ShipPosition createWith: position at: newLap and: parsecs  .
-		result := result - parsecsByCell ].
+	(result <0)ifTrue:[
+		newShipPosition := self change: aShipPosition  withNegativeParsecs: result  .
+		].
+	(result   > parsecsByCell) ifTrue:[
+		newShipPosition := self change: aShipPosition  withMoreParsecsThanMax: result  .
+		].
 	
 	^ newShipPosition 
 ]

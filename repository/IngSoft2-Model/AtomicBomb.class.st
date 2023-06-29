@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #action }
-AtomicBomb >> applyTo: aGameBoard [
+AtomicBomb >> applyTo: aGameBoard for: aShip [
 
 	| newShipPosition ship lap parsec |
 	1 to: aGameBoard amountOfPlayers do: [ :index |
@@ -14,15 +14,4 @@ AtomicBomb >> applyTo: aGameBoard [
 		parsec := ship shipPosition isAtParsec.
 		newShipPosition := ShipPosition createWith: 0 at: lap and: parsec.
 		ship changePosition: newShipPosition ]
-]
-
-{ #category : #action }
-AtomicBomb >> repeatFor: aChosenShip using: aGameBoard [
-
-	| lap parsec newShipPosition |
-	1 to: aGameBoard amountOfPlayers do: [ :index | 
-		lap := aChosenShip shipPosition isAtLap.
-		parsec := aChosenShip shipPosition isAtParsec.
-		newShipPosition := ShipPosition createWith: 0 at: lap and: parsec.
-		aChosenShip changePosition: newShipPosition ]
 ]

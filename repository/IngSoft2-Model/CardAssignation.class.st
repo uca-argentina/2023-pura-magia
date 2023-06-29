@@ -5,10 +5,10 @@ Class {
 }
 
 { #category : #action }
-CardAssignation >> applyTo: aGameBoard [ 
+CardAssignation >> applyTo: aGameBoard for: aShip [
 	|numberOfShip|
 	
-	numberOfShip:= aGameBoard turn.
+	numberOfShip:= aShip numberOfShip .
 	aGameBoard designateRandomCardTo: numberOfShip .
 	
 ]
