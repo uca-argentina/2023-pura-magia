@@ -1,13 +1,12 @@
 # 2023-pura-magia
 
-![GHA Status](https://github.com/uca-argentina/2023-pura-magia/actions/workflows/GHA.yml/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/uca-argentina/2023-pura-magia/badge.svg?branch=master)](https://coveralls.io/github/uca-argentina/2023-pura-magia?branch=master)
-
+![GHA Status](https://github.com/marianoklecha/2023-pura-magia-final/actions/workflows/GHA.yml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/marianoklecha/2023-pura-magia-final/badge.svg?branch=master)](https://coveralls.io/github/marianoklecha/2023-pura-magia-final?branch=master)
 ## Metacello
 
 ```smalltalk
 Metacello new
    baseline: 'IngSoft2';
-   githubUser: 'uca-argentina' project: '2023-pura-magia' commitish: 'master' path: 'repository';
+   githubUser: 'marianoklecha' project: '2023-pura-magia-final' commitish: 'master' path: 'repository';
    load: 'development'.
 ```
