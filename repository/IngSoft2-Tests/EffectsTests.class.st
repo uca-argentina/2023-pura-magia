@@ -568,6 +568,7 @@ EffectsTests >> test051HyperJumpWithACollectionOutOfOrderThenRaiseAnException [
 self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
 
+
 parsc1 := Parsecs with: 4.
 light1 := LightYears with: 3.
 parsc2 := Parsecs with: 2.
