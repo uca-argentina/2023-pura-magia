@@ -622,6 +622,22 @@ self assert: (aGameBoard checkPositionOf: (aGameBoard player: 1) ) equals: 6 .
 ]
 
 { #category : #tests }
+GameTests >> test026PlayWithNormalDieAndCheckThereIsAWinner [
+
+	die1 := Die with: 4.
+	die2 := Die with: 8.
+
+	arrayOfDie := OrderedCollection new.
+	arrayOfDie add: die1.
+	arrayOfDie add: die2.
+
+	self setUpGameWith: 2 andGameboardWith: 2 and: 1.
+
+	aGame throwNextPlayer.
+	self deny: aGameBoard winner equals: 0
+]
+
+{ #category : #tests }
 GameTests >> test027GameBoardCircularWithXLaps [
 
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
