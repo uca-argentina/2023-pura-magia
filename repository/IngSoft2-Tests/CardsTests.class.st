@@ -596,3 +596,29 @@ CardsTests >> test023PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 	
 	
 ]
+
+{ #category : #tests }
+CardsTests >> test024Ship1WinsButShip2UsesRepeatWormHoleThenShip2ThrowAndWin [
+	|ship ship2  repeat wormHole|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 1.
+	
+	wormHole := WormHole  new.
+	repeat  := Repeat with: aGame .
+	aGameBoard add: wormHole at: 5.
+	
+	ship:= 1.
+	ship2:=2.
+	aGameBoard add: repeat to: ship2.
+	
+	aGame throwNextPlayer . "P1 3 LAP1 P2 0 LAP1 "
+	aGame throwNextPlayer . "P1 3 LAP1 P2 1 LAP1 "
+	aGame throwNextPlayer . "P1 6 LAP1 P2 1 LAP1 "
+	aGame throwNextPlayer . "P1 6 LAP1 P2 6 LAP1 "
+	aGame throwNextPlayer . "P1 0 LAP2 P2 6 LAP1 "
+	
+	self assert: aGame winner equals: 1. "Ship 1 has won"
+	repeat from: ship2 to: ship. "P1 5 LAP1 P2 6 LAP1 "
+	aGame throwNextPlayer .
+	self assert: aGame winner equals: 2. "Ship 2 has finally won"
+]

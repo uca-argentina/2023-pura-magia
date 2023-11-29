@@ -573,19 +573,8 @@ self should:[ GameBoard  with: -4 and: -1] raise: Error withMessage: 'Cannot cre
 { #category : #tests }
 GameTests >> test023PlayerThrowWithTurns [ 
 
-amountOfPlayers := 4.
-numbers := #(1 1 1 1)  .
-anotherNumbers := #(2 2 2 4)  .
-die1  := LoadedDie with: numbers .
-die2  := LoadedDie with: anotherNumbers .
-
-arrayOfDie := OrderedCollection new.
-arrayOfDie add: die1  .
-arrayOfDie add: die2  .
-
-aGameBoard := GameBoard with: cells and: 1 .
-aGameBoard cellsWith: 0 and: arrayOfDie .
-aGame startwith: amountOfPlayers   and: aGameBoard.
+self setUpLoadedDiceWith: #(1 1 1 1) and: #(2 2 2 4) .
+self setUpGameWith:4 andGameboardWith: cells and:1 .
 
 aGame throwNextPlayer.
 
@@ -600,21 +589,8 @@ self assert: (aGameBoard checkPositionOf: (aGameBoard player: 1) ) equals: 3 .
 { #category : #tests }
 GameTests >> test024PlayWithLoadedDiceTwoTurnsThenCheckPositionOfTheSecondPlayer [
 
-
-amountOfPlayers := 4.
-
-numbers := #(1 1 1 1)  .
-anotherNumbers := #(2 4 2 4)  .
-die1  := LoadedDie with: numbers .
-die1  := LoadedDie with: anotherNumbers .
-
-arrayOfDie := OrderedCollection new.
-arrayOfDie add: die1 .
-arrayOfDie add: die2 .
-
-aGameBoard := GameBoard with: cells and: 1.
-aGameBoard cellsWith: 0 and: arrayOfDie .
-aGame startwith: amountOfPlayers   and: aGameBoard.
+self setUpLoadedDiceWith: #(1 1 1 1) and: #(2 7 2 4) .
+self setUpGameWith:4 andGameboardWith: 8 and: 1 .
 
 aGame throwNextPlayer .
 aGame throwNextPlayer .
@@ -630,22 +606,8 @@ self assert: (aGameBoard checkPositionOf: (aGameBoard player: 2) ) equals: 8 .
 { #category : #tests }
 GameTests >> test025PlayThreeTurnsWithLoadedDiceAndTwoPlayersThenCheckPositionChangeOfTheFirstPlayer [
 
-aGame:= ShipsGame initializeEmpty.
-amountOfPlayers := 2.
-cells:= 8.
-numbers := #(1 1 )  .
-anotherNumbers := #(2 2)  .
-die1  := LoadedDie with: numbers .
-die2  := LoadedDie with: anotherNumbers .
-
-
-arrayOfDie := OrderedCollection new.
-arrayOfDie add: die1  .
-arrayOfDie add: die2  .
-
-aGameBoard := GameBoard with: cells and: 1.
-aGameBoard cellsWith: 0 and: arrayOfDie .
-aGame startwith: amountOfPlayers   and: aGameBoard.
+self setUpLoadedDiceWith: #(1 1) and: #(2 2) .
+self setUpGameWith: 2 andGameboardWith: 8 and: 1 .
 
 aGame throwNextPlayer .
 aGame throwNextPlayer .
@@ -660,40 +622,24 @@ self assert: (aGameBoard checkPositionOf: (aGameBoard player: 1) ) equals: 6 .
 ]
 
 { #category : #tests }
-GameTests >> test026PlayThreeTurnsWithDiceAndCheckThereIsAWinner [
+GameTests >> test026PlayWithNormalDieAndCheckThereIsAWinner [
 
-self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
-self setUpGameWith: 1 andGameboardWith: 2 and: 1.
+	die1 := Die with: 4.
+	die2 := Die with: 8.
 
-die1 := Die with: 4 .
-die2 := Die with: 8.
+	arrayOfDie := OrderedCollection new.
+	arrayOfDie add: die1.
+	arrayOfDie add: die2.
 
-arrayOfDie := OrderedCollection new.
-arrayOfDie add: die1 .
-arrayOfDie add: die2 .
+	self setUpGameWith: 2 andGameboardWith: 2 and: 1.
 
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-
-
-self deny: (aGameBoard winner = 0) .
-
-
-
-
-  
+	aGame throwNextPlayer.
+	self deny: aGameBoard winner equals: 0
 ]
 
 { #category : #tests }
 GameTests >> test027GameBoardCircularWithXLaps [
+
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 
@@ -749,6 +695,7 @@ aGame throwNextPlayer.
 
 
 self assert: (aGameBoard checkPositionOf:(aGameBoard player: 1) ) equals: 1 .
+self assert: (aGameBoard checkLapOf: (aGameBoard player: 1)) equals: 2.
 
 
 
@@ -758,20 +705,19 @@ self assert: (aGameBoard checkPositionOf:(aGameBoard player: 1) ) equals: 1 .
 ]
 
 { #category : #tests }
-GameTests >> test031RankingPlayers [
+GameTests >> test031RankingPlayersHavingPlayedAll [
 | parsecs  amountOfParsecsToMove aRanking|
 
 self setUpGameWith: 3 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 2) and: #(3 2 4).
 amountOfParsecsToMove:= #(7 3 2 1).
 parsecs := 4. 
-
 aGameBoard cellsWith: parsecs and: arrayOfDie .
+
 aGame throwNextPlayer.
 aGame throwNextPlayer.
 aGame throwNextPlayer.
 aRanking := aGame ranking.
-
 
 self assert: (aRanking at: 1) numberOfShip  equals: 3 .
 self assert: (aRanking at: 2) numberOfShip  equals: 1 .
@@ -898,6 +844,30 @@ GameTests >> test057GamePlayersWithShipPositionShipCards [
 self setUpGameWith: 1 andGameboardWith: 4 and: 1.
 
 self assert: (((aGameBoard player: 1)shipPosition)isAtPosition ) equals: 0
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test058WhenThereIsAWinnerNextPlayerCantThrow [
+| parsecs  amountOfParsecsToMove|
+
+self setUpGameWith: 2 andGameboardWith: 8 and: 1.
+self setUpLoadedDiceWith: #(1 1 2) and: #(3 2 5).
+amountOfParsecsToMove:= #(7 3 2 1).
+parsecs := 4. 
+aGameBoard cellsWith: parsecs and: arrayOfDie .
+
+aGame throwNextPlayer. "P1: 4 LAP1 P2: 0 LAP1"
+aGame throwNextPlayer. "P1: 4 LAP1 P2: 3 LAP1"
+aGame throwNextPlayer. "P1: 3 LAP2 P2: 3 LAP1  --> Ship 1 has won"
+
+self assert: aGame winner equals: 1. 
+self should:  [aGame throwNextPlayer] raise: Error withMessage: 'There is a winner and the game has finished, unless you have a card that prevents it, you cant throw'.
 
 
 
