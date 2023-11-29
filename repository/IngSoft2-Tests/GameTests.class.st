@@ -624,8 +624,8 @@ self assert: (aGameBoard checkPositionOf: (aGameBoard player: 1) ) equals: 6 .
 { #category : #tests }
 GameTests >> test026PlayWithNormalDieAndCheckThereIsAWinner [
 
-	die1 := Die with: 4.
-	die2 := Die with: 8.
+	die1 := Die with: 20.
+	die2 := Die with: 15.
 
 	arrayOfDie := OrderedCollection new.
 	arrayOfDie add: die1.

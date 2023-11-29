@@ -590,3 +590,23 @@ self should:[ HyperJump with: amountOfParsecsToMove ] raise: Error withMessage: 
 
   
 ]
+
+{ #category : #tests }
+EffectsTests >> test052GameUsingNullEffect [
+| nullEffect |
+
+nullEffect := NullEffect new.
+
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+
+aGameBoard add: nullEffect at: 3.
+
+self assert: ((aGameBoard specialEffectAtCell: 3) isKindOf:  NullEffect) .
+
+
+
+
+
+  
+]

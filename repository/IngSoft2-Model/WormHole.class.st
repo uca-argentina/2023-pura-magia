@@ -11,4 +11,5 @@ WormHole >> applyTo: aGameBoard for: aChosenShip [
 	shipPosition := aChosenShip shipPosition .
 	newShipPosition:= aGameBoard verifyCellsOf: shipPosition   at: newCell .
 	aChosenShip  changePosition: newShipPosition.
+	^self.
 ]

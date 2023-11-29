@@ -13,5 +13,6 @@ AtomicBomb >> applyTo: aGameBoard for: aShip [
 		lap := ship shipPosition isAtLap.
 		parsec := ship shipPosition isAtParsec.
 		newShipPosition := ShipPosition createWith: 0 at: lap and: parsec.
-		ship changePosition: newShipPosition ]
+		ship changePosition: newShipPosition ].
+	^self.
 ]

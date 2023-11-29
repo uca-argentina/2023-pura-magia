@@ -11,4 +11,5 @@ SpeedUp >> applyTo: aGameBoard for: aShip [
 	shipPosition := aShip shipPosition .
 	newShipPosition:= aGameBoard verifyCellsOf: shipPosition   at: newCell .
 	aShip  changePosition: newShipPosition.
+	^self.
 ]
