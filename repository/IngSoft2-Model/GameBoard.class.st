@@ -397,9 +397,11 @@ GameBoard >> turn [
 
 { #category : #action }
 GameBoard >> turnOf: numberOfShip [
-	turn := numberOfShip .
-	self
-		move: (collectionOfShipPositions  at: numberOfShip)
+
+	turn := numberOfShip.
+	self winner = 0
+		ifTrue: [ self move: (collectionOfShipPositions at: numberOfShip) ]
+		ifFalse: [ Error signal: 'There is a winner and the game has finished, unless you have a card that prevents it, you cant throw' ]
 ]
 
 { #category : #update }
@@ -455,16 +457,14 @@ GameBoard >> verifyParsecsOf: aShipPosition at: aNewParsec [
 { #category : #validation }
 GameBoard >> winner [
 
-	| counter shipLap|
+	| counter shipLap |
 	counter := 1.
-	shipLap:=((collectionOfShipPositions  at: counter)shipPosition ) isAtLap. 
-	[ (counter >= collectionOfShipPositions  size or:
-			 (shipLap >= (laps + 1))) ] 
-		whileFalse: [ counter := counter + 1 ].
+	shipLap := (collectionOfShipPositions at: counter) shipPosition isAtLap.
+	[ counter >= collectionOfShipPositions size or: shipLap >= (laps + 1) ] 
+		whileFalse: [ counter := counter + 1. 
+			shipLap := (collectionOfShipPositions at: counter) shipPosition isAtLap.].
 
-	(counter <= collectionOfShipPositions  size and:
-		 (shipLap >= (laps + 1)))
-		ifTrue: [ 
-		^ (collectionOfShipPositions  at: counter) numberOfShip ]
+	(counter <= collectionOfShipPositions size and: shipLap >= (laps + 1))
+		ifTrue: [ ^ (collectionOfShipPositions at: counter) numberOfShip ]
 		ifFalse: [ ^ 0 ]
 ]
