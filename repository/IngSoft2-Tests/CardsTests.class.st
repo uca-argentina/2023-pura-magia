@@ -596,3 +596,178 @@ CardsTests >> test023PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 	
 	
 ]
+
+{ #category : #tests }
+CardsTests >> test024PlayWithReverseCardForEffectHyperJump [
+	| player player2  reverse amountOfParsecsToMove parsecs hyperJump parsc1 light1 parsc2 light2 collection1 |
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	parsc1 := Parsecs with: 7.
+	light1 := LightYears with: 9.
+	parsc2 := Parsecs with: 2.
+	light2 := LightYears with: 3.
+
+	amountOfParsecsToMove:= OrderedCollection new.
+	collection1:=OrderedCollection new.
+	collection1 add: parsc1 .
+	collection1 add: light1  .
+	collection1 add: parsc2   .
+	collection1 add: light2  .
+
+	amountOfParsecsToMove add: collection1 .
+	parsecs := 4. 
+	hyperJump := HyperJump with: amountOfParsecsToMove .
+	
+	aGameBoard cellsWith: parsecs and: arrayOfDices .
+	
+	reverse := Reverse with: aGame.
+	aGameBoard add: hyperJump at: 3 .
+	player:= 1.
+	player2:=2.
+	aGameBoard add: reverse to: player.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+		
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 1 .
+	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 2.
+	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
+]
+
+{ #category : #tests }
+CardsTests >> test025PlayWithReverseCardAndThenCancelledForEffectHyperJump [
+	| player player2  reverse amountOfParsecsToMove parsecs hyperJump parsc1 light1 parsc2 light2 collection1 cancellation|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	parsc1 := Parsecs with: 7.
+	light1 := LightYears with: 15.
+	parsc2 := Parsecs with: 2.
+	light2 := LightYears with: 3.
+
+	amountOfParsecsToMove:= OrderedCollection new.
+	collection1:=OrderedCollection new.
+	collection1 add: parsc1 .
+	collection1 add: light1  .
+	collection1 add: parsc2   .
+	collection1 add: light2  .
+
+	amountOfParsecsToMove add: collection1 .
+	parsecs := 4. 
+	hyperJump := HyperJump with: amountOfParsecsToMove .
+	
+	aGameBoard cellsWith: parsecs and: arrayOfDices .
+	cancellation:= Cancellation with: aGame .
+	reverse := Reverse with: aGame.
+	aGameBoard add: hyperJump at: 3 .
+	player:= 1.
+	player2:=2.
+	aGameBoard add: reverse to: player.
+	aGameBoard add: cancellation to: player2.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	cancellation from: player2 canceled: reverse.
+	aGame throwNextPlayer .
+		
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 1 .
+	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 4.
+	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
+]
+
+{ #category : #tests }
+CardsTests >> test026PlayWithReverseCardAndThenReverseAgainForEffectHyperJump [
+	| player player2  reverse amountOfParsecsToMove parsecs hyperJump parsc1 light1 parsc2 light2 collection1 reverse2|
+	self setUpLoadedDiceWith: #(1 0 1 ) and: #(2 0 2).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	parsc1 := Parsecs with: 7.
+	light1 := LightYears with: 15.
+	parsc2 := Parsecs with: 2.
+	light2 := LightYears with: 3.
+
+	amountOfParsecsToMove:= OrderedCollection new.
+	collection1:=OrderedCollection new.
+	collection1 add: parsc1 .
+	collection1 add: light1  .
+	collection1 add: parsc2   .
+	collection1 add: light2  .
+
+	amountOfParsecsToMove add: collection1 .
+	parsecs := 4. 
+	hyperJump := HyperJump with: amountOfParsecsToMove .
+	
+	aGameBoard cellsWith: parsecs and: arrayOfDices .
+	reverse2 := Reverse with: aGame.
+	reverse := Reverse with: aGame.
+	aGameBoard add: hyperJump at: 3 .
+	player:= 1.
+	player2:=2.
+	aGameBoard add: reverse to: player.
+	aGameBoard add: reverse2  to: player2.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+	reverse2 from: player  to: 3 .
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+		
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 4 .
+	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 4.
+	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
+]
+
+{ #category : #tests }
+CardsTests >> test027PlayWithReverseCardAndThenReverseAgainAndThenCancellForEffectHyperJump [
+	| player player2  reverse amountOfParsecsToMove parsecs hyperJump parsc1 light1 parsc2 light2 collection1 reverse2 cancellation|
+	self setUpLoadedDiceWith: #(1 0 1 ) and: #(2 0 2).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	parsc1 := Parsecs with: 7.
+	light1 := LightYears with: 15.
+	parsc2 := Parsecs with: 2.
+	light2 := LightYears with: 3.
+
+	amountOfParsecsToMove:= OrderedCollection new.
+	collection1:=OrderedCollection new.
+	collection1 add: parsc1 .
+	collection1 add: light1  .
+	collection1 add: parsc2   .
+	collection1 add: light2  .
+
+	amountOfParsecsToMove add: collection1 .
+	parsecs := 4. 
+	hyperJump := HyperJump with: amountOfParsecsToMove .
+	
+	aGameBoard cellsWith: parsecs and: arrayOfDices .
+	reverse2 := Reverse with: aGame.
+	reverse := Reverse with: aGame.
+	cancellation:= Cancellation with: aGame .
+	aGameBoard add: hyperJump at: 3 .
+	player:= 1.
+	player2:=2.
+	aGameBoard add: reverse to: player.
+	aGameBoard add: reverse2  to: player2.
+	aGameBoard add: cancellation to: player.
+	
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	reverse2 from: player2  to: 3 .
+	aGame throwNextPlayer .
+	
+	cancellation from: player canceled: reverse2.
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+		
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 4 .
+	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 1.
+	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
+]

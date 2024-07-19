@@ -34,11 +34,6 @@ GameBoard class >> with: numberOfCells and: numberOfLaps [
 	 
 ]
 
-{ #category : #action }
-GameBoard >> accelerations [
-	^aCollectionOfAccelerations .
-]
-
 { #category : #adding }
 GameBoard >> add: aEffect at: aNumberOfCell [ 
 	aCollectionOfSpecialCells add: (Cell with: aEffect  and: aNumberOfCell).
@@ -109,6 +104,11 @@ GameBoard >> amountOfPlayers [
 	^ collectionOfShipPositions  size.
 ]
 
+{ #category : #action }
+GameBoard >> cardForAllPlayers [
+	^aCollectionOfAccelerations .
+]
+
 { #category : #initialization }
 GameBoard >> cellsWith: anAmountOfParsecs and: aCollectionOfDice [
 	parsecsByCell := anAmountOfParsecs .
@@ -167,9 +167,10 @@ GameBoard >> change: aShipPosition withNegative: aResult [
 GameBoard >> change: aShipPosition withNegativeParsecs: aResult [ 
 	|newShipPosition  result  position newLap parsecs |
 	result := aResult .
+	position := aShipPosition isAtPosition.
 	[ result   < 0 ] whileTrue: [ 
 		
-		position:=aShipPosition isAtPosition -1.
+		position:= position -1.
 		newShipPosition := self verifyCellsOf: aShipPosition  at: position.
 		position := newShipPosition isAtPosition .
 		newLap := newShipPosition isAtLap .
@@ -357,6 +358,13 @@ GameBoard >> resultOf: aShip [
 	^dieResult .
 ]
 
+{ #category : #action }
+GameBoard >> specialCell: aNumberOfCell [ 
+	| targetCell |
+	targetCell:= aCollectionOfSpecialCells detect: [ :each | each numberOfSpecialCell  = aNumberOfCell].
+	^targetCell.
+]
+
 { #category : #validation }
 GameBoard >> specialEffectAtCell: aNumberOfCell [
 
@@ -398,8 +406,9 @@ GameBoard >> turn [
 { #category : #action }
 GameBoard >> turnOf: numberOfShip [
 	turn := numberOfShip .
-	self
-		move: (collectionOfShipPositions  at: numberOfShip)
+	self winner = 0
+	ifTrue: [ self move: (collectionOfShipPositions at: numberOfShip) ]
+	ifFalse: [ Error signal: 'The game is finished, we already have a winner' ]
 ]
 
 { #category : #update }

@@ -17,6 +17,11 @@ Parsecs >> initializeWith: aNominalValue [
 	nominalValue := aNominalValue.
 ]
 
+{ #category : #action }
+Parsecs >> negateNominalValue [
+	nominalValue := nominalValue negated.
+]
+
 { #category : #value }
 Parsecs >> nominalValue [
 	^ nominalValue

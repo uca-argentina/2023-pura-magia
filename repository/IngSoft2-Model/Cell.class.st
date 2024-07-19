@@ -13,6 +13,11 @@ Cell class >> with: aSpecialEffect and: aNumberOfCell [
 	^(self new)initializeWith: aSpecialEffect and: aNumberOfCell.
 ]
 
+{ #category : #action }
+Cell >> changeEffect: specialEffectNewState [
+	effect := specialEffectNewState.
+]
+
 { #category : #initialization }
 Cell >> initializeWith: aSpeedUp and: aNumberOfCell [ 
 	effect := aSpeedUp.
