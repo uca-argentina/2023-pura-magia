@@ -27,6 +27,11 @@ ShipsGame >> cardDirectedTo: aNumberOfShip [
 	chosenCard selected: (gameboard player: aNumberOfShip) 
 ]
 
+{ #category : #action }
+ShipsGame >> cardDirectedToCell: aNumberOfCell [ 
+	chosenCard selected:(gameboard specialCell: aNumberOfCell)
+]
+
 { #category : #validation }
 ShipsGame >> chosen: aCard from: aNumberOfShip [
 
