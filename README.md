@@ -8,6 +8,6 @@
 ```smalltalk
 Metacello new
    baseline: 'IngSoft2';
-   githubUser: 'uca-argentina' project: '2023-pura-magia' commitish: 'master' path: 'repository';
+   githubUser: 'Delfinalasheras' project: '2023-pura-magia' commitish: 'master' path: 'repository';
    load: 'development'.
 ```
