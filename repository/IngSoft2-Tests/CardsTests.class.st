@@ -711,15 +711,15 @@ CardsTests >> test026PlayWithReverseCardAndThenReverseAgainForEffectHyperJump [
 	aGameBoard add: reverse2  to: player2.
 	
 	reverse from: player  to: 3 .
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
-	reverse2 from: player  to: 3 .
-	aGame throwNextPlayer .
-	aGame throwNextPlayer .
+	aGame throwNextPlayer . "cae en hyperjump y 3 + -7parcecs = casillero 1"
+	aGame throwNextPlayer . "cae en 0 no pasa nada"
+	reverse2 from: player  to: 3 . "tira otra vez el reverse queda en negativo"
+	aGame throwNextPlayer . "tira un 3 => celda 4"
+	aGame throwNextPlayer ." p2 cae en hyperjump 3 + (-15/3 parcecs) = 1"
 		
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 4 .
 	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 4.
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 1.
 	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
 ]
 
@@ -768,6 +768,83 @@ CardsTests >> test027PlayWithReverseCardAndThenReverseAgainAndThenCancellForEffe
 		
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 4 .
 	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
-	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 1.
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 4.
 	self assert: (aGameBoard checkLapOf:  (aGameBoard player: 1)) equals: 1 .
+]
+
+{ #category : #tests }
+CardsTests >> test028PlayWithReverseCardOnMoonWalk [
+	| player player2  reverse moonWalk|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	moonWalk := MoonWalk with: -3.
+	reverse := Reverse with: aGame.
+	aGameBoard add: moonWalk at: 3.
+
+	player:= 1.
+	player2:=2.
+	aGameBoard add: reverse to: player.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 3 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 8 .
+]
+
+{ #category : #tests }
+CardsTests >> test029PlayWithReverseAndThenAReverseAgainOnCardOnMoonWalkButStateDoesntChange [
+	| player player2  reverse reverse2 moonWalk|
+	self setUpLoadedDiceWith: #(1 1 1) and: #(2 2 0).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	moonWalk := MoonWalk with: -3.
+	reverse := Reverse with: aGame.
+	reverse2 := Reverse with: aGame.
+	aGameBoard add: moonWalk at: 3.
+
+	player:= 1.
+	player2:=2.
+	aGameBoard add: reverse to: player.
+	aGameBoard add: reverse2 to: player2.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	reverse from: player2  to: 3 .
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 4 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 6 .
+]
+
+{ #category : #tests }
+CardsTests >> test030PlayWithReverseAndCancellThenMoonWalkgoesBackToNormal [
+	| player player2  reverse  moonWalk cancellation|
+	self setUpLoadedDiceWith: #(1 0 1) and: #(2 0 0).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	moonWalk := MoonWalk with: -3.
+	reverse := Reverse with: aGame.
+	aGameBoard add: moonWalk at: 3.
+	cancellation:= Cancellation with: aGame .
+
+	player:= 1.
+	player2:=2.
+	aGameBoard add: reverse to: player.
+	aGameBoard add: cancellation to: player2.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	cancellation from: player2 canceled: reverse.
+	aGame throwNextPlayer .
+
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 0 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 3 .
+
 ]

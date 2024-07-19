@@ -2,7 +2,8 @@ Class {
 	#name : #MoonWalk,
 	#superclass : #Object,
 	#instVars : [
-		'amountOfCells'
+		'amountOfCells',
+		'stateReverse'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -25,6 +26,18 @@ MoonWalk >> applyTo: aGameBoard for: aChosenShip [
 ]
 
 { #category : #initialization }
+MoonWalk >> changeState: aStateToChange [ 
+	stateReverse := aStateToChange.
+	amountOfCells := amountOfCells negated.
+]
+
+{ #category : #initialization }
 MoonWalk >> initializeWith: anAmountOfCells [ 
 	amountOfCells:= anAmountOfCells .
+	stateReverse := false.
+]
+
+{ #category : #initialization }
+MoonWalk >> stateReverse [
+	^ stateReverse
 ]

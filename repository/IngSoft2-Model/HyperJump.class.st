@@ -47,7 +47,7 @@ HyperJump >> applyTo: aGameBoard for: aChosenShip [
 { #category : #action }
 HyperJump >> changeState: stateToChange [ 
 	stateReverse := stateToChange.
-	
+	self reverseCollectionOfParcecsToMove.
 ]
 
 { #category : #initialization }
@@ -57,20 +57,14 @@ HyperJump >> initializeWith: amountOfParsecsToMove [
 	stateReverse := false.
 ]
 
-{ #category : #highlighting }
-HyperJump >> reverse [
-	(stateReverse not )ifTrue:[ 
-		self changeState: true .
-		]
-	ifFalse:[
-		self changeState: false.
-		].
-	self reverseCollectionOfParcecsToMove.
-		
-]
-
 { #category : #action }
 HyperJump >> reverseCollectionOfParcecsToMove [
 	 anAmountOfParsecsToMove  do: [:each | each negateNominalValue]
+	
+]
+
+{ #category : #action }
+HyperJump >> stateReverse [
+	^ stateReverse
 	
 ]

@@ -15,10 +15,12 @@ Reverse class >> with: aShipsGame [
 
 { #category : #action }
 Reverse >> apply: aGameBoard [ 
-	|aTargetSpecialEffect|
-	aTargetSpecialEffect  := atargetCell typeOfSpecialEffect.	
-	aTargetSpecialEffect reverse.
-	atargetCell changeEffect: aTargetSpecialEffect.
+	atargetCell reverse: true.
+]
+
+{ #category : #action }
+Reverse >> applyCancellation: aGameBoard [ 
+	atargetCell reverse: false.
 ]
 
 { #category : #'instance creation' }

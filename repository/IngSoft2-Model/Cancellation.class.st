@@ -26,13 +26,8 @@ Cancellation >> apply: aGameBoard [
 ]
 
 { #category : #action }
-Cancellation >> applyForCardsThatAffectCell [
-	
-]
-
-{ #category : #action }
 Cancellation >> applyForCardsThatAffectCell: aGameBoard [ 
-	cardToRemove apply: aGameBoard 
+	cardToRemove applyCancellation: aGameBoard 
 ]
 
 { #category : #action }

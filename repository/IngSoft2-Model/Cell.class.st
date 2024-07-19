@@ -31,6 +31,14 @@ Cell >> numberOfSpecialCell [
 ]
 
 { #category : #validation }
+Cell >> reverse: aStateToChange [
+
+	effect stateReverse == aStateToChange ifTrue: [ ^ self ].
+	effect changeState: aStateToChange.
+	self changeEffect: effect.
+]
+
+{ #category : #validation }
 Cell >> typeOfSpecialEffect [
 	^effect .
 ]
