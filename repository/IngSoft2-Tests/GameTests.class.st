@@ -660,39 +660,6 @@ self assert: (aGameBoard checkPositionOf: (aGameBoard player: 1) ) equals: 6 .
 ]
 
 { #category : #tests }
-GameTests >> test026PlayThreeTurnsWithDiceAndCheckThereIsAWinner [
-
-self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
-self setUpGameWith: 1 andGameboardWith: 2 and: 1.
-
-die1 := Die with: 4 .
-die2 := Die with: 8.
-
-arrayOfDie := OrderedCollection new.
-arrayOfDie add: die1 .
-arrayOfDie add: die2 .
-
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-aGame throwNextPlayer.
-
-
-self deny: (aGameBoard winner = 0) .
-
-
-
-
-  
-]
-
-{ #category : #tests }
 GameTests >> test027GameBoardCircularWithXLaps [
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
@@ -898,6 +865,32 @@ GameTests >> test057GamePlayersWithShipPositionShipCards [
 self setUpGameWith: 1 andGameboardWith: 4 and: 1.
 
 self assert: (((aGameBoard player: 1)shipPosition)isAtPosition ) equals: 0
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test058KeepPlayingWhenThereIsAWinnerThenThrowException [
+
+| parsecs  amountOfParsecsToMove|
+
+self setUpGameWith: 2 andGameboardWith: 8 and: 1.
+self setUpLoadedDiceWith: #(1 1 2) and: #(3 2 5).
+amountOfParsecsToMove:= #(7 3 2 1).
+parsecs := 4. 
+aGameBoard cellsWith: parsecs and: arrayOfDie .
+
+aGame throwNextPlayer. 
+aGame throwNextPlayer. 
+aGame throwNextPlayer. 
+
+self assert: aGame winner equals: 1. 
+self should:  [aGame throwNextPlayer] raise: Error withMessage: 'The game is finished, we already have a winner'.
+
 
 
 

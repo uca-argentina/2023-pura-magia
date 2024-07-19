@@ -36,6 +36,11 @@ Overload >> initializeWith: aShipsGame [
 	shipsGame := aShipsGame .
 ]
 
+{ #category : #testing }
+Overload >> isOnlyForPlayers [
+	^true.
+]
+
 { #category : #validation }
 Overload >> permanent [
 	^true.

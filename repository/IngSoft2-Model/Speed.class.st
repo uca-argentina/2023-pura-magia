@@ -36,6 +36,11 @@ Speed >> initializeWith: aShipsGame [
 	shipsGame := aShipsGame .
 ]
 
+{ #category : #testing }
+Speed >> isOnlyForPlayers [
+	^true.
+]
+
 { #category : #validation }
 Speed >> permanent [
 	^true
