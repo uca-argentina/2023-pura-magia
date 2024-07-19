@@ -13,6 +13,14 @@ Reverse class >> with: aShipsGame [
 	^(self new) initializeWith: aShipsGame .
 ]
 
+{ #category : #action }
+Reverse >> apply: aGameBoard [ 
+	|aTargetSpecialEffect|
+	aTargetSpecialEffect  := atargetCell typeOfSpecialEffect.	
+	aTargetSpecialEffect reverse.
+	atargetCell changeEffect: aTargetSpecialEffect.
+]
+
 { #category : #'instance creation' }
 Reverse >> from: aNumberOfShip to: anEffectCell [
 	shipsGame chosen: self from: aNumberOfShip.

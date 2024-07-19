@@ -16,8 +16,10 @@ Cancellation class >> with: aShipsGame [
 
 { #category : #action }
 Cancellation >> apply: aGameBoard [ 
-	self applyForAccelerationTo: aGameBoard .
-	self applyForOtherCardsTo: aGameBoard .
+	(cardToRemove isOnlyForPlayers)ifTrue:[
+	self applyForcardForAllPlayersTo: aGameBoard .
+	self applyForOtherCardsTo: aGameBoard .]ifFalse:[
+	self applyForCardsThatAffectCell: aGameBoard.].
 	
 	^(self)
 	

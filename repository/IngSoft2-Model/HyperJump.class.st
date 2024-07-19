@@ -57,6 +57,18 @@ HyperJump >> initializeWith: amountOfParsecsToMove [
 	stateReverse := false.
 ]
 
+{ #category : #highlighting }
+HyperJump >> reverse [
+	(stateReverse not )ifTrue:[ 
+		self changeState: true .
+		]
+	ifFalse:[
+		self changeState: false.
+		].
+	self reverseCollectionOfParcecsToMove.
+		
+]
+
 { #category : #action }
 HyperJump >> reverseCollectionOfParcecsToMove [
 	 anAmountOfParsecsToMove  do: [:each | each negateNominalValue]
