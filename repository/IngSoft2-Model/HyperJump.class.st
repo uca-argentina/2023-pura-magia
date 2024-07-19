@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'anAmountOfParsecsToMove',
-		'round'
+		'round',
+		'stateReverse'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -43,8 +44,33 @@ HyperJump >> applyTo: aGameBoard for: aChosenShip [
 	(aChosenShip) changePosition:  newPosition.
 ]
 
+{ #category : #action }
+HyperJump >> changeState: stateToChange [ 
+	stateReverse := stateToChange.
+	
+]
+
 { #category : #initialization }
 HyperJump >> initializeWith: amountOfParsecsToMove [ 
 	anAmountOfParsecsToMove:=amountOfParsecsToMove  .
 	round:= 0.
+	stateReverse := false.
+]
+
+{ #category : #highlighting }
+HyperJump >> reverse [
+	(stateReverse not )ifTrue:[ 
+		self changeState: true .
+		]
+	ifFalse:[
+		self changeState: false.
+		].
+	self reverseCollectionOfParcecsToMove.
+		
+]
+
+{ #category : #action }
+HyperJump >> reverseCollectionOfParcecsToMove [
+	 anAmountOfParsecsToMove  do: [:each | each negateNominalValue]
+	
 ]

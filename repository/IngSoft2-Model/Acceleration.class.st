@@ -34,6 +34,11 @@ Acceleration >> initializeWith: aShipsGame [
 	shipsGame := aShipsGame .
 ]
 
+{ #category : #testing }
+Acceleration >> isOnlyForPlayers [
+	^true.
+]
+
 { #category : #validation }
 Acceleration >> permanent [
 	^true.

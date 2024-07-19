@@ -16,18 +16,23 @@ Cancellation class >> with: aShipsGame [
 
 { #category : #action }
 Cancellation >> apply: aGameBoard [ 
-	self applyForAccelerationTo: aGameBoard .
-	self applyForOtherCardsTo: aGameBoard .
+	(cardToRemove isOnlyForPlayers)ifTrue:[
+	self applyForcardForAllPlayersTo: aGameBoard .
+	self applyForOtherCardsTo: aGameBoard .]ifFalse:[
+	self applyForCardsThatAffectCell: aGameBoard.].
 	
 	^(self)
 	
 ]
 
 { #category : #action }
-Cancellation >> applyForAccelerationTo: aGameBoard [ 
-	(aGameBoard accelerations includes: cardToRemove) ifTrue: [
-		self removeAcceleration: aGameBoard.
-		 ].
+Cancellation >> applyForCardsThatAffectCell [
+	
+]
+
+{ #category : #action }
+Cancellation >> applyForCardsThatAffectCell: aGameBoard [ 
+	cardToRemove apply: aGameBoard 
 ]
 
 { #category : #action }
@@ -37,6 +42,13 @@ Cancellation >> applyForOtherCardsTo: aGameBoard [
 	1 to: aGameBoard amountOfPlayers do: [ :counter | 
 		collectionCards := (aGameBoard player: counter) shipCards cardsForMe.
 		self removeFrom: collectionCards ]
+]
+
+{ #category : #action }
+Cancellation >> applyForcardForAllPlayersTo: aGameBoard [ 
+	(aGameBoard cardForAllPlayers includes: cardToRemove) ifTrue: [
+		self removecardForAllPlayers: aGameBoard.
+		 ].
 ]
 
 { #category : #initialization }
@@ -74,18 +86,18 @@ Cancellation >> permanent: aShipsGame verify: aNumberOfShip [
 ]
 
 { #category : #action }
-Cancellation >> removeAcceleration: aGameBoard [ 
-	|collectionOfAccelerations|
-	collectionOfAccelerations := aGameBoard accelerations.
-	collectionOfAccelerations remove: cardToRemove .
-]
-
-{ #category : #action }
 Cancellation >> removeFrom: collectionCards [
 
 	(collectionCards includes: cardToRemove) ifTrue: [ 
 		collectionCards remove: cardToRemove ]
 	
+]
+
+{ #category : #action }
+Cancellation >> removecardForAllPlayers: aGameBoard [ 
+	|collectionOfAccelerations|
+	collectionOfAccelerations := aGameBoard cardForAllPlayers.
+	collectionOfAccelerations remove: cardToRemove .
 ]
 
 { #category : #instance }

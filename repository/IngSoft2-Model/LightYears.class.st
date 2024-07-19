@@ -17,6 +17,11 @@ LightYears >> initializeWith: aNominalValue [
 	nominalValue := aNominalValue .
 ]
 
+{ #category : #action }
+LightYears >> negateNominalValue [
+	nominalValue := nominalValue negated.
+]
+
 { #category : #calculating }
 LightYears >> parsecs [
 	^( Parsecs with: (nominalValue // 3))
