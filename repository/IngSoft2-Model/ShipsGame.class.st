@@ -19,7 +19,7 @@ ShipsGame class >> initializeEmpty [
 
 { #category : #action }
 ShipsGame >> applyChosenCard [
-	lastUsedCard := chosenCard apply: gameboard .
+	lastUsedCard := chosenCard apply:  gameboard .
 ]
 
 { #category : #assignments }

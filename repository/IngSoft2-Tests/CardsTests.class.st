@@ -316,7 +316,7 @@ CardsTests >> test014PlayWithRepeatCardEffectWormHole [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	
-	wormHole := WormHole  new.
+	wormHole := WormHole  createNew .
 	repeat  := Repeat with: aGame .
 	aGameBoard add: wormHole at: 3.
 	
@@ -847,4 +847,78 @@ CardsTests >> test030PlayWithReverseAndCancellThenMoonWalkgoesBackToNormal [
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 0 .
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 3 .
 
+]
+
+{ #category : #tests }
+CardsTests >> test031PlayWithReverseCardOnMWormHole [
+	| player player2  reverse wormHole|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	wormHole := WormHole  createNew.
+	reverse := Reverse with: aGame.
+	aGameBoard add: wormHole at: 3.
+
+	player:= 1.
+	player2:=2.
+	aGameBoard add: reverse to: player.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 7.
+]
+
+{ #category : #tests }
+CardsTests >> test032PlayWithReverseAndReverseAgainCardOnMWormHoleThenEffectOnlyReverseOnce [
+	| player player2  reverse reverse2 wormHole|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	wormHole := WormHole  createNew.
+	reverse := Reverse with: aGame.
+	aGameBoard add: wormHole at: 3.
+	reverse2 :=Reverse with: aGame.
+
+	player:= 1.
+	player2:=2.
+	aGameBoard add: reverse to: player.
+	aGameBoard add: reverse2 to: player.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	reverse from: player2  to: 3 .
+	aGame throwNextPlayer .
+
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 7 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 7 .
+]
+
+{ #category : #tests }
+CardsTests >> test033PlayWithReverseOnMWormHoleThenCancell [
+	| player player2  reverse cancellation wormHole|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	wormHole := WormHole  createNew.
+	reverse := Reverse with: aGame.
+	aGameBoard add: wormHole at: 3.
+	cancellation:= Cancellation with: aGame .
+
+	player:= 1.
+	player2:=2.
+	aGameBoard add: reverse to: player.
+	aGameBoard add: cancellation to: player2.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	cancellation from: player2  canceled: reverse .
+	aGame throwNextPlayer .
+
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 7 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 0 .
 ]
