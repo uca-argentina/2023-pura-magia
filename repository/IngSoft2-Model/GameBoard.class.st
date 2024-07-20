@@ -40,15 +40,6 @@ GameBoard >> add: aEffect at: aNumberOfCell [
 ]
 
 { #category : #action }
-GameBoard >> add: aCard to: numberOfPlayer [ 
-	| aShip |
-	aShip :=(self player: numberOfPlayer). 
-	aShip add: aCard.
-	
-	
-]
-
-{ #category : #action }
 GameBoard >> addEffects: aCollectionOfProbabilities forHyperJump: aCollectionOfDifferentParsecs [ 
 	|randomNumber probabilities|
 		
@@ -72,7 +63,7 @@ GameBoard >> addEffects: aCollectionOfProbabilities forHyperJump: aCollectionOfD
 			self add: (AtomicBomb  new) at: index. 
 		 ].
 	(randomNumber >= (probabilities  at: 6) and: randomNumber < (probabilities at: 7)) ifTrue: [ 
-			self add: (CardAssignation new) at: index. 
+			self add: (DrawEffect  new) at: index. 
 		 ].].
 
 ]
@@ -196,6 +187,11 @@ GameBoard >> checkPositionOf: aShip [
 	^ ((anotherShip shipPosition ) isAtPosition)
 ]
 
+{ #category : #accessing }
+GameBoard >> collectionOfShipPositions [
+	^ collectionOfShipPositions
+]
+
 { #category : #action }
 GameBoard >> createCollectionFrom: aCollection [
 
@@ -218,43 +214,6 @@ GameBoard >> createPositionIn: aResult with: aShipPosition [
 { #category : #creation }
 GameBoard >> createWithNew: aResult with: aShipPosition [ 
 	^(self verifyParsecsOf: aShipPosition at: aResult).
-]
-
-{ #category : #assign }
-GameBoard >> designateRandomCardTo: numberOfShip [
-	|probabilities randomNumber|
-	probabilities := #(0 10 20 30 40 50 60) .
-		
-		randomNumber:= 60 atRandom.
-		
-		( randomNumber >= (probabilities  at: 1) and: randomNumber < (probabilities at: 2)) ifTrue: [
-			self add: (Overload new) to: numberOfShip.
-		 ].
-	 (randomNumber >= (probabilities  at: 2) and: randomNumber < (probabilities at: 3)) ifTrue: [ 
-			self add: (Speed new) to: numberOfShip.
-		 ].
-	 (randomNumber >= (probabilities  at: 3) and: randomNumber < (probabilities at: 4)) ifTrue: [ 
-			self add: (Cancellation new) to: numberOfShip.
-		 ].
-	 (randomNumber >= (probabilities  at: 4) and: randomNumber < (probabilities at: 5)) ifTrue: [ 
-			self add: (Redo new) to: numberOfShip.
-		 ].
-	(randomNumber >= (probabilities  at: 5) and: randomNumber < (probabilities at: 6)) ifTrue: [ 
-			self add: (Acceleration new) to: numberOfShip. 
-		 ].
-	(randomNumber >= (probabilities  at: 6) and: randomNumber <= (probabilities at: 7)) ifTrue: [ 
-			self add: (Repeat new) to: numberOfShip. 
-		 ].
-]
-
-{ #category : #creating }
-GameBoard >> fillWith: players [
-	
-	players do: [ :each | collectionOfShipPositions add: each ].
-
-	1 to: collectionOfShipPositions size do: [ :counter | 
-		self designateRandomCardTo: counter.
-		self designateRandomCardTo: counter ]
 ]
 
 { #category : #initialization }

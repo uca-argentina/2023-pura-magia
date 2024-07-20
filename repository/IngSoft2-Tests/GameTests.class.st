@@ -772,7 +772,7 @@ GameTests >> test053GameUsingCellWithCardThenValidateAmountOfCards [
 self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.
 
-anSpecialCard := CardAssignation new.
+anSpecialCard := DrawEffect  with: aGame.
 aGameBoard add: anSpecialCard at: 4.
 
 aGame throwNextPlayer .
@@ -784,7 +784,7 @@ self assert: (((aGameBoard player: 1)shipCards) cardsInHand size) equals: 3.
 { #category : #tests }
 GameTests >> test054GameUsingWormholeAndShipDecreasesLapWhenFalling [
 | wormHole|
-wormHole:= WormHole  new.
+wormHole := WormHole  createNew .
 
 self setUpLoadedDiceWith: #(1 1 ) and: #(5 0 ).
 self setUpGameWith: 1 andGameboardWith: 4 and: 2.

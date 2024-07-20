@@ -39,7 +39,7 @@ ProbabilityOfEffects >> calculate: arrayOfEffectsProbabilities forHyperJump: aCo
 		totalMoonWalks := totalMoonWalks + (each amountOf: MoonWalk). 
 		totalHyperJumps := totalHyperJumps + (each amountOf: HyperJump). 
 		totalAtomicBombs := totalAtomicBombs + (each amountOf: AtomicBomb).
-		totalSpecialCardsCells := totalSpecialCardsCells + (each amountOf: CardAssignation).
+		totalSpecialCardsCells := totalSpecialCardsCells + (each amountOf: DrawEffect).
 		totalNormalCells := totalNormalCells + (each amountOfNormalCells).
 		
 		

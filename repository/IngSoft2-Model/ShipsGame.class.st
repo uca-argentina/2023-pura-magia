@@ -7,7 +7,8 @@ Class {
 		'numberOfPlayer',
 		'amountOfPlayers',
 		'chosenCard',
-		'lastUsedCard'
+		'lastUsedCard',
+		'crupier'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -15,6 +16,11 @@ Class {
 { #category : #initialization }
 ShipsGame class >> initializeEmpty [
 	^(self new) initializeWith: 'The Game does not have a winner'
+]
+
+{ #category : #action }
+ShipsGame >> add: aCard to: aNumberOfPlayer [ 
+	crupier add: aCard to: aNumberOfPlayer using: gameboard.
 ]
 
 { #category : #action }
@@ -60,6 +66,11 @@ ShipsGame >> create: anAmountOfPlayers [
 	^ playersCollection
 ]
 
+{ #category : #accessing }
+ShipsGame >> crupier [
+	^ crupier
+]
+
 { #category : #action }
 ShipsGame >> gameboard [
 	^ gameboard
@@ -72,6 +83,7 @@ ShipsGame >> initializeWith: aResult [
 	gameboard := nil.
 	numberOfPlayer := 1.
 	amountOfPlayers := 0.
+	crupier := Crupier new.
 ]
 
 { #category : #action }
@@ -104,7 +116,7 @@ ShipsGame >> startwith: anAmountOfPlayers and: aGameboard [
 	gameboard := aGameboard.
 	players := self create: anAmountOfPlayers .
 	amountOfPlayers := anAmountOfPlayers. 
-	aGameboard fillWith: players
+	crupier fillWith: players using: aGameboard. 
 ]
 
 { #category : #action }

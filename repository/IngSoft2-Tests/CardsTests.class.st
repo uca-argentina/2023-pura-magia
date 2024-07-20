@@ -104,8 +104,8 @@ CardsTests >> test006PlayerStartTheGameThen2OverloadCardsAreAsigned [
 	
 	player:= 1.
 
-	aGameBoard add: overload1 to: player.
-	aGameBoard add: overload2 to: player.
+	aGame add: overload1 to: player.
+	aGame add: overload2 to: player.
 
 	self assert: (((((aGameBoard player: 1)shipCards ) cardsInHand ) at: 3) isKindOf: Overload).
 	self assert: (((((aGameBoard player: 1)shipCards ) cardsInHand ) at: 4) isKindOf: Overload).
@@ -126,8 +126,8 @@ CardsTests >> test007PlayerStartTheGameWith2OverloadCardsThenApplyEffect [
 	player:=1.
 	player2:=2.
 	
-	aGameBoard add: overload1 to: player.
-	aGameBoard add: overload2 to: player2.
+	aGame add: overload1 to: player.
+	aGame add: overload2 to: player2.
 
 	overload1 from: player applyTo: player2. 
 	
@@ -156,8 +156,8 @@ CardsTests >> test008PlayerStartTheGameWith2OSpeedCardsThenApplyEffectToThemSelf
 	player:= 1.
 	player2:=2.
 
-	aGameBoard add: speed1 to: player.
-	aGameBoard add: speed2 to: player2.
+	aGame add: speed1 to: player.
+	aGame add: speed2 to: player2.
 
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
@@ -186,8 +186,8 @@ CardsTests >> test009PlayerStartTheGameWith2OAcelerationCardsThenApplyEffect [
 	player:= 1.
 	player2:=2.
 
-	aGameBoard add: acceleration1 to: player.
-	aGameBoard add: acceleration2 to: player2.
+	aGame add: acceleration1 to: player.
+	aGame add: acceleration2 to: player2.
 		
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
@@ -219,8 +219,8 @@ CardsTests >> test010PlayWithCancelletionCardForOverload [
 	player:= 1.
 	player2:=2.
 	
-	aGameBoard add: overload to: player.
-	aGameBoard add: cancellation to: player2.
+	aGame add: overload to: player.
+	aGame add: cancellation to: player2.
 
 	overload  from: player  applyTo: player2 .
 	cancellation from: player2 applyTo: player2 canceled: overload .
@@ -249,8 +249,8 @@ CardsTests >> test011PlayWithCancelletionCardForSpeed [
 	player:= 1.
 	player2:=2.
 
-	aGameBoard add: speed  to: player.
-	aGameBoard add: cancellation to: player2.
+	aGame add: speed  to: player.
+	aGame add: cancellation to: player2.
 	
 	speed from: player applyTo: player . 
 	aGame throwNextPlayer .
@@ -275,8 +275,8 @@ CardsTests >> test012PlayWithCancelletionCardForAcceleration [
 	player:= 1.
 	player2:=2.
 
-	aGameBoard add: acceleration  to: player.
-	aGameBoard add: cancellation to: player2.
+	aGame add: acceleration  to: player.
+	aGame add: cancellation to: player2.
 
 	acceleration applyToAllFrom: player . 
 	aGame throwNextPlayer .
@@ -301,7 +301,7 @@ CardsTests >> test013PlayWithRepeatCardEffectSpeedUpToThemself [
 	player:= 1.
 	player2:=2.
 
-	aGameBoard add: repeat   to: player.
+	aGame add: repeat   to: player.
 
 	aGame throwNextPlayer .
 	repeat from: player to: player . 
@@ -323,7 +323,7 @@ CardsTests >> test014PlayWithRepeatCardEffectWormHole [
 	player:= 1.
 	player2:=2.
 
-	aGameBoard add: repeat   to: player.
+	aGame add: repeat   to: player.
 	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
@@ -344,7 +344,7 @@ CardsTests >> test015PlayWithRepeatCardEffectMoonWalk [
 	
 	player:= 1.
 	player2:=2.
-	aGameBoard add: repeat   to: player.
+	aGame add: repeat   to: player.
 	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
@@ -366,7 +366,7 @@ CardsTests >> test016PlayWithRepeatCardEffectAtomicBomb [
 	player:= 1.
 	player2:=2.
 
-	aGameBoard add: repeat   to: player.	
+	aGame add: repeat   to: player.	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
 	repeat from: player. 
@@ -402,7 +402,7 @@ CardsTests >> test017PlayWithRepeatCardEffectHyperJump [
 	aGameBoard add: hyperJump at: 3 .
 	player:= 1.
 	player2:=2.
-	aGameBoard add: repeat   to: player.
+	aGame add: repeat   to: player.
 	
 	aGame throwNextPlayer .
 	aGame throwNextPlayer .
@@ -423,8 +423,8 @@ CardsTests >> test018PlayWithRedoCardAndOverloadCard [
 	player:=1.
 	player2:=2.
 	
-	aGameBoard add: overload to: player.
-	aGameBoard add: redo to: player2.
+	aGame add: overload to: player.
+	aGame add: redo to: player2.
 	
 	overload from: player applyTo: player2 . 
 	aGame throwNextPlayer . 
@@ -451,11 +451,11 @@ CardsTests >> test019PlayWithRedoCardAndAccelerationCard [
 	player:=1.
 	player2:=2.
 	
-	aGameBoard add: acceleration to: player.
-	aGameBoard add: acceleration to: player.
+	aGame add: acceleration to: player.
+	aGame add: acceleration to: player.
 	
-	aGameBoard add: redo to: player2.
-	aGameBoard add: acceleration to: player2.
+	aGame add: redo to: player2.
+	aGame add: acceleration to: player2.
 
 	acceleration applyToAllFrom:  player . 
 	aGame throwNextPlayer . 
@@ -485,8 +485,8 @@ CardsTests >> test020PlayWithRedoCardAndSpeedCard [
 	player:=1.
 	player2:=2.
 	
-	aGameBoard add: speed to: player.
-	aGameBoard add: redo to: player2.
+	aGame add: speed to: player.
+	aGame add: redo to: player2.
 
 	speed from: player applyTo: player . 
 	aGame throwNextPlayer . 
@@ -516,10 +516,10 @@ CardsTests >> test021PlayWithRedoCardAndCancellationCard [
 	player:=1.
 	player2:=2.
 	
-	aGameBoard add: speed1 to: player.
-	aGameBoard add: cancellation to: player.
-	aGameBoard add: redo to: player2.
-	aGameBoard add: speed2 to: player2.
+	aGame add: speed1 to: player.
+	aGame add: cancellation to: player.
+	aGame add: redo to: player2.
+	aGame add: speed2 to: player2.
 	
 	speed1 from: player applyTo: player. 
 	aGame throwNextPlayer . "1-P4 2-P0"
@@ -553,10 +553,10 @@ CardsTests >> test022PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 	player:=1.
 	player2:=2.
 	
-	aGameBoard add: speed to: player.
+	aGame add: speed to: player.
 	
-	aGameBoard add: redo1 to: player2.
-	aGameBoard add: redo2 to: player2.
+	aGame add: redo1 to: player2.
+	aGame add: redo2 to: player2.
 
 	speed  from: player applyTo: player .
 	aGame throwNextPlayer . 
@@ -586,8 +586,8 @@ CardsTests >> test023PlayWithRedoCardAndAnotherRedoCardWithPermanentLastCardWhen
 	player:=1.
 	player2:=2.
 	
-	aGameBoard add: speed to: player.
-	aGameBoard add: redo to: player2.
+	aGame add: speed to: player.
+	aGame add: redo to: player2.
 	speed  from: player  applyTo: player .
 	
 	self should:  [redo from: player2] raise: Error withMessage: 'Cannot use permanent card when its not their turn'.
@@ -625,7 +625,7 @@ CardsTests >> test024PlayWithReverseCardForEffectHyperJump [
 	aGameBoard add: hyperJump at: 3 .
 	player:= 1.
 	player2:=2.
-	aGameBoard add: reverse to: player.
+	aGame add: reverse to: player.
 	
 	reverse from: player  to: 3 .
 	aGame throwNextPlayer .
@@ -665,8 +665,8 @@ CardsTests >> test025PlayWithReverseCardAndThenCancelledForEffectHyperJump [
 	aGameBoard add: hyperJump at: 3 .
 	player:= 1.
 	player2:=2.
-	aGameBoard add: reverse to: player.
-	aGameBoard add: cancellation to: player2.
+	aGame add: reverse to: player.
+	aGame add: cancellation to: player2.
 	
 	reverse from: player  to: 3 .
 	aGame throwNextPlayer .
@@ -707,8 +707,8 @@ CardsTests >> test026PlayWithReverseCardAndThenReverseAgainForEffectHyperJump [
 	aGameBoard add: hyperJump at: 3 .
 	player:= 1.
 	player2:=2.
-	aGameBoard add: reverse to: player.
-	aGameBoard add: reverse2  to: player2.
+	aGame add: reverse to: player.
+	aGame add: reverse2  to: player2.
 	
 	reverse from: player  to: 3 .
 	aGame throwNextPlayer . "cae en hyperjump y 3 + -7parcecs = casillero 1"
@@ -752,9 +752,9 @@ CardsTests >> test027PlayWithReverseCardAndThenReverseAgainAndThenCancellForEffe
 	aGameBoard add: hyperJump at: 3 .
 	player:= 1.
 	player2:=2.
-	aGameBoard add: reverse to: player.
-	aGameBoard add: reverse2  to: player2.
-	aGameBoard add: cancellation to: player.
+	aGame add: reverse to: player.
+	aGame add: reverse2  to: player2.
+	aGame add: cancellation to: player.
 	
 	
 	reverse from: player  to: 3 .
@@ -784,7 +784,7 @@ CardsTests >> test028PlayWithReverseCardOnMoonWalk [
 
 	player:= 1.
 	player2:=2.
-	aGameBoard add: reverse to: player.
+	aGame add: reverse to: player.
 	
 	reverse from: player  to: 3 .
 	aGame throwNextPlayer .
@@ -808,8 +808,8 @@ CardsTests >> test029PlayWithReverseAndThenAReverseAgainOnCardOnMoonWalkButState
 
 	player:= 1.
 	player2:=2.
-	aGameBoard add: reverse to: player.
-	aGameBoard add: reverse2 to: player2.
+	aGame add: reverse to: player.
+	aGame add: reverse2 to: player2.
 	
 	reverse from: player  to: 3 .
 	aGame throwNextPlayer .
@@ -835,8 +835,8 @@ CardsTests >> test030PlayWithReverseAndCancellThenMoonWalkgoesBackToNormal [
 
 	player:= 1.
 	player2:=2.
-	aGameBoard add: reverse to: player.
-	aGameBoard add: cancellation to: player2.
+	aGame add: reverse to: player.
+	aGame add: cancellation to: player2.
 	
 	reverse from: player  to: 3 .
 	aGame throwNextPlayer .
@@ -861,7 +861,7 @@ CardsTests >> test031PlayWithReverseCardOnMWormHole [
 
 	player:= 1.
 	player2:=2.
-	aGameBoard add: reverse to: player.
+	aGame add: reverse to: player.
 	
 	reverse from: player  to: 3 .
 	aGame throwNextPlayer .
@@ -884,8 +884,8 @@ CardsTests >> test032PlayWithReverseAndReverseAgainCardOnMWormHoleThenEffectOnly
 
 	player:= 1.
 	player2:=2.
-	aGameBoard add: reverse to: player.
-	aGameBoard add: reverse2 to: player.
+	aGame add: reverse to: player.
+	aGame add: reverse2 to: player.
 	
 	reverse from: player  to: 3 .
 	aGame throwNextPlayer .
@@ -910,8 +910,8 @@ CardsTests >> test033PlayWithReverseOnMWormHoleThenCancell [
 
 	player:= 1.
 	player2:=2.
-	aGameBoard add: reverse to: player.
-	aGameBoard add: cancellation to: player2.
+	aGame add: reverse to: player.
+	aGame add: cancellation to: player2.
 	
 	reverse from: player  to: 3 .
 	aGame throwNextPlayer .
