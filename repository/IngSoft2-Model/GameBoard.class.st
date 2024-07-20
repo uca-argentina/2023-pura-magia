@@ -216,6 +216,11 @@ GameBoard >> createWithNew: aResult with: aShipPosition [
 	^(self verifyParsecsOf: aShipPosition at: aResult).
 ]
 
+{ #category : #accessing }
+GameBoard >> fill: players [ 
+		players do: [ :each | self collectionOfShipPositions add: each ].
+]
+
 { #category : #initialization }
 GameBoard >> initializeWith: numberOfCells and: numberOfLaps [ 
 	cells := numberOfCells .
