@@ -79,7 +79,7 @@ self assert: ((aGameBoard specialEffectAtCell: 3) isKindOf:  SpeedUp) .
 EffectsTests >> test032GamePlayerFallsInSpeedUpEffectThenChangePosition [
 | speedUp|
 
-speedUp:= SpeedUp new.
+speedUp := SpeedUp createNew.
 
 self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 self setUpGameWith: 1 andGameboardWith: 8 and: 2.

@@ -294,7 +294,7 @@ CardsTests >> test013PlayWithRepeatCardEffectSpeedUpToThemself [
 	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
 	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
 	
-	speedUp := SpeedUp new.
+	speedUp := SpeedUp createNew.
 	repeat  := Repeat with: aGame .
 	
 	aGameBoard add: speedUp at: 3.
@@ -372,6 +372,29 @@ CardsTests >> test016PlayWithRepeatCardEffectAtomicBomb [
 	repeat from: player. 
 	
 	self assert: (aGameBoard checkPositionOf:  ((aGameBoard player: 2)) ) equals: 0 .
+]
+
+{ #category : #tests }
+CardsTests >> test016bisPlayWithRepeatCardEffectOnDrawCard [
+	| player player2  repeat draw|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	draw := DrawEffect with: aGame.
+	repeat  := Repeat with: aGame .
+	aGameBoard add: draw at: 5 .
+
+	player:= 1.
+	player2:=2.
+
+	aGame add: repeat   to: player.	
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+	repeat from: player. 
+	
+	self assert: (  (((aGameBoard player: 1)shipCards)cardsInHand)size) equals: 3 .
+	self assert: (  (((aGameBoard player: 1)shipCards)cardsInHand)size) equals: 3 .
+	
 ]
 
 { #category : #tests }
@@ -920,5 +943,198 @@ CardsTests >> test033PlayWithReverseOnMWormHoleThenCancell [
 
 	
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 7 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 0 .
+]
+
+{ #category : #tests }
+CardsTests >> test034PlayWithReverseCardOnDrawEffect [
+	| player player2  reverse draw|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	draw := DrawEffect  with: aGame.
+	reverse := Reverse with: aGame.
+	aGameBoard add: draw at: 3.
+
+	player:= 1.
+	player2:=2.
+	aGame add: reverse to: player.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+
+	
+	self assert: (  (((aGameBoard player: 1)shipCards)cardsInHand)size) equals: 1 .
+]
+
+{ #category : #tests }
+CardsTests >> test035PlayWithReverseCardOnDrawEffectThenCancelation [
+	| player player2  reverse  cancellation draw draw2|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	draw := DrawEffect  with: aGame.
+	draw2 := DrawEffect  with: aGame.
+	reverse := Reverse with: aGame.
+	cancellation :=Cancellation  with: aGame.
+	aGameBoard add: draw at: 3.
+
+	player:= 1.
+	player2:=2.
+	aGame add: reverse to: player.
+	aGame add: cancellation  to: player2.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	cancellation from: player2 canceled: reverse.
+	aGame throwNextPlayer .
+
+	
+	self assert: (  (((aGameBoard player: 1)shipCards)cardsInHand)size) equals: 1 .
+	self assert: (  (((aGameBoard player: 2)shipCards)cardsInHand)size) equals: 3 .
+]
+
+{ #category : #tests }
+CardsTests >> test035PlayWithReverseCardOnDrawEffectThenReverseAgain [
+	| player player2  reverse  reverse2 draw draw2|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	
+	draw := DrawEffect  with: aGame.
+	draw2 := DrawEffect  with: aGame.
+	reverse := Reverse with: aGame.
+	reverse2  := Reverse with: aGame.
+	aGameBoard add: draw at: 3.
+
+	player:= 1.
+	player2:=2.
+	aGame add: reverse to: player.
+	aGame add: reverse2   to: player2.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	reverse2 from: player2 to: 3.
+	aGame throwNextPlayer .
+
+	
+	self assert: (  (((aGameBoard player: 1)shipCards)cardsInHand)size) equals: 1 .
+	self assert: (  (((aGameBoard player: 2)shipCards)cardsInHand)size) equals: 1 .
+]
+
+{ #category : #tests }
+CardsTests >> test036PlayWithReverseCardOnSpeedUp [
+	| player player2  reverse speedUp|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	speedUp := SpeedUp createNew.
+	reverse := Reverse with: aGame.
+	aGameBoard add: speedUp at: 3.
+
+	player:= 1.
+	player2:=2.
+	aGame add: reverse to: player.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 0 .
+]
+
+{ #category : #tests }
+CardsTests >> test037PlayWithReverseCardOnSpeedUpThenReverseAgain [
+	| player player2  reverse reverse2 speedUp|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	speedUp := SpeedUp createNew.
+	reverse := Reverse with: aGame.
+	reverse2 :=Reverse with: aGame.
+	aGameBoard add: speedUp at: 3.
+
+	player:= 1.
+	player2:=2.
+	aGame add: reverse to: player.
+	aGame add: reverse2 to: player2.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	reverse2 from: player2  to: 3 .
+	aGame throwNextPlayer .
+
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 0 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 0 .
+]
+
+{ #category : #tests }
+CardsTests >> test038PlayWithReverseCardOnSpeedUpThenRCancelCard [
+	| player player2  reverse cancellation speedUp|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	speedUp := SpeedUp createNew.
+	reverse := Reverse with: aGame.
+	cancellation :=Cancellation with: aGame.
+	aGameBoard add: speedUp at: 3.
+
+	player:= 1.
+	player2:=2.
+	aGame add: reverse to: player.
+	aGame add: cancellation to: player2.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	cancellation from: player2 canceled: reverse.
+	aGame throwNextPlayer .
+
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 0 .
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 7.
+]
+
+{ #category : #tests }
+CardsTests >> test039PlayWithReverseCardAtomicBomb [
+	| player player2  reverse atomicBomb|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 4 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	atomicBomb := AtomicBomb new.
+	reverse := Reverse with: aGame.
+	aGameBoard add: atomicBomb at: 3.
+
+	player:= 1.
+	player2:=2.
+	aGame add: reverse to: player.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	aGame throwNextPlayer .
+
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 0 .
+]
+
+{ #category : #tests }
+CardsTests >> test039PlayWithReverseCardAtomicBombThenCancel [
+	| player player2  reverse atomicBomb cancellation|
+	self setUpLoadedDiceWith: #(1 1 ) and: #(2 2 ).
+	self setUpGameWith: 2 andGameboardWith: 8 and: 2.
+	atomicBomb := AtomicBomb new.
+	reverse := Reverse with: aGame.
+	aGameBoard add: atomicBomb at: 3.
+	cancellation := Cancellation with: aGame.
+
+	player:= 1.
+	player2:=2.
+	aGame add: reverse to: player.
+	aGame add: cancellation to: player2.
+	
+	reverse from: player  to: 3 .
+	aGame throwNextPlayer .
+	cancellation from: player2 canceled: reverse.
+	aGame throwNextPlayer .
+
+	
+	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1)) equals: 0 .
 	self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2)) equals: 0 .
 ]

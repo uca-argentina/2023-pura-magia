@@ -15,3 +15,12 @@ AtomicBomb >> applyTo: aGameBoard for: aShip [
 		newShipPosition := ShipPosition createWith: 0 at: lap and: parsec.
 		ship changePosition: newShipPosition ]
 ]
+
+{ #category : #initialization }
+AtomicBomb >> changeState: aBoolean [
+]
+
+{ #category : #initialization }
+AtomicBomb >> stateReverse [
+	^false.
+]

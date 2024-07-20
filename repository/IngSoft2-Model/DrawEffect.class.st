@@ -17,7 +17,15 @@ DrawEffect class >> with: aShipsGame [
 DrawEffect >> applyTo: aGameBoard for: aShip [
 	|numberOfShip|
 	numberOfShip:= aShip numberOfShip .
-	((self shipGame) crupier) designateRandomCardTo: numberOfShip using: aGameBoard.
+	(self stateReverse not)ifTrue:[
+	((self shipGame) crupier) designateRandomCardTo: numberOfShip using: aGameBoard.]
+	ifFalse: [ 
+		((self shipGame) crupier) takeOutARandomCardTo: numberOfShip using: aGameBoard. ]
+]
+
+{ #category : #initialization }
+DrawEffect >> changeState: aStateToChange [ 
+	stateReverse := aStateToChange.
 ]
 
 { #category : #initialization }
@@ -29,4 +37,9 @@ DrawEffect >> initializeWith: aShipsGame [
 { #category : #action }
 DrawEffect >> shipGame [
 	^shipsGame.
+]
+
+{ #category : #accessing }
+DrawEffect >> stateReverse [
+	^ stateReverse
 ]
