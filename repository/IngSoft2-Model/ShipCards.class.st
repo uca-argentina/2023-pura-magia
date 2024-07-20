@@ -42,6 +42,13 @@ ShipCards >> initializeNew [
 	aCollectionOfCardsForMe := OrderedCollection new.
 ]
 
+{ #category : #removing }
+ShipCards >> removeCardInHand [
+	|randomElement|
+	randomElement:=aCollectionOfCards atRandom.
+	aCollectionOfCards remove: randomElement.
+]
+
 { #category : #action }
 ShipCards >> resultOfCards [
 

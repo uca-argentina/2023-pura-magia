@@ -46,3 +46,14 @@ Crupier >> fillWith: players using: aGameBoard [
 		self designateRandomCardTo: counter using: aGameBoard.
 		self designateRandomCardTo: counter using: aGameBoard ]
 ]
+
+{ #category : #action }
+Crupier >> takeOutARandomCardTo: numberOfShip using: aGameBoard [ 
+	|aShip |
+	aShip :=(aGameBoard player: numberOfShip). 
+	aShip shipCards removeCardInHand.
+"	collectionOfCards:= (aShip shipCards ) cardsInHand.
+	randomElement:=collectionOfCards atRandom.
+	(aShip shipCards ) cardsInHand remove: randomElement."
+	
+]
