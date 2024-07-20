@@ -21,7 +21,7 @@ MoonWalk >> applyTo: aGameBoard for: aChosenShip [
 		(aGameBoard player: index) = aChosenShip ifFalse: [ 
 			newCell := (aGameBoard player: index) shipPosition isAtPosition + amountOfCells.
 			shipPosition := (aGameBoard player: index) shipPosition.
-			newShipPosition := aGameBoard verifyCellsOf: shipPosition at: newCell.
+			newShipPosition := (aGameBoard positionManager) manageCellsOf: shipPosition at: newCell.
 			(aGameBoard player: index) changePosition: newShipPosition ] ]
 ]
 

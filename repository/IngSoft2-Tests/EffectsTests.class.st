@@ -610,3 +610,24 @@ self assert: (  (((aGameBoard player: 1)shipCards)cardsInHand)size) equals: 3 .
 
   
 ]
+
+{ #category : #tests }
+EffectsTests >> test053GameUsingNullEffect [
+| nullEffect |
+
+nullEffect := NullEffect new.
+
+self setUpLoadedDiceWith: #(1 1 ) and: #(3 4 ).
+self setUpGameWith: 1 andGameboardWith: 8 and: 2.
+
+aGameBoard add: nullEffect at: 3.
+
+self assert: ((aGameBoard specialEffectAtCell: 3) isKindOf:  NullEffect) .
+
+
+
+
+
+
+  
+]

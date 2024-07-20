@@ -52,8 +52,5 @@ Crupier >> takeOutARandomCardTo: numberOfShip using: aGameBoard [
 	|aShip |
 	aShip :=(aGameBoard player: numberOfShip). 
 	aShip shipCards removeCardInHand.
-"	collectionOfCards:= (aShip shipCards ) cardsInHand.
-	randomElement:=collectionOfCards atRandom.
-	(aShip shipCards ) cardsInHand remove: randomElement."
 	
 ]

@@ -18,7 +18,7 @@ SpeedUp >> applyTo: aGameBoard for: aShip [
 	|newCell newShipPosition shipPosition|
 	newCell := (((aShip shipPosition ) isAtPosition)+ amountOfCells).
 	shipPosition := aShip shipPosition .
-	newShipPosition:= aGameBoard verifyCellsOf: shipPosition   at: newCell .
+	newShipPosition := (aGameBoard positionManager) manageCellsOf: shipPosition at: newCell.
 	aShip  changePosition: newShipPosition.
 ]
 
