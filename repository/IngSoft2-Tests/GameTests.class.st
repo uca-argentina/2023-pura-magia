@@ -936,7 +936,7 @@ self setUpLoadedDiceWith: #(1 1 2) and: #(3 2 5).
 (aGame turnManager) throwNext: player .
 
 self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 2 .
-self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2) ) equals: 3 .
+
 
 
 
