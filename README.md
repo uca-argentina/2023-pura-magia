@@ -1,7 +1,7 @@
 # 2023-pura-magia
 
-![GHA Status](https://github.com/uca-argentina/2023-pura-magia/actions/workflows/GHA.yml/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/uca-argentina/2023-pura-magia/badge.svg?branch=master)](https://coveralls.io/github/uca-argentina/2023-pura-magia?branch=master)
+![GHA Status](https://github.com/uca-argentina/Delfinalasheras/actions/workflows/GHA.yml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/Delfinalasheras/2023-pura-magia/badge.svg?branch=master)](https://coveralls.io/github/Delfinalasheras/2023-pura-magia?branch=master)
 
 ## Metacello
 
