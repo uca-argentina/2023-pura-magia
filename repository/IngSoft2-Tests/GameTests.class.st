@@ -898,3 +898,53 @@ self should:  [aGame throwNextPlayer] raise: Error withMessage: 'The game is fin
 
   
 ]
+
+{ #category : #tests }
+GameTests >> test059APlayerCheatsThenGoesback2cells [
+|player player2|
+self setUpGameWith: 2 andGameboardWith: 8 and: 1.
+self setUpLoadedDiceWith: #(1 1 2) and: #(3 2 5).
+	player:= 1.
+	player2:=2.
+
+(aGame turnManager) throwNext: player. 
+(aGame turnManager) throwNext: player. 
+(aGame turnManager) throwNext: player2. 
+
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 2 .
+
+
+
+
+
+
+
+  
+]
+
+{ #category : #tests }
+GameTests >> test059APlayerCheatsThenGoesback2cellsAndLosesTheirTurn [
+|player player2|
+self setUpGameWith: 2 andGameboardWith: 10 and: 1.
+self setUpLoadedDiceWith: #(1 1 2) and: #(3 2 5).
+	player:= 1.
+	player2:=2.
+
+(aGame turnManager) throwNext: player. 
+(aGame turnManager) throwNext: player .
+(aGame turnManager) throwNext: player2 . 
+(aGame turnManager) throwNext: player .
+
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 1) ) equals: 2 .
+self assert: (aGameBoard checkPositionOf:  (aGameBoard player: 2) ) equals: 3 .
+
+
+
+
+
+
+
+
+
+  
+]

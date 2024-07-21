@@ -8,7 +8,6 @@ Class {
 		'aCollectionOfSpecialCells',
 		'parsecsByCell',
 		'dieCollection',
-		'turn',
 		'aCollectionOfUsedCards',
 		'lastEffectUsed',
 		'aCollectionOfAccelerations',
@@ -142,11 +141,6 @@ GameBoard >> createCollectionFrom: aCollection [
 	^ newCollection
 ]
 
-{ #category : #creation }
-GameBoard >> createWithNew: aResult with: aShipPosition [ 
-	^(self verifyParsecsOf: aShipPosition at: aResult).
-]
-
 { #category : #action }
 GameBoard >> diceResultOf: aShip [
 	|dieResult|
@@ -196,12 +190,10 @@ GameBoard >> move: aShip [
 
 { #category : #action }
 GameBoard >> move: aShip using: specialEffect and: result [ 
-	|newPosition turnShip|
+	|newPosition|
 	newPosition := positionManager manageCellsOf: aShip shipPosition at: result.
 	aShip changePosition: newPosition.
-	turnShip:= self player:  (self turn) .
-	
-	lastEffectUsed := specialEffect applyTo:  self  for: turnShip  . 
+	lastEffectUsed := specialEffect applyTo:  self  for: aShip  . 
 ]
 
 { #category : #validation }
@@ -294,13 +286,7 @@ GameBoard >> throwVariousDices: aCollectionOfDices [
 ]
 
 { #category : #action }
-GameBoard >> turn [
-	^ turn
-]
-
-{ #category : #action }
 GameBoard >> turnOf: numberOfShip [
-	turn := numberOfShip .
 	self winner = 0
 	ifTrue: [ self move: (collectionOfShipPositions at: numberOfShip) ]
 	ifFalse: [ Error signal: 'The game is finished, we already have a winner' ]

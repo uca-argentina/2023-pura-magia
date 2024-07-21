@@ -8,7 +8,8 @@ Class {
 		'amountOfPlayers',
 		'chosenCard',
 		'lastUsedCard',
-		'crupier'
+		'crupier',
+		'turnManager'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -84,6 +85,7 @@ ShipsGame >> initializeWith: aResult [
 	numberOfPlayer := 1.
 	amountOfPlayers := 0.
 	crupier := Crupier new.
+	turnManager := TurnManager new.
 ]
 
 { #category : #action }
@@ -117,20 +119,17 @@ ShipsGame >> startwith: anAmountOfPlayers and: aGameboard [
 	players := self create: anAmountOfPlayers .
 	amountOfPlayers := anAmountOfPlayers. 
 	crupier fillWith: players using: aGameboard. 
+	turnManager := TurnManager with: anAmountOfPlayers and: gameboard.
 ]
 
 { #category : #action }
 ShipsGame >> throwNextPlayer [
-	numberOfPlayer <= amountOfPlayers ifTrue:  [ 
-		gameboard turnOf: numberOfPlayer.
-		((numberOfPlayer := numberOfPlayer + 1)> amountOfPlayers )ifTrue: [ 
-			numberOfPlayer := 1.
-			 ].
-		 ]ifFalse: [ 
-			numberOfPlayer := 1.
-			gameboard turnOf: numberOfPlayer.
-			numberOfPlayer := numberOfPlayer + 1.
-			 ]
+	numberOfPlayer := (turnManager throwNext: numberOfPlayer) nextTurn.
+]
+
+{ #category : #action }
+ShipsGame >> turnManager [
+	^turnManager .
 ]
 
 { #category : #validation }
